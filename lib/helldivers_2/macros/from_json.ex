@@ -6,18 +6,21 @@ defmodule Helldivers2.Macros.FromJson do
   This allows constant time lookups from the JSON.
   """
 
-  defmacro __using__(_filename) do
-    mappings = %{}
-    # mappings = :helldivers_2
-    # |> :code.priv_dir()
-    # |> Path.join(filename)
-    # |> File.read!()
-    # |> Jason.decode!()
+  defmacro __using__(filename) do
+    mappings = :helldivers_2
+    |> :code.priv_dir()
+    |> Path.join(filename)
+    |> File.read!()
+    |> Jason.decode!()
 
     for {key, value} <- mappings do
       quote do
         defp lookup("#{unquote(key)}"), do: unquote(value)
       end
-    end ++ []
+    end ++ [
+      quote do
+        def all(), do: unquote(Macro.escape(Map.values(mappings)))
+      end
+    ]
   end
 end

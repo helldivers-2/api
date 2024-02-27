@@ -30,6 +30,20 @@ defmodule Helldivers2.WarSeason do
     end
   end
 
+  @doc """
+  Checks if the given war ID actually exists.
+  """
+  @spec exists?(String.t()) :: boolean()
+  def exists?(war_id) do
+    case Registry.lookup(__MODULE__.Registry, war_id) do
+      [{pid, _}] when is_pid(pid) ->
+        true
+
+      _ ->
+        false
+    end
+  end
+
   @spec store(String.t(), WarInfo.t() | WarStatus.t()) :: :ok | :error
   def store(war_id, data) do
     GenServer.call({:via, Registry, {__MODULE__.Registry, war_id}}, {:store, data})
@@ -105,7 +119,8 @@ defmodule Helldivers2.WarSeason do
     end
   end
 
-  @spec get_planet_status(String.t(), non_neg_integer()) :: {:ok, PlanetStatus.t()} | {:error, term()}
+  @spec get_planet_status(String.t(), non_neg_integer()) ::
+          {:ok, PlanetStatus.t()} | {:error, term()}
   def get_planet_status(war_id, planet_index) do
     case :ets.lookup(table_name(war_id), {PlanetStatus, planet_index}) do
       [] ->

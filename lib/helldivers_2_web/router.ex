@@ -14,16 +14,20 @@ defmodule Helldivers2Web.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", Helldivers2Web do
-    pipe_through :browser
+  # scope "/", Helldivers2Web do
+  #   pipe_through :browser
 
-    get "/", PageController, :home
-  end
+  #   get "/", PageController, :home
+  # end
 
   # Other scopes may use custom stacks.
-  # scope "/api", Helldivers2Web do
-  #   pipe_through :api
-  # end
+  scope "/api", Helldivers2Web.Api do
+    pipe_through :api
+
+    get "/", WarSeasonController, :index
+    get "/:war_id/info", WarSeasonController, :show_info
+    get "/:war_id/planets", PlanetsController, :index
+  end
 
   # Enable LiveDashboard in development
   if Application.compile_env(:helldivers_2, :dev_routes) do

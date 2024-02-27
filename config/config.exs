@@ -8,7 +8,8 @@
 import Config
 
 config :helldivers_2,
-  generators: [timestamp_type: :utc_datetime]
+  generators: [timestamp_type: :utc_datetime],
+  war_seasons: ["801"]
 
 # Configures the endpoint
 config :helldivers_2, Helldivers2Web.Endpoint,
