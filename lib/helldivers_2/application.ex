@@ -11,6 +11,10 @@ defmodule Helldivers2.Application do
       Helldivers2Web.Telemetry,
       {DNSCluster, query: Application.get_env(:helldivers_2, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Helldivers2.PubSub},
+      {Registry, keys: :unique, name: Helldivers2.WarSync.Registry},
+      {Registry, keys: :unique, name: Helldivers2.WarSeason.Registry},
+      # Start a sync for war 801
+      {Helldivers2.WarSync, war_id: "801"},
       # Start a worker by calling: Helldivers2.Worker.start_link(arg)
       # {Helldivers2.Worker, arg},
       # Start to serve requests, typically the last entry

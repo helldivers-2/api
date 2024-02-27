@@ -19,9 +19,12 @@ defmodule Helldivers2.MixProject do
   def application do
     [
       mod: {Helldivers2.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: extra_apps(Mix.env())
     ]
   end
+
+  defp extra_apps(:dev), do: [:logger, :runtime_tools, :os_mon, :wx, :observer]
+  defp extra_apps(_), do: [:logger, :runtime_tools, :os_mon]
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
@@ -44,7 +47,11 @@ defmodule Helldivers2.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, ">= 0.0.0"}
+      {:bandit, ">= 0.0.0"},
+      {:req, "~> 0.4.11"},
+      {:nimble_options, "~> 1.1.0"},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
   end
 

@@ -7,7 +7,7 @@ defmodule Helldivers2Web.Endpoint do
   @session_options [
     store: :cookie,
     key: "_helldivers_2_key",
-    signing_salt: "/F1siyq3",
+    signing_salt: "40PtH+91",
     same_site: "Lax"
   ]
 
