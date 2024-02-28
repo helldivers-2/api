@@ -27,6 +27,7 @@ defmodule Helldivers2Web do
       import Plug.Conn
       import Phoenix.Controller
       import Phoenix.LiveView.Router
+      import Helldivers2Web.Plugs.RateLimit, only: [rate_limit: 2]
     end
   end
 

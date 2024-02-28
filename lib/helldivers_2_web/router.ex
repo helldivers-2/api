@@ -12,6 +12,7 @@ defmodule Helldivers2Web.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :rate_limit, [interval_seconds: 300, max_requests: 10]
   end
 
   # scope "/", Helldivers2Web do

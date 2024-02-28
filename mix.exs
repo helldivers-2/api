@@ -51,7 +51,8 @@ defmodule Helldivers2.MixProject do
       {:req, "~> 0.4.11"},
       {:nimble_options, "~> 1.1.0"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:ex_rated, "~> 2.1.0"}
     ]
   end
 
