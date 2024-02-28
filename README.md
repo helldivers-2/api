@@ -8,11 +8,9 @@ This is **NOT** an official *nor* endorsed API and may stop functioning at any t
 Currently the API does not enforce authentication.
 You can see all active war seasons at `/api/`
 
-Once you picked a war season you can query it with the currently implemented endpoints:
-- `/api/:war_id/info`
-- `/api/:war_id/planets`
+We provide an OpenApi specification which you can download at [`/api/openapi`](https://helldivers-2.fly.dev/api/openapi)
 
-for example: https://helldivers-2.fly.dev/api/801/info will yield the war season information of `801`
+We also provide a SwaggerUI view on the above specification [here](https://helldivers-2.fly.dev/api/swaggerui).
 
 ### Rate limit
 Currently the rate limit is set rather low, at 10 requests/5 minutes.
