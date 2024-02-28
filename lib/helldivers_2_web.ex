@@ -28,6 +28,7 @@ defmodule Helldivers2Web do
       import Phoenix.Controller
       import Phoenix.LiveView.Router
       import Helldivers2Web.Plugs.RateLimit, only: [rate_limit: 2]
+      import Helldivers2Web.Plugs.WarSeason, only: [check_war_id: 2]
     end
   end
 
@@ -44,6 +45,13 @@ defmodule Helldivers2Web do
         layouts: [html: Helldivers2Web.Layouts]
 
       import Plug.Conn
+
+      # OpenApi helpers
+      alias OpenApiSpex.Schema
+      alias OpenApiSpex.JsonErrorResponse
+      alias OpenApiSpex.Plug.CastAndValidate
+      alias Helldivers2Web.Schemas.NotFoundSchema
+      alias Helldivers2Web.Schemas.TooManyRequestsSchema
 
       unquote(verified_routes())
     end

@@ -12,7 +12,14 @@ defmodule Helldivers2Web.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug OpenApiSpex.Plug.PutApiSpec, module: Helldivers2Web.ApiSpec
     plug :rate_limit, [interval_seconds: 300, max_requests: 10]
+    plug :check_war_id
+  end
+
+  pipeline :openapi do
+    plug :accepts, ["json"]
+    plug OpenApiSpex.Plug.PutApiSpec, module: Helldivers2Web.ApiSpec
   end
 
   # scope "/", Helldivers2Web do
@@ -20,6 +27,13 @@ defmodule Helldivers2Web.Router do
 
   #   get "/", PageController, :home
   # end
+
+  scope "/api" do
+    pipe_through :openapi
+
+    get "/openapi", OpenApiSpex.Plug.RenderSpec, []
+    get "/swaggerui", OpenApiSpex.Plug.SwaggerUI, path: "/api/openapi"
+  end
 
   # Other scopes may use custom stacks.
   scope "/api", Helldivers2Web.Api do

@@ -26,7 +26,7 @@ defmodule Helldivers2Web.Plugs.RateLimit do
 
     conn
     |> put_rate_limit_headers(limit, 0)
-    |> put_resp_header("Retry-After", to_string(ms_to_next_bucket / 1_000))
+    |> put_resp_header("retry-after", to_string(ms_to_next_bucket / 1_000))
     |> put_status(:too_many_requests)
     |> json(%{error: "Rate limit exceeded."})
     |> halt()
@@ -34,7 +34,7 @@ defmodule Helldivers2Web.Plugs.RateLimit do
 
   defp put_rate_limit_headers(conn, limit, remaining) do
     conn
-    |> put_resp_header("X-RateLimit-Limit", to_string(limit))
-    |> put_resp_header("X-RateLimit-Remaining", to_string(remaining))
+    |> put_resp_header("x-ratelimit-limit", to_string(limit))
+    |> put_resp_header("x-ratelimit-remaining", to_string(remaining))
   end
 end

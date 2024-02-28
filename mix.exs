@@ -52,7 +52,8 @@ defmodule Helldivers2.MixProject do
       {:nimble_options, "~> 1.1.0"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:ex_rated, "~> 2.1.0"}
+      {:ex_rated, "~> 2.1.0"},
+      {:open_api_spex, "~> 3.18"}
     ]
   end
 

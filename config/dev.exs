@@ -66,3 +66,6 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Include HEEx debug annotations as HTML comments in rendered markup
 config :phoenix_live_view, :debug_heex_annotations, true
+
+# Ensures the OpenApi spec is refreshed during development and not cached
+config :open_api_spex, :cache_adapter, OpenApiSpex.Plug.NoneCache
