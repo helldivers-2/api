@@ -6,6 +6,7 @@ defmodule Helldivers2Web.Api.PlanetsJSON do
     Enum.map(planets, &show/1)
   end
 
+  def show(%{planet: planet}), do: show(planet)
   def show(%Planet{} = planet) do
     {x, y} = planet.position
 
