@@ -6,7 +6,8 @@ defmodule Helldivers2Web.Schemas.PlanetSchema do
   def response(), do: {"Planet response", "application/json", __MODULE__}
 
   @doc "Generates a schema for an array of planet schemas"
-  def responses(), do: {"Planets response", "application/json", %Schema{type: :array, items: __MODULE__}}
+  def responses(),
+    do: {"Planets response", "application/json", %Schema{type: :array, items: __MODULE__}}
 
   OpenApiSpex.schema(%{
     description: "Represents a planet in the galactic war that must receive Managed democracy",

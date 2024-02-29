@@ -27,15 +27,6 @@ defmodule Helldivers2.WarSync do
     ]
   ]
 
-  @type state :: %{
-          war_id: String.t(),
-          interval: non_neg_integer(),
-          healthy?: boolean(),
-          last_error: String.t() | nil,
-          last_sync: DateTime.t() | nil,
-          war_info: WarInfo.t() | nil
-        }
-
   @doc "Supported options:\n#{NimbleOptions.docs(@options)}"
   def start_link(opts) do
     with {:ok, options} <- NimbleOptions.validate(opts, @options) do
@@ -50,14 +41,20 @@ defmodule Helldivers2.WarSync do
   @impl GenServer
   def init(opts) do
     war_id = Keyword.get(opts, :war_id)
+    interval = Keyword.get(opts, :interval)
     WarSeason.start_link(war_id: war_id)
 
     send(self(), :sync)
-    {:ok, Map.new(opts)}
+    {:ok, %{
+      war_id: war_id,
+      interval: interval
+    }}
   end
 
   @impl GenServer
-  def handle_info(:sync, %{war_id: war_id} = state) do
+  def handle_info(:sync, %{war_id: war_id, interval: interval} = state) do
+    Process.send_after(self(), :sync, interval)
+
     with {:ok, war_info} <- WarInfo.download(war_id),
          :ok <- WarSeason.store(war_id, war_info),
          {:ok, war_status} <- WarStatus.download(war_id),

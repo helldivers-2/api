@@ -12,7 +12,7 @@ defmodule Helldivers2Web.Schemas.WarInfoSchema do
     type: :object,
     properties: %{
       war_id: %Schema{
-        type: :string,
+        type: :integer,
         description:
           "The identifier for this war, this ID must be passed for all resources under this war"
       },

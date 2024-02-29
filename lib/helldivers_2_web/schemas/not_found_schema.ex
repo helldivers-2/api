@@ -8,9 +8,12 @@ defmodule Helldivers2Web.Schemas.NotFoundSchema do
     description: "The resource you tried to retrieve could not be found",
     type: :object,
     properties: %{
-      errors: %Schema{type: :object, properties: %{
-        detail: %Schema{type: :string, description: "Description of what went wrong"}
-      }}
+      errors: %Schema{
+        type: :object,
+        properties: %{
+          detail: %Schema{type: :string, description: "Description of what went wrong"}
+        }
+      }
     }
   })
 end

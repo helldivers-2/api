@@ -42,7 +42,7 @@ defmodule Helldivers2.Models.WarStatus.PlanetEvent do
       event_type: Map.get(map, "eventType"),
       race: Faction.parse(Map.get(map, "race")),
       health: Map.get(map, "health"),
-      max_health: Map.get(map, "max_health"),
+      max_health: Map.get(map, "maxHealth"),
       start_time: DateTime.from_unix!(Map.get(map, "startTime")),
       expire_time: DateTime.from_unix!(Map.get(map, "expireTime")),
       campaign: lookup_campaign(map, campaigns),

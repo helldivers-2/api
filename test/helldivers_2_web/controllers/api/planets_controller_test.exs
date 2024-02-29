@@ -2,9 +2,8 @@ defmodule Helldivers2Web.Api.PlanetsControllerTest do
   use Helldivers2Web.ConnCase
 
   import OpenApiSpex.TestAssertions
+  import Helldivers2.WarSeasonFixtures
 
-  alias Helldivers2.Models.WarInfo.Planet
-  alias Helldivers2.Models.WarInfo
   alias Helldivers2.WarSeason
 
   @war_id "1"
@@ -14,32 +13,7 @@ defmodule Helldivers2Web.Api.PlanetsControllerTest do
     {:ok, _} = WarSeason.start_link(war_id: @war_id)
 
     # Store a few planets in the given war season
-    WarSeason.store(@war_id, %WarInfo{
-      planets: [
-        %Planet{
-          index: 0,
-          name: "Super Earth",
-          hash: 897_386_910,
-          position: {0, 0},
-          waypoints: [1],
-          sector: "Sol",
-          max_health: 1_000_000,
-          disabled: false,
-          initial_owner: "Humans"
-        },
-        %Planet{
-          index: 1,
-          name: "Klen Dahth II",
-          hash: 3621417917,
-          position: {0.05373042, 0.10565466},
-          waypoints: [2],
-          sector: "Altus",
-          max_health: 1000000,
-          disabled: false,
-          initial_owner: "Humans"
-        }
-      ]
-    })
+    WarSeason.store(@war_id, war_info_fixture())
 
     :ok
   end

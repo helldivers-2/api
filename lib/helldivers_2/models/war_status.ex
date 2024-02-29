@@ -19,7 +19,7 @@ defmodule Helldivers2.Models.WarStatus do
           snapshot_at: DateTime.t(),
           impact_multiplier: float(),
           planet_status: list(PlanetStatus.t()),
-          planet_attacks: %{String.t() => Planet.t()},
+          planet_attacks: {Planet.t(), Planet.t()},
           campaigns: list(Campaign.t()),
           community_targets: [],
           joint_operations: list(JointOperation.t()),
@@ -74,9 +74,9 @@ defmodule Helldivers2.Models.WarStatus do
       planet_status: Enum.map(Map.get(map, "planetStatus"), &PlanetStatus.parse(war_id, &1)),
       planet_attacks:
         Enum.map(Map.get(map, "planetAttacks"), fn attack ->
-          %{
-            "source" => WarSeason.get_planet!(war_id, Map.get(attack, "source")),
-            "target" => WarSeason.get_planet!(war_id, Map.get(attack, "target"))
+          {
+            WarSeason.get_planet!(war_id, Map.get(attack, "source")),
+            WarSeason.get_planet!(war_id, Map.get(attack, "target"))
           }
         end),
       campaigns: campaigns,

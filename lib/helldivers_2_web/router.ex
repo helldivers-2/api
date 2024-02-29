@@ -41,6 +41,8 @@ defmodule Helldivers2Web.Router do
 
     get "/", WarSeasonController, :index
     get "/:war_id/info", WarSeasonController, :show_info
+    get "/:war_id/status", WarSeasonController, :show_status
+
     get "/:war_id/planets", PlanetsController, :index
     get "/:war_id/planets/:planet_index", PlanetsController, :show
   end

@@ -114,7 +114,7 @@ defmodule Helldivers2.WarSeason do
       [] ->
         {:error, :not_found}
 
-      [{WarInfo, war_info}] ->
+      [{WarStatus, war_info}] ->
         {:ok, war_info}
     end
   end
