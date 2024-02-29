@@ -24,12 +24,12 @@ To avoid hitting rate limits in your clients check the following headers in your
 ### Roadmap
 - [X] map /WarInfo & /Status
 - [X] Provide endpoint for fetching WarInfo
-- [ ] Provide endpoint for fetching War status
+- [X] Provide endpoint for fetching War status
 - [X] Provide endpoint for fetching planet information
-- [ ] Provide endpoint for querying planets
+- [X] Provide endpoint for querying planets
 - [ ] Provide endpoints for all mapped entities
 - [ ] reverse-engineer entire Helldivers 2 API
-- [ ] tests
+- [X] tests
 - [ ] health checks
 
 ### Goals
