@@ -70,4 +70,39 @@ defmodule Helldivers2Web.Api.PlanetsControllerTest do
       assert_schema(response, "PlanetSchema", spec)
     end
   end
+
+  describe "GET /api/:war_id/planets/:planet_index/status" do
+    setup _ do
+      # We need war status for these endpoints
+      WarSeason.store(@war_id, war_status_fixture())
+    end
+
+    test "returns 404 for unknown planets", %{conn: conn} do
+      conn
+      |> get(~p"/api/#{@war_id}/planets/5/status")
+      |> json_response(404)
+    end
+
+    test "returns 422 for invalid planet indices", %{conn: conn} do
+      conn
+      |> get(~p"/api/#{@war_id}/planets/invalid/status")
+      |> json_response(422)
+    end
+
+    test "returns 200 for a valid planet index", %{conn: conn} do
+      conn
+      |> get(~p"/api/#{@war_id}/planets/0/status")
+      |> json_response(200)
+    end
+
+    test "response conforms to schema", %{conn: conn} do
+      response =
+        conn
+        |> get(~p"/api/#{@war_id}/planets/0/status")
+        |> json_response(200)
+
+      spec = Helldivers2Web.ApiSpec.spec()
+      assert_schema(response, "PlanetStatusSchema", spec)
+    end
+  end
 end

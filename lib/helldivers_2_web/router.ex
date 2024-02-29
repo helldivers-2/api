@@ -45,6 +45,7 @@ defmodule Helldivers2Web.Router do
 
     get "/:war_id/planets", PlanetsController, :index
     get "/:war_id/planets/:planet_index", PlanetsController, :show
+    get "/:war_id/planets/:planet_index/status", PlanetsController, :show_planet_status
   end
 
   # Enable LiveDashboard in development

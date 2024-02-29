@@ -31,6 +31,7 @@ defmodule Helldivers2Web.Api.PlanetsJSON do
   end
 
   @doc "Named separately from `show/1` to avoid pattern matching conflicts (`PlanetStatus` also matches for `%{planet: planet}`)"
+  def show_status(%{planet_status: planet_status}), do: show_status(planet_status)
   def show_status(%PlanetStatus{} = planet_status) do
     %{
       "planet" => show(planet_status.planet),

@@ -32,6 +32,9 @@ defmodule Helldivers2Web.ConnCase do
   end
 
   setup _tags do
+    # Ensure the rate limit bucket is cleared before every test.
+    ExRated.delete_bucket("127.0.0.1")
+
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end
