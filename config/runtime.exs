@@ -50,6 +50,11 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
+  # Configure rate limits, in development we'll just have none
+  config :helldivers_2, Helldivers2Web.Plugs.RateLimit,
+    max_requests: String.to_integer(System.get_env("RATE_LIMIT_MAX_REQUESTS", "10")),
+    interval_seconds: String.to_integer(System.get_env("RATE_LIMIT_INTERVAL", "300"))
+
   # ## SSL Support
   #
   # To get SSL working, you will need to add the `https` key

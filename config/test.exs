@@ -16,3 +16,9 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# Configure rate limits, in tests we'll just have none
+config :helldivers_2, Helldivers2Web.Plugs.RateLimit,
+  max_requests: 0,
+  # 5 minutes
+  interval_seconds: 300

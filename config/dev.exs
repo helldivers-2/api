@@ -69,3 +69,9 @@ config :phoenix_live_view, :debug_heex_annotations, true
 
 # Ensures the OpenApi spec is refreshed during development and not cached
 config :open_api_spex, :cache_adapter, OpenApiSpex.Plug.NoneCache
+
+# Configure rate limits, in development we'll just have none
+config :helldivers_2, Helldivers2Web.Plugs.RateLimit,
+  max_requests: 0,
+  # 5 minutes
+  interval_seconds: 300

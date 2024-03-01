@@ -12,6 +12,8 @@ kill_signal = 'SIGTERM'
 [env]
   PHX_HOST = 'helldivers-2.fly.dev'
   PORT = '8080'
+  RATE_LIMIT_MAX_REQUESTS = 10
+  RATE_LIMIT_INTERVAL = 300
 
 [http_service]
   internal_port = 8080

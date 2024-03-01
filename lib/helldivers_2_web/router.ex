@@ -13,7 +13,7 @@ defmodule Helldivers2Web.Router do
   pipeline :api do
     plug :accepts, ["json"]
     plug OpenApiSpex.Plug.PutApiSpec, module: Helldivers2Web.ApiSpec
-    plug :rate_limit, [interval_seconds: 300, max_requests: 10]
+    plug :rate_limit
     plug :check_war_id
   end
 
