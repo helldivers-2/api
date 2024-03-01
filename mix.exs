@@ -53,7 +53,8 @@ defmodule Helldivers2.MixProject do
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_rated, "~> 2.1.0"},
-      {:open_api_spex, "~> 3.18"}
+      {:open_api_spex, "~> 3.18"},
+      {:ex_doc, "~> 0.31", only: :dev, runtime: false},
     ]
   end
 
