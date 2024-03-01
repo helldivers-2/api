@@ -1,4 +1,7 @@
 # Helldivers2
+[![Fly Deploy](https://github.com/dealloc/helldivers2-api/actions/workflows/fly.yml/badge.svg)](https://github.com/dealloc/helldivers2-api/actions/workflows/fly.yml)
+[![Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://dealloc.github.io/helldivers2-api)
+[![CI](https://github.com/dealloc/helldivers2-api/actions/workflows/elixir.yml/badge.svg)](https://github.com/dealloc/helldivers2-api/actions/workflows/elixir.yml)
 
 This is a reverse engineered API of the official [Helldivers 2](https://store.steampowered.com/agecheck/app/553850/) video game.
 
