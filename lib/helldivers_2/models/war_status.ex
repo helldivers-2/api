@@ -7,10 +7,10 @@ defmodule Helldivers2.Models.WarStatus do
   and global events.
   """
   alias Helldivers2.WarSeason
+  alias Helldivers2.Models.WarInfo.Planet
   alias Helldivers2.Models.WarStatus.PlanetEvent
   alias Helldivers2.Models.WarStatus.JointOperation
   alias Helldivers2.Models.WarStatus.GlobalEvent
-  alias Helldivers2.Models.WarStatus.Planet
   alias Helldivers2.Models.WarStatus.Campaign
   alias Helldivers2.Models.WarStatus.PlanetStatus
 
@@ -21,11 +21,11 @@ defmodule Helldivers2.Models.WarStatus do
           planet_status: list(PlanetStatus.t()),
           planet_attacks: {Planet.t(), Planet.t()},
           campaigns: list(Campaign.t()),
-          community_targets: [],
+          community_targets: list(),
           joint_operations: list(JointOperation.t()),
           planet_events: list(PlanetEvent.t()),
-          planet_active_effects: [],
-          active_election_policy_effects: [],
+          planet_active_effects: list(),
+          active_election_policy_effects: list(),
           global_events: list(GlobalEvent.t())
         }
 

@@ -88,13 +88,13 @@ defmodule Helldivers2.WarSeasonFixtures do
       ],
       campaigns: [
         %Campaign{
-          id: 49961,
+          id: 49_961,
           planet: planet_super_earth_fixture(),
           type: 0,
           count: 1
         },
         %Helldivers2.Models.WarStatus.Campaign{
-          id: 49958,
+          id: 49_985,
           planet: planet_klen_dath_fixture(),
           type: 0,
           count: 1
@@ -119,7 +119,7 @@ defmodule Helldivers2.WarSeasonFixtures do
           start_time: ~U[1970-01-21 09:11:00Z],
           expire_time: ~U[1970-01-23 01:11:00Z],
           campaign: %Helldivers2.Models.WarStatus.Campaign{
-            id: 49985,
+            id: 49_985,
             planet: planet_super_earth_fixture(),
             type: 0,
             count: 6
