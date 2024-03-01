@@ -1,16 +1,17 @@
 defmodule Helldivers2.Models.WarStatus.JointOperation do
   alias Helldivers2.WarSeason
   alias Helldivers2.Models.WarInfo.Planet
+
   @type t :: %__MODULE__{
-    id: non_neg_integer(),
-    planet: Planet.t(),
-    hq_node_index: non_neg_integer()
-  }
+          id: non_neg_integer(),
+          planet: Planet.t(),
+          hq_node_index: non_neg_integer()
+        }
 
   defstruct [
     :id,
     :planet,
-    :hq_node_index,
+    :hq_node_index
   ]
 
   @doc """

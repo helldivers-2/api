@@ -14,6 +14,7 @@ defmodule Helldivers2Web.Plugs.WarSeason do
     case Map.get(conn.params, "war_id") do
       nil ->
         conn
+
       war_id ->
         validate_war_id(conn, war_id)
     end
@@ -24,6 +25,7 @@ defmodule Helldivers2Web.Plugs.WarSeason do
     case WarSeason.exists?(war_id) do
       true ->
         conn
+
       false ->
         conn
         |> FallbackController.call({:error, :not_found})

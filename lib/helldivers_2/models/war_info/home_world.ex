@@ -11,13 +11,13 @@ defmodule Helldivers2.Models.WarInfo.HomeWorld do
   alias Helldivers2.Models.WarInfo.Faction
 
   @type t :: %__MODULE__{
-    race: Faction.t(),
-    planets: list(Planet.t()),
-  }
+          race: Faction.t(),
+          planets: list(Planet.t())
+        }
 
   defstruct [
     :race,
-    :planets,
+    :planets
   ]
 
   @doc """
@@ -27,13 +27,13 @@ defmodule Helldivers2.Models.WarInfo.HomeWorld do
   def parse(map, planets) when is_map(map) do
     %__MODULE__{
       race: Faction.parse(Map.get(map, "race")),
-      planets: Enum.map(Map.get(map, "planetIndices"), &(find_planet(&1, planets)))
+      planets: Enum.map(Map.get(map, "planetIndices"), &find_planet(&1, planets))
     }
   end
 
   @spec find_planet(non_neg_integer(), list(Planet.t())) :: Planet.t()
   defp find_planet(planet_index, planets) do
-    Enum.find(planets, fn (planet) ->
+    Enum.find(planets, fn planet ->
       planet.index == planet_index
     end)
   end

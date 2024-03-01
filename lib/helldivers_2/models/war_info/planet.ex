@@ -5,16 +5,16 @@ defmodule Helldivers2.Models.WarInfo.Planet do
   use Helldivers2.Macros.FromJson, "planets.json"
 
   @type t() :: %__MODULE__{
-    index: non_neg_integer(),
-    name: String.t(),
-    hash: String.t(),
-    position: {float(), float()},
-    waypoints: list(non_neg_integer()),
-    sector: Sector.t(),
-    max_health: non_neg_integer(),
-    disabled: boolean(),
-    initial_owner: Faction.t()
-  }
+          index: non_neg_integer(),
+          name: String.t(),
+          hash: String.t(),
+          position: {float(), float()},
+          waypoints: list(non_neg_integer()),
+          sector: Sector.t(),
+          max_health: non_neg_integer(),
+          disabled: boolean(),
+          initial_owner: Faction.t()
+        }
 
   defstruct [
     :index,
@@ -34,6 +34,7 @@ defmodule Helldivers2.Models.WarInfo.Planet do
   @spec parse(map()) :: t()
   def parse(map) when is_map(map) do
     index = Map.get(map, "index")
+
     %__MODULE__{
       index: index,
       name: lookup(to_string(index)),

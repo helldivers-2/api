@@ -45,20 +45,21 @@ defmodule Helldivers2Web.Api.WarSeasonController do
   end
 
   operation :show_status,
-  summary: "Get the current status of the Helldivers offensive",
-  externalDocs: %OpenApiSpex.ExternalDocumentation{
-    description: "This is a mapped version of the official WarInfo object",
-    url: "https://api.live.prod.thehelldiversgame.com/api/WarSeason/801/Status"
-  },
-  parameters: [
-    war_id: [in: :path, description: "The war ID", type: :integer, example: 801]
-  ],
-  responses: [
-    ok: WarStatusSchema.response(),
-    not_found: NotFoundSchema.response(),
-    too_many_requests: TooManyRequestsSchema.response(),
-    unprocessable_entity: JsonErrorResponse.response()
-  ]
+    summary: "Get the current status of the Helldivers offensive",
+    externalDocs: %OpenApiSpex.ExternalDocumentation{
+      description: "This is a mapped version of the official WarInfo object",
+      url: "https://api.live.prod.thehelldiversgame.com/api/WarSeason/801/Status"
+    },
+    parameters: [
+      war_id: [in: :path, description: "The war ID", type: :integer, example: 801]
+    ],
+    responses: [
+      ok: WarStatusSchema.response(),
+      not_found: NotFoundSchema.response(),
+      too_many_requests: TooManyRequestsSchema.response(),
+      unprocessable_entity: JsonErrorResponse.response()
+    ]
+
   def show_status(conn, %{war_id: war_id}) do
     with {:ok, war_status} <- WarSeason.get_war_status(war_id) do
       render(conn, :show, war_status: war_status)

@@ -13,7 +13,7 @@ defmodule Helldivers2.WarSeasonFixtures do
       minimum_client_version: "0.3.0",
       planets: [
         planet_super_earth_fixture(),
-        planet_klen_dath_fixture(),
+        planet_klen_dath_fixture()
       ],
       home_worlds: [
         %HomeWorld{
@@ -71,14 +71,14 @@ defmodule Helldivers2.WarSeasonFixtures do
         %PlanetStatus{
           planet: planet_super_earth_fixture(),
           owner: "Humans",
-          health: 1000000,
+          health: 1_000_000,
           regen_per_second: 138.88889,
           players: 1728
         },
         %PlanetStatus{
           planet: planet_klen_dath_fixture(),
           owner: "Humans",
-          health: 1000000,
+          health: 1_000_000,
           regen_per_second: 138.88889,
           players: 0
         }
@@ -114,8 +114,8 @@ defmodule Helldivers2.WarSeasonFixtures do
           planet: planet_klen_dath_fixture(),
           event_type: 1,
           race: "Automaton",
-          health: 1017958,
-          max_health: 2000000,
+          health: 1_017_958,
+          max_health: 2_000_000,
           start_time: ~U[1970-01-21 09:11:00Z],
           expire_time: ~U[1970-01-23 01:11:00Z],
           campaign: %Helldivers2.Models.WarStatus.Campaign{
@@ -137,13 +137,14 @@ defmodule Helldivers2.WarSeasonFixtures do
       active_election_policy_effects: [],
       global_events: [
         %Helldivers2.Models.WarStatus.GlobalEvent{
-          id: 1499071,
+          id: 1_499_071,
           id_32: 0,
           portrait_id_32: 0,
           title: "SUCCESS",
-          title_32: 2998873950,
-          message: "The path to the Barrier Planets is clear. \n\nUpon each Barrier Planet, SEAF Engineers have begun construction of the Terminid Control System (TCS): a network of massive towers that will cover each planet in the well-tested neurotoxin known as Termicide.\n\nSoon, our citizens will be able to rest easy, knowing their children are safe from the threat of being eaten alive.",
-          message_id_32: 2450763514,
+          title_32: 2_998_873_950,
+          message:
+            "The path to the Barrier Planets is clear. \n\nUpon each Barrier Planet, SEAF Engineers have begun construction of the Terminid Control System (TCS): a network of massive towers that will cover each planet in the well-tested neurotoxin known as Termicide.\n\nSoon, our citizens will be able to rest easy, knowing their children are safe from the threat of being eaten alive.",
+          message_id_32: 2_450_763_514,
           race: "Humans",
           flag: 2,
           assignment_id_32: 0,
@@ -151,16 +152,17 @@ defmodule Helldivers2.WarSeasonFixtures do
           planets: []
         },
         %Helldivers2.Models.WarStatus.GlobalEvent{
-          id: 1499072,
+          id: 1_499_072,
           id_32: 0,
           portrait_id_32: 0,
           title: "BRIEFING",
-          title_32: 2908633975,
-          message: "The Automatons have launched cowardly surprise attacks on multiple highly-populated Super Earth planets. The Super Earth Armed Forces in the region have been overrun. Millions of citizens are in grave danger of death, or disenfranchisement.\n\nThis grievous attack on Freedom will not go unanswered. The homes of our citizens must be defended.",
-          message_id_32: 2667498758,
+          title_32: 2_908_633_975,
+          message:
+            "The Automatons have launched cowardly surprise attacks on multiple highly-populated Super Earth planets. The Super Earth Armed Forces in the region have been overrun. Millions of citizens are in grave danger of death, or disenfranchisement.\n\nThis grievous attack on Freedom will not go unanswered. The homes of our citizens must be defended.",
+          message_id_32: 2_667_498_758,
           race: "Humans",
           flag: 1,
-          assignment_id_32: 4098053760,
+          assignment_id_32: 4_098_053_760,
           effect_ids: [],
           planets: []
         }

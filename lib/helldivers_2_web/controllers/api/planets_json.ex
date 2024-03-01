@@ -11,6 +11,7 @@ defmodule Helldivers2Web.Api.PlanetsJSON do
   end
 
   def show(%{planet: planet}), do: show(planet)
+
   def show(%Planet{} = planet) do
     {x, y} = planet.position
 
@@ -32,13 +33,14 @@ defmodule Helldivers2Web.Api.PlanetsJSON do
 
   @doc "Named separately from `show/1` to avoid pattern matching conflicts (`PlanetStatus` also matches for `%{planet: planet}`)"
   def show_status(%{planet_status: planet_status}), do: show_status(planet_status)
+
   def show_status(%PlanetStatus{} = planet_status) do
     %{
       "planet" => show(planet_status.planet),
       "owner" => planet_status.owner,
       "health" => planet_status.health,
       "regen_per_second" => planet_status.regen_per_second,
-      "players" => planet_status.players,
+      "players" => planet_status.players
     }
   end
 

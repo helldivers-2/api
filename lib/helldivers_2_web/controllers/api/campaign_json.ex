@@ -7,7 +7,7 @@ defmodule Helldivers2Web.Api.CampaignJSON do
       "id" => campaign.id,
       "planet" => PlanetsJSON.show(campaign.planet),
       "type" => campaign.type,
-      "count" => campaign.count,
+      "count" => campaign.count
     }
   end
 end

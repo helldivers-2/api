@@ -2,7 +2,7 @@ import Config
 
 # We don't start up any Helldiver seasons during tests to avoid hitting the API
 config :helldivers_2,
-war_seasons: []
+  war_seasons: []
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.

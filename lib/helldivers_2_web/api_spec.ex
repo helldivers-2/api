@@ -17,6 +17,7 @@ defmodule Helldivers2Web.ApiSpec do
       # Populate the paths from a phoenix router
       paths: Paths.from_router(Router)
     }
-    |> OpenApiSpex.resolve_schema_modules() # Discover request/response schemas from path specs
+    # Discover request/response schemas from path specs
+    |> OpenApiSpex.resolve_schema_modules()
   end
 end

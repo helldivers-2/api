@@ -29,12 +29,13 @@ defmodule Helldivers2Web.Api.WarSeasonJSON do
       "snapshot_at" => war_status.snapshot_at,
       "impact_multiplier" => war_status.impact_multiplier,
       "planet_status" => Enum.map(war_status.planet_status, &PlanetsJSON.show_status/1),
-      "planet_attacks" => Enum.map(war_status.planet_attacks, fn ({source, target}) ->
-        %{
-          "source" => PlanetsJSON.show(source),
-          "target" => PlanetsJSON.show(target)
-        }
-      end),
+      "planet_attacks" =>
+        Enum.map(war_status.planet_attacks, fn {source, target} ->
+          %{
+            "source" => PlanetsJSON.show(source),
+            "target" => PlanetsJSON.show(target)
+          }
+        end),
       "campaigns" => Enum.map(war_status.campaigns, &CampaignJSON.show/1),
       "community_targets" => [],
       "joint_operations" => Enum.map(war_status.joint_operations, &JointOperationsJSON.show/1),

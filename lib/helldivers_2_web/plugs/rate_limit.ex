@@ -12,8 +12,11 @@ defmodule Helldivers2Web.Plugs.RateLimit do
     max_requests = Keyword.get(options, :max_requests, 1)
 
     case check_rate(conn, interval_milliseconds, max_requests) do
-      {:ok, count, until_expire} -> put_rate_limit_headers(conn, max_requests, count, until_expire)
-      {:error, _count, until_expire} -> render_error(conn, max_requests, until_expire)
+      {:ok, count, until_expire} ->
+        put_rate_limit_headers(conn, max_requests, count, until_expire)
+
+      {:error, _count, until_expire} ->
+        render_error(conn, max_requests, until_expire)
     end
   end
 
@@ -35,7 +38,7 @@ defmodule Helldivers2Web.Plugs.RateLimit do
     case check do
       {:ok, count} ->
         # Count is amount of calls to this bucket, we just want to see the 'remaining'
-        {:ok, max((limit - count), 0), until_expiration}
+        {:ok, max(limit - count, 0), until_expiration}
 
       {:error, _} ->
         {:error, limit, until_expiration}
@@ -49,7 +52,6 @@ defmodule Helldivers2Web.Plugs.RateLimit do
 
   # Rate limit was hit, halt the conn and put response headers
   defp render_error(conn, limit, until_expire) do
-
     conn
     |> put_rate_limit_headers(limit, 0, until_expire)
     |> put_resp_header("retry-after", to_string(until_expire / 1_000))

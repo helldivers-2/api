@@ -3,17 +3,17 @@ defmodule Helldivers2.Models.WarStatus.Campaign do
   alias Helldivers2.Models.WarInfo.Planet
 
   @type t :: %__MODULE__{
-    id: number(),
-    planet: Planet.t(),
-    type: non_neg_integer(),
-    count: non_neg_integer(),
-  }
+          id: number(),
+          planet: Planet.t(),
+          type: non_neg_integer(),
+          count: non_neg_integer()
+        }
 
   defstruct [
     :id,
     :planet,
     :type,
-    :count,
+    :count
   ]
 
   @doc """

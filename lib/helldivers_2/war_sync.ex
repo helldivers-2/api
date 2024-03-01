@@ -45,10 +45,12 @@ defmodule Helldivers2.WarSync do
     WarSeason.start_link(war_id: war_id)
 
     send(self(), :sync)
-    {:ok, %{
-      war_id: war_id,
-      interval: interval
-    }}
+
+    {:ok,
+     %{
+       war_id: war_id,
+       interval: interval
+     }}
   end
 
   @impl GenServer

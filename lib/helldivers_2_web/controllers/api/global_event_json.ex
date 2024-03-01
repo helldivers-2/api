@@ -1,6 +1,7 @@
 defmodule Helldivers2Web.Api.GlobalEventJSON do
   alias Helldivers2Web.Api.PlanetsJSON
   alias Helldivers2.Models.WarStatus.GlobalEvent
+
   def show(%GlobalEvent{} = global_event) do
     %{
       "id" => global_event.id,

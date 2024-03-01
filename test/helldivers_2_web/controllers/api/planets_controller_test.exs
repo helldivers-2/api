@@ -35,6 +35,7 @@ defmodule Helldivers2Web.Api.PlanetsControllerTest do
         |> json_response(200)
 
       spec = Helldivers2Web.ApiSpec.spec()
+
       for planet <- response do
         assert_schema(planet, "PlanetSchema", spec)
       end

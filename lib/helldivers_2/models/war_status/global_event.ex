@@ -4,19 +4,19 @@ defmodule Helldivers2.Models.WarStatus.GlobalEvent do
   alias Helldivers2.Models.WarInfo.Faction
 
   @type t :: %__MODULE__{
-    id: non_neg_integer(),
-    id_32: non_neg_integer(),
-    portrait_id_32: non_neg_integer(),
-    title: String.t(),
-    title_32: non_neg_integer(),
-    message: String.t(),
-    message_id_32: non_neg_integer(),
-    race: Faction.t(),
-    flag: non_neg_integer(),
-    assignment_id_32: non_neg_integer(),
-    effect_ids: list(non_neg_integer()),
-    planets: list(Planet.t()),
-  }
+          id: non_neg_integer(),
+          id_32: non_neg_integer(),
+          portrait_id_32: non_neg_integer(),
+          title: String.t(),
+          title_32: non_neg_integer(),
+          message: String.t(),
+          message_id_32: non_neg_integer(),
+          race: Faction.t(),
+          flag: non_neg_integer(),
+          assignment_id_32: non_neg_integer(),
+          effect_ids: list(non_neg_integer()),
+          planets: list(Planet.t())
+        }
 
   defstruct [
     :id,
@@ -30,7 +30,7 @@ defmodule Helldivers2.Models.WarStatus.GlobalEvent do
     :flag,
     :assignment_id_32,
     :effect_ids,
-    :planets,
+    :planets
   ]
 
   @doc """
@@ -49,7 +49,7 @@ defmodule Helldivers2.Models.WarStatus.GlobalEvent do
       race: Faction.parse(Map.get(map, "race")),
       flag: Map.get(map, "flag"),
       assignment_id_32: Map.get(map, "assignmentId32"),
-      effect_ids: Enum.map(Map.get(map, "effectIds"), fn (effect_id) -> effect_id end),
+      effect_ids: Enum.map(Map.get(map, "effectIds"), fn effect_id -> effect_id end),
       planets: Enum.map(Map.get(map, "planetIndices"), &WarSeason.get_planet!(war_id, &1))
     }
   end

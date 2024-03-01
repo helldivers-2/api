@@ -21,20 +21,48 @@ defmodule Helldivers2Web.Schemas.WarStatusSchema do
         description:
           "The identifier for this war, this ID must be passed for all resources under this war"
       },
-      snapshot_at: %Schema{type: :string, format: :"date-time", description: "The timestamp this status was snapshotted, as returned by the Helldivers API"},
-      impact_multiplier: %Schema{type: :number, description: "I don't fully understand what this does, feel free to ping me if you know"},
+      snapshot_at: %Schema{
+        type: :string,
+        format: :"date-time",
+        description:
+          "The timestamp this status was snapshotted, as returned by the Helldivers API"
+      },
+      impact_multiplier: %Schema{
+        type: :number,
+        description: "I don't fully understand what this does, feel free to ping me if you know"
+      },
       planet_status: %Schema{type: :array, items: PlanetStatusSchema},
-      planet_attacks: %Schema{type: :array, items: %Schema{type: :object, properties: %{
-        source: PlanetSchema,
-        target: PlanetSchema
-      }}, description: "An overview of attacks currently being carried out against Democracy"},
-      campaigns: %Schema{type: :array, items: CampaignSchema, description: "An overview of the campaigns active in the current offensive"},
-      community_targets: %Schema{type: :array, description: "Always empty AFAIK, haven't figured this out"},
+      planet_attacks: %Schema{
+        type: :array,
+        items: %Schema{
+          type: :object,
+          properties: %{
+            source: PlanetSchema,
+            target: PlanetSchema
+          }
+        },
+        description: "An overview of attacks currently being carried out against Democracy"
+      },
+      campaigns: %Schema{
+        type: :array,
+        items: CampaignSchema,
+        description: "An overview of the campaigns active in the current offensive"
+      },
+      community_targets: %Schema{
+        type: :array,
+        description: "Always empty AFAIK, haven't figured this out"
+      },
       joint_operations: %Schema{type: :array, items: JointOperationSchema},
       planet_events: %Schema{type: :array, items: PlanetEventSchema},
-      planet_active_effects: %Schema{type: :array, description: "Always empty AFAIK, haven't figured this out"},
-      active_election_policy_effects: %Schema{type: :array, description: "Always empty AFAIK, haven't figured this out"},
-      global_events: %Schema{type: :array, items: GlobalEventSchema},
+      planet_active_effects: %Schema{
+        type: :array,
+        description: "Always empty AFAIK, haven't figured this out"
+      },
+      active_election_policy_effects: %Schema{
+        type: :array,
+        description: "Always empty AFAIK, haven't figured this out"
+      },
+      global_events: %Schema{type: :array, items: GlobalEventSchema}
     }
   })
 end

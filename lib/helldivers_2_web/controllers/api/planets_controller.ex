@@ -19,6 +19,7 @@ defmodule Helldivers2Web.Api.PlanetsController do
       not_found: NotFoundSchema.response(),
       too_many_requests: TooManyRequestsSchema.response()
     ]
+
   def index(conn, %{war_id: war_id}) do
     with {:ok, planets} <- WarSeason.get_planets(war_id) do
       render(conn, :index, planets: planets)
@@ -42,6 +43,7 @@ defmodule Helldivers2Web.Api.PlanetsController do
       too_many_requests: TooManyRequestsSchema.response(),
       unprocessable_entity: JsonErrorResponse.response()
     ]
+
   def show(conn, %{war_id: war_id, planet_index: planet_index}) do
     with {:ok, planets} <- WarSeason.get_planet(war_id, planet_index) do
       render(conn, :show, planet: planets)
@@ -65,6 +67,7 @@ defmodule Helldivers2Web.Api.PlanetsController do
       too_many_requests: TooManyRequestsSchema.response(),
       unprocessable_entity: JsonErrorResponse.response()
     ]
+
   def show_planet_status(conn, %{war_id: war_id, planet_index: planet_index}) do
     with {:ok, planet_status} <- WarSeason.get_planet_status(war_id, planet_index) do
       render(conn, :show_status, planet_status: planet_status)
