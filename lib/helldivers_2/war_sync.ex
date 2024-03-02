@@ -64,6 +64,6 @@ defmodule Helldivers2.WarSync do
       Logger.info("Finished synchronizing API #{war_id}")
     end
 
-    {:noreply, state}
+    {:noreply, state, :hibernate}
   end
 end
