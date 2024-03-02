@@ -12,15 +12,15 @@ kill_signal = 'SIGTERM'
 [env]
   PHX_HOST = 'helldivers-2.fly.dev'
   PORT = '8080'
-  RATE_LIMIT_MAX_REQUESTS = 10
-  RATE_LIMIT_INTERVAL = 300
+  RATE_LIMIT_MAX_REQUESTS = "10"
+  RATE_LIMIT_INTERVAL = "300"
 
 [http_service]
   internal_port = 8080
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1
   processes = ['app']
 
   [http_service.concurrency]
@@ -29,4 +29,5 @@ kill_signal = 'SIGTERM'
     soft_limit = 1000
 
 [[vm]]
+  memory = "512mb"
   size = 'shared-cpu-1x'
