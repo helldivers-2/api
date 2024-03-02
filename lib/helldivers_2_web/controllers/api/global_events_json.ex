@@ -1,6 +1,12 @@
-defmodule Helldivers2Web.Api.GlobalEventJSON do
+defmodule Helldivers2Web.Api.GlobalEventsJSON do
   alias Helldivers2Web.Api.PlanetsJSON
   alias Helldivers2.Models.WarStatus.GlobalEvent
+
+  def index(%{global_events: global_events}), do: index(global_events)
+
+  def index(global_events), do: Enum.map(global_events, &show/1)
+
+  def show(%{global_event: global_event}), do: show(global_event)
 
   def show(%GlobalEvent{} = global_event) do
     %{

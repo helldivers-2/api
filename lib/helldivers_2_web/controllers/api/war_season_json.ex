@@ -1,5 +1,5 @@
 defmodule Helldivers2Web.Api.WarSeasonJSON do
-  alias Helldivers2Web.Api.GlobalEventJSON
+  alias Helldivers2Web.Api.GlobalEventsJSON
   alias Helldivers2Web.Api.JointOperationsJSON
   alias Helldivers2Web.Api.CampaignJSON
   alias Helldivers2.Models.WarStatus
@@ -42,7 +42,7 @@ defmodule Helldivers2Web.Api.WarSeasonJSON do
       "planet_events" => Enum.map(war_status.planet_events, &PlanetsJSON.show_event/1),
       "planet_active_effects" => [],
       "active_election_policy_effects" => [],
-      "global_events" => Enum.map(war_status.global_events, &GlobalEventJSON.show/1)
+      "global_events" => Enum.map(war_status.global_events, &GlobalEventsJSON.show/1)
     }
   end
 end

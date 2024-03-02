@@ -6,6 +6,8 @@ defmodule Helldivers2Web.Schemas.GlobalEventSchema do
   @doc "Generates a schema for a single homeworld schema response"
   def response(), do: {"Global event response", "application/json", __MODULE__}
 
+  def responses(), do: {"Global events response", "application/json", %Schema{type: :array, items: __MODULE__}}
+
   OpenApiSpex.schema(%{
     description: "Contains information about a global event, past and present",
     type: :object,

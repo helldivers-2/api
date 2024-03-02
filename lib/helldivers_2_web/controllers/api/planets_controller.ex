@@ -1,5 +1,4 @@
 defmodule Helldivers2Web.Api.PlanetsController do
-  alias Helldivers2Web.Schemas.PlanetStatusSchema
   use Helldivers2Web, :controller
   use OpenApiSpex.ControllerSpecs
 
@@ -8,6 +7,7 @@ defmodule Helldivers2Web.Api.PlanetsController do
 
   alias Helldivers2.WarSeason
   alias Helldivers2Web.Schemas.PlanetSchema
+  alias Helldivers2Web.Schemas.PlanetStatusSchema
 
   operation :index,
     summary: "Get an overview of all planets",
