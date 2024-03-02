@@ -27,6 +27,13 @@ defmodule Helldivers2.WarSync do
     ]
   ]
 
+  def child_spec(options) do
+    Supervisor.child_spec(%{
+      id: Keyword.get(options, :war_id),
+      start: {__MODULE__, :start_link, [options]}
+    }, [])
+  end
+
   @doc "Supported options:\n#{NimbleOptions.docs(@options)}"
   def start_link(opts) do
     with {:ok, options} <- NimbleOptions.validate(opts, @options) do

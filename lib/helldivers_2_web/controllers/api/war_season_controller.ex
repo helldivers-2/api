@@ -1,5 +1,4 @@
 defmodule Helldivers2Web.Api.WarSeasonController do
-  alias Helldivers2Web.Schemas.WarStatusSchema
   use Helldivers2Web, :controller
   use OpenApiSpex.ControllerSpecs
 
@@ -8,18 +7,22 @@ defmodule Helldivers2Web.Api.WarSeasonController do
 
   alias Helldivers2.WarSeason
   alias Helldivers2Web.Schemas.WarInfoSchema
+  alias Helldivers2Web.Schemas.WarStatusSchema
+  alias Helldivers2Web.Schemas.WarSeasonOverview
 
   operation :index,
     summary: "Get an overview of all available war seasons",
     responses: [
       ok:
-        {"Warseason overview", "application/json",
-         %Schema{type: :array, items: %Schema{type: :string}}},
+        {"Warseason overview", "application/json", WarSeasonOverview},
       too_many_requests: TooManyRequestsSchema.response()
     ]
 
   def index(conn, _) do
-    json(conn, Application.get_env(:helldivers_2, :war_seasons))
+    json(conn, %{
+      current: Application.get_env(:helldivers_2, :war_season),
+      seasons: Application.get_env(:helldivers_2, :war_seasons)
+    })
   end
 
   operation :show_info,
