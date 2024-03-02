@@ -148,7 +148,7 @@ defmodule Helldivers2.WarSeasonFixtures do
           race: "Humans",
           flag: 2,
           assignment_id_32: 0,
-          effect_ids: [],
+          effects: [],
           planets: []
         },
         %Helldivers2.Models.WarStatus.GlobalEvent{
@@ -163,7 +163,7 @@ defmodule Helldivers2.WarSeasonFixtures do
           race: "Humans",
           flag: 1,
           assignment_id_32: 4_098_053_760,
-          effect_ids: [],
+          effects: [],
           planets: []
         }
       ]

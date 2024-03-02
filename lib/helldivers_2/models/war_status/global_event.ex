@@ -1,4 +1,5 @@
 defmodule Helldivers2.Models.WarStatus.GlobalEvent do
+  alias Helldivers2.Models.WarStatus.Effect
   alias Helldivers2.WarSeason
   alias Helldivers2.Models.WarInfo.Planet
   alias Helldivers2.Models.WarInfo.Faction
@@ -14,7 +15,7 @@ defmodule Helldivers2.Models.WarStatus.GlobalEvent do
           race: Faction.t(),
           flag: non_neg_integer(),
           assignment_id_32: non_neg_integer(),
-          effect_ids: list(non_neg_integer()),
+          effects: list(String.t()),
           planets: list(Planet.t())
         }
 
@@ -29,7 +30,7 @@ defmodule Helldivers2.Models.WarStatus.GlobalEvent do
     :race,
     :flag,
     :assignment_id_32,
-    :effect_ids,
+    :effects,
     :planets
   ]
 
@@ -49,7 +50,7 @@ defmodule Helldivers2.Models.WarStatus.GlobalEvent do
       race: Faction.parse(Map.get(map, "race")),
       flag: Map.get(map, "flag"),
       assignment_id_32: Map.get(map, "assignmentId32"),
-      effect_ids: Map.get(map, "effectIds"),
+      effects: Enum.map(Map.get(map, "effectIds"), &Effect.parse/1),
       planets: Enum.map(Map.get(map, "planetIndices"), &WarSeason.get_planet!(war_id, &1))
     }
   end

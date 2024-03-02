@@ -20,7 +20,7 @@ defmodule Helldivers2Web.Api.GlobalEventsJSON do
       "race" => global_event.race,
       "flag" => global_event.flag,
       "assignment_id_32" => global_event.assignment_id_32,
-      "effect_ids" => global_event.effect_ids,
+      "effects" => global_event.effects,
       "planets" => Enum.map(global_event.planets, &PlanetsJSON.show/1)
     }
   end

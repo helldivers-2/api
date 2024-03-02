@@ -42,9 +42,10 @@ defmodule Helldivers2Web.Schemas.GlobalEventSchema do
         type: :integer,
         description: "Internal identifier, haven't figured this out"
       },
-      effect_ids: %Schema{
+      effects: %Schema{
         type: :array,
-        description: "A list of identifier, so far always been empty so no idea"
+        items: %Schema{type: :string},
+        description: "A list of effects, usually strategems or bonuses"
       },
       planets: %Schema{type: :array, items: PlanetSchema}
     }
