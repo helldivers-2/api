@@ -10,6 +10,11 @@ This is **NOT** an official *nor* endorsed API and may stop functioning at any t
 > [!TIP]
 > Hitting rate limits? You can run a local docker image, see [Local development](#running-in-docker--podman)
 
+> [!TIP]
+> Want to contribute even though you aren't a developer or don't know [Elixir](https://elixir-lang.org/)?
+> You can help by finding more planet names, notifying us of new ongoing events
+> or suggesting features!
+
 ### Getting started
 Currently the API does not enforce authentication.
 You can see all active war seasons at `/api/`
