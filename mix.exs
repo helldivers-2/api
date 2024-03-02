@@ -55,6 +55,7 @@ defmodule Helldivers2.MixProject do
       {:ex_rated, "~> 2.1.0"},
       {:open_api_spex, "~> 3.18"},
       {:ex_doc, "~> 0.31", only: :dev, runtime: false},
+      {:corsica, "~> 2.1.3"}
     ]
   end
 
