@@ -49,7 +49,7 @@ defmodule Helldivers2.Models.WarStatus.GlobalEvent do
       race: Faction.parse(Map.get(map, "race")),
       flag: Map.get(map, "flag"),
       assignment_id_32: Map.get(map, "assignmentId32"),
-      effect_ids: Enum.map(Map.get(map, "effectIds"), fn effect_id -> effect_id end),
+      effect_ids: Map.get(map, "effectIds"),
       planets: Enum.map(Map.get(map, "planetIndices"), &WarSeason.get_planet!(war_id, &1))
     }
   end

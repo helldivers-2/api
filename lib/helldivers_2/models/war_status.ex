@@ -89,7 +89,10 @@ defmodule Helldivers2.Models.WarStatus do
         ),
       planet_active_effects: [],
       active_election_policy_effects: [],
-      global_events: Enum.map(Map.get(map, "globalEvents"), &GlobalEvent.parse(war_id, &1))
+      global_events: map
+      |> Map.get("globalEvents")
+      |> Enum.map(&GlobalEvent.parse(war_id, &1))
+      |> Enum.sort(fn (event1, event2) -> event1.id > event2.id end)
     }
   end
 end
