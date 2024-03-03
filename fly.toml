@@ -14,6 +14,7 @@ kill_signal = 'SIGTERM'
   PORT = '8080'
   RATE_LIMIT_MAX_REQUESTS = "100"
   RATE_LIMIT_INTERVAL = "300"
+  ENABLE_IPV6 = 'true'
 
 [http_service]
   internal_port = 8080
