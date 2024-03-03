@@ -2,7 +2,7 @@ defmodule Helldivers2Web.Schemas.NotFoundSchema do
   alias OpenApiSpex.Schema
   require OpenApiSpex
 
-  def response(), do: {"Resource not found", "application/json", __MODULE__}
+  def response(), do: {"Resource not found", "application/json", __MODULE__, Helldivers2Web.ApiSpec.default_options()}
 
   OpenApiSpex.schema(%{
     description: "The resource you tried to retrieve could not be found",

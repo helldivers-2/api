@@ -5,7 +5,7 @@ defmodule Helldivers2Web.Schemas.PlanetStatusSchema do
   alias Helldivers2Web.Schemas.PlanetSchema
 
   @doc "Generates a schema for a single war info schema response"
-  def response(), do: {"Planet status response", "application/json", __MODULE__}
+  def response(), do: {"Planet status response", "application/json", __MODULE__, Helldivers2Web.ApiSpec.default_options()}
 
   OpenApiSpex.schema(%{
     description: "The current offense status of a planet (owner, health, regen, player count)",

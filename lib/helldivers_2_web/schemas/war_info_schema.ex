@@ -5,7 +5,7 @@ defmodule Helldivers2Web.Schemas.WarInfoSchema do
   alias Helldivers2Web.Schemas.{PlanetSchema, HomeWorldSchema}
 
   @doc "Generates a schema for a single war info schema response"
-  def response(), do: {"War info response", "application/json", __MODULE__}
+  def response(), do: {"War info response", "application/json", __MODULE__, Helldivers2Web.ApiSpec.default_options()}
 
   OpenApiSpex.schema(%{
     description: "Global overview of the war, it's planets, capitals etc",

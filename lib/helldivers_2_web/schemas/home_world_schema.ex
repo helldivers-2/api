@@ -4,7 +4,7 @@ defmodule Helldivers2Web.Schemas.HomeWorldSchema do
   require OpenApiSpex
 
   @doc "Generates a schema for a single homeworld schema response"
-  def response(), do: {"Homeworld response", "application/json", __MODULE__}
+  def response(), do: {"Homeworld response", "application/json", __MODULE__, Helldivers2Web.ApiSpec.default_options()}
 
   OpenApiSpex.schema(%{
     description: "Homeworld information of a given faction",

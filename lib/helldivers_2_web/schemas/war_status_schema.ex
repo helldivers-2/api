@@ -10,7 +10,7 @@ defmodule Helldivers2Web.Schemas.WarStatusSchema do
   alias OpenApiSpex.Schema
 
   @doc "Generates a schema for a single war info schema response"
-  def response(), do: {"War status response", "application/json", __MODULE__}
+  def response(), do: {"War status response", "application/json", __MODULE__, Helldivers2Web.ApiSpec.default_options()}
 
   OpenApiSpex.schema(%{
     description: "Current status of the Helldivers offensive in the galactic war",

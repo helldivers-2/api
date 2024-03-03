@@ -14,7 +14,7 @@ defmodule Helldivers2Web.Api.WarSeasonController do
     summary: "Get an overview of all available war seasons",
     responses: [
       ok:
-        {"Warseason overview", "application/json", WarSeasonOverview},
+        {"Warseason overview", "application/json", WarSeasonOverview, Helldivers2Web.ApiSpec.default_options()},
       too_many_requests: TooManyRequestsSchema.response()
     ]
 

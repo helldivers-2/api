@@ -7,7 +7,7 @@ defmodule Helldivers2Web.Schemas.PlanetEventSchema do
   alias OpenApiSpex.Schema
 
   @doc "Generates a schema for a single homeworld schema response"
-  def response(), do: {"Planet event response", "application/json", __MODULE__}
+  def response(), do: {"Planet event response", "application/json", __MODULE__, Helldivers2Web.ApiSpec.default_options()}
 
   OpenApiSpex.schema(%{
     description: "An event occuring on a specific planet for a limited time",

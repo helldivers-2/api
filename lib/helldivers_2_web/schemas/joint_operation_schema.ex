@@ -4,7 +4,7 @@ defmodule Helldivers2Web.Schemas.JointOperationSchema do
   require OpenApiSpex
 
   @doc "Generates a schema for a single homeworld schema response"
-  def response(), do: {"Joint operation response", "application/json", __MODULE__}
+  def response(), do: {"Joint operation response", "application/json", __MODULE__, Helldivers2Web.ApiSpec.default_options()}
 
   OpenApiSpex.schema(%{
     description: "Contains information about a currently joint operation",

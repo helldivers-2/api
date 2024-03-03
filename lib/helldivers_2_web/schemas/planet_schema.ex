@@ -3,11 +3,11 @@ defmodule Helldivers2Web.Schemas.PlanetSchema do
   require OpenApiSpex
 
   @doc "Generates a schema for a single planet schema response"
-  def response(), do: {"Planet response", "application/json", __MODULE__}
+  def response(), do: {"Planet response", "application/json", __MODULE__, Helldivers2Web.ApiSpec.default_options()}
 
   @doc "Generates a schema for an array of planet schemas"
   def responses(),
-    do: {"Planets response", "application/json", %Schema{type: :array, items: __MODULE__}}
+    do: {"Planets response", "application/json", %Schema{type: :array, items: __MODULE__}, Helldivers2Web.ApiSpec.default_options()}
 
   OpenApiSpex.schema(%{
     description: "Represents a planet in the galactic war that must receive Managed democracy",
