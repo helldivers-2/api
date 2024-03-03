@@ -40,7 +40,8 @@ defmodule Helldivers2Web.Api.PlanetsJSON do
       "owner" => planet_status.owner,
       "health" => planet_status.health,
       "regen_per_second" => planet_status.regen_per_second,
-      "players" => planet_status.players
+      "players" => planet_status.players,
+      "liberation" => planet_status.liberation
     }
   end
 

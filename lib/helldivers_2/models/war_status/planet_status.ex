@@ -14,7 +14,8 @@ defmodule Helldivers2.Models.WarStatus.PlanetStatus do
           owner: Faction.t(),
           health: non_neg_integer(),
           regen_per_second: float(),
-          players: non_neg_integer()
+          players: non_neg_integer(),
+          liberation: float(),
         }
 
   defstruct [
@@ -22,7 +23,8 @@ defmodule Helldivers2.Models.WarStatus.PlanetStatus do
     :owner,
     :health,
     :regen_per_second,
-    :players
+    :players,
+    :liberation
   ]
 
   @doc """
@@ -30,12 +32,26 @@ defmodule Helldivers2.Models.WarStatus.PlanetStatus do
   """
   @spec parse(String.t(), map()) :: t()
   def parse(war_id, map) when is_map(map) do
+    health = Map.get(map, "health")
+    owner = Faction.parse(Map.get(map, "owner"))
+    planet = WarSeason.get_planet!(war_id, Map.get(map, "index"))
+
+    # Calculate health as a percentage
+    health_percentage = ((health / planet.max_health) * 100)
+
     %__MODULE__{
-      planet: WarSeason.get_planet!(war_id, Map.get(map, "index")),
-      owner: Faction.parse(Map.get(map, "owner")),
-      health: Map.get(map, "health"),
+      planet: planet,
+      owner: owner,
+      health: health,
       regen_per_second: Map.get(map, "regenPerSecond"),
-      players: Map.get(map, "players")
+      players: Map.get(map, "players"),
+      liberation: liberation(owner, health_percentage)
     }
   end
+
+  # Liberation depends on which faction controls, if it's Humans it's X% liberated.
+  # If it's controlled by Automatons it's their control, so we deduct it from 100%
+  defp liberation("Humans", percentage), do: percentage
+
+  defp liberation(_faction, percentage), do: 100 - percentage
 end

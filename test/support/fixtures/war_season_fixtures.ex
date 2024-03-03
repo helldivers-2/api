@@ -73,14 +73,16 @@ defmodule Helldivers2.WarSeasonFixtures do
           owner: "Humans",
           health: 1_000_000,
           regen_per_second: 138.88889,
-          players: 1728
+          players: 1728,
+          liberation: 100,
         },
         %PlanetStatus{
           planet: planet_klen_dath_fixture(),
           owner: "Humans",
           health: 1_000_000,
           regen_per_second: 138.88889,
-          players: 0
+          players: 0,
+          liberation: 100,
         }
       ],
       planet_attacks: [

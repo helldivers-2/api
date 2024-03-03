@@ -24,6 +24,10 @@ defmodule Helldivers2Web.Schemas.PlanetStatusSchema do
       players: %Schema{
         type: :integer,
         description: "The amount of helldivers currently on this planet"
+      },
+      liberation: %Schema{
+        type: :number,
+        description: "The progression of liberation on this planet, presented as a %"
       }
     }
   })
