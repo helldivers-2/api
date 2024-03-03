@@ -28,7 +28,6 @@ defmodule Helldivers2.Application do
           Helldivers2Web.Endpoint
         ]
 
-        IO.inspect(children)
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Helldivers2.Supervisor]

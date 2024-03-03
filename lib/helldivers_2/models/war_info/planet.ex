@@ -51,7 +51,7 @@ defmodule Helldivers2.Models.WarInfo.Planet do
   defp parse_position(map) do
     position = Map.get(map, "position", %{})
 
-    {Map.get(position, "x"), Map.get(position, "y")}
+    {round_coord(Map.get(position, "x") * 100), round_coord(Map.get(position, "y") * 100)}
   end
 
   defp parse_waypoints(map) do
@@ -60,4 +60,8 @@ defmodule Helldivers2.Models.WarInfo.Planet do
 
   # define a fallback for FromJson.lookup
   defp lookup(_), do: "Unknown"
+
+  defp round_coord(0), do: 0
+
+  defp round_coord(number), do: Float.round(number, 6)
 end
