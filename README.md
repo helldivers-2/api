@@ -84,6 +84,7 @@ Now to run this container, you'll need a few variables to configure how the API 
 - `FLY_PRIVATE_IP` - used to uniquely identify this node in the cluster (if you're running a single instance you can use `127.0.0.1`)
 - `RATE_LIMIT_MAX_REQUESTS` - (optional) the max amount of requests the rate limit will allow, set to `0` to disable rate limiting
 - `RATE_LIMIT_INTERVAL` - (optional) how many seconds before the rate limit will reset itself (must be a valid number greater than `0`)
+- `ENABLE_IPV6` - disables IPv6, use this if your host is incompatible with IPv6 (see [#7](https://github.com/dealloc/helldivers2-api/issues/7))
 
 or if you're just setting up a local development instance, you can copy paste the command below:
 ```shell
