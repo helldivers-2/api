@@ -15,8 +15,14 @@ defmodule Helldivers2.Macros.FromJson do
       |> Jason.decode!()
 
     for {key, value} <- mappings do
-      quote do
-        defp lookup("#{unquote(key)}"), do: unquote(value)
+      if String.length(value) > 0 do
+        quote do
+          defp lookup("#{unquote(key)}"), do: unquote(value)
+        end
+      else
+        quote do
+          defp lookup("#{unquote(key)}"), do: unquote(key)
+        end
       end
     end ++
       [
