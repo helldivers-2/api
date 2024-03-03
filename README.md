@@ -24,7 +24,7 @@ We provide an OpenApi specification which you can download at [`/api/openapi`](h
 We also provide a SwaggerUI view on the above specification [here](https://helldivers-2.fly.dev/api/swaggerui).
 
 ### Rate limit
-Currently the rate limit is set rather low, at 10 requests/5 minutes.
+Currently the rate limit is set at 100 requests/5 minutes.
 This limit will probably be increased in the future, but given the limited API endpoints available this should be sufficient.
 
 To avoid hitting rate limits in your clients check the following headers in your response:
