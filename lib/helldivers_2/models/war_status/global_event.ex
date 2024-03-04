@@ -10,7 +10,7 @@ defmodule Helldivers2.Models.WarStatus.GlobalEvent do
           portrait_id_32: non_neg_integer(),
           title: String.t(),
           title_32: non_neg_integer(),
-          message: String.t(),
+          message: %{String.t() => String.t()},
           message_id_32: non_neg_integer(),
           race: Faction.t(),
           flag: non_neg_integer(),
@@ -36,16 +36,32 @@ defmodule Helldivers2.Models.WarStatus.GlobalEvent do
 
   @doc """
   Attempts to parse as much information as possible from the given `map` into a struct.
+
+  Takes an optional map of translations, where each key is the language
+  and each value is the full list of all global events available.
   """
   @spec parse(String.t(), map()) :: t()
-  def parse(war_id, map) when is_map(map) do
+  def parse(war_id, map, translations \\ %{}) when is_map(map) do
+    # Get the ID of the base entity so we can fetch all matching entities from translations.
+    id = Map.get(map, "eventId")
+
+    # Filter out our translations map to only include the currently being processed message.
+    translations = translations
+    |> Map.new(fn {lang, events} ->
+      event = events
+      |> Enum.find(%{}, fn event -> Map.get(event, "eventId") == id end)
+      |> Map.get("message")
+
+      {lang, event}
+    end)
+
     %__MODULE__{
-      id: Map.get(map, "eventId"),
+      id: id,
       id_32: Map.get(map, "id32"),
       portrait_id_32: Map.get(map, "portraitId32"),
       title: Map.get(map, "title"),
       title_32: Map.get(map, "titleId32"),
-      message: Map.get(map, "message"),
+      message: translations,
       message_id_32: Map.get(map, "messageId32"),
       race: Faction.parse(Map.get(map, "race")),
       flag: Map.get(map, "flag"),

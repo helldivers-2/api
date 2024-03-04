@@ -10,7 +10,19 @@ import Config
 config :helldivers_2,
   generators: [timestamp_type: :utc_datetime],
   war_season: "801",
-  war_seasons: ["801", "805"]
+  war_seasons: ["801", "805"],
+  # default language
+  language: :en,
+  # all available languages
+  languages: [
+    en: "en-US",
+    de: "de-DE",
+    es: "es-ES",
+    ru: "ru-RU",
+    fr: "fr-FR",
+    it: "it-IT",
+    pl: "pl-PL"
+  ]
 
 # Configures the endpoint
 config :helldivers_2, Helldivers2Web.Endpoint,

@@ -6,6 +6,7 @@ defmodule Helldivers2.Models.WarStatus do
   community targets, joint operations, planet events,
   and global events.
   """
+  require Logger
   alias Helldivers2.WarSeason
   alias Helldivers2.Models.WarInfo.Planet
   alias Helldivers2.Models.WarStatus.PlanetEvent
@@ -46,26 +47,35 @@ defmodule Helldivers2.Models.WarStatus do
 
   @spec download(String.t()) :: {:ok, t()} | {:error, term()}
   def download(war_id) do
-    with {:ok, response} <-
-           Req.get("https://api.live.prod.thehelldiversgame.com/api/WarSeason/#{war_id}/Status"),
-         %Req.Response{status: 200, body: payload} <- response do
-      {:ok, parse(payload)}
-    else
-      %Req.Response{status: status} ->
-        {:error, "API error #{status}"}
-    end
+    default_language = Application.get_env(:helldivers_2, :language)
+
+    translations = :helldivers_2
+    |> Application.get_env(:languages)
+    |> Task.async_stream(fn {key, lang} -> {key, download_language!(war_id, lang)} end, timeout: :infinity, zip_input_on_exit: true)
+    |> Enum.reduce(%{}, fn ({:ok, {key, payload}}, acc) ->
+      Map.put(acc, key, payload)
+    end)
+
+    # Take the default language as 'base' response object.
+    base = Map.get(translations, default_language)
+
+    {:ok, parse(base, translations)}
   end
 
   @doc """
   Attempts to parse as much information as possible from the given `map` into a struct.
   """
-  @spec parse(map()) :: t()
-  def parse(map) when is_map(map) do
+  @spec parse(map(), %{atom() => map()}) :: t()
+  def parse(map, translations \\ %{}) when is_map(map) do
     war_id = Map.get(map, "warId")
     campaigns = Enum.map(Map.get(map, "campaigns"), &Campaign.parse(war_id, &1))
 
     joint_operations =
       Enum.map(Map.get(map, "jointOperations"), &JointOperation.parse(war_id, &1))
+
+    # We currently only translate global events
+    global_event_translations = translations
+    |> Map.new(fn {key, payload} -> {key, Map.get(payload, "globalEvents")} end)
 
     %__MODULE__{
       war_id: war_id,
@@ -91,8 +101,27 @@ defmodule Helldivers2.Models.WarStatus do
       active_election_policy_effects: [],
       global_events: map
       |> Map.get("globalEvents")
-      |> Enum.map(&GlobalEvent.parse(war_id, &1))
+      |> Enum.map(&GlobalEvent.parse(war_id, &1, global_event_translations))
       |> Enum.sort(fn (event1, event2) -> event1.id > event2.id end)
     }
+  end
+
+  @spec download_language!(String.t(), String.t()) :: map() | no_return()
+  defp download_language!(war_id, language) do
+    Logger.debug("Fetching #{language} for #{war_id}")
+
+    response =
+      [url: "https://api.live.prod.thehelldiversgame.com/api/WarSeason/#{war_id}/Status", retry: :transient]
+      |> Req.new()
+      |> Req.Request.put_header("accept-language", language)
+      |> Req.request!()
+
+    case response do
+      %Req.Response{status: 200} ->
+        response.body
+
+      %Req.Response{status: status} ->
+        raise "API returned an error #{status}"
+    end
   end
 end

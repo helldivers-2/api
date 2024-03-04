@@ -74,7 +74,7 @@ defmodule Helldivers2.WarSeasonFixtures do
           health: 1_000_000,
           regen_per_second: 138.88889,
           players: 1728,
-          liberation: 100,
+          liberation: 100
         },
         %PlanetStatus{
           planet: planet_klen_dath_fixture(),
@@ -82,7 +82,7 @@ defmodule Helldivers2.WarSeasonFixtures do
           health: 1_000_000,
           regen_per_second: 138.88889,
           players: 0,
-          liberation: 100,
+          liberation: 100
         }
       ],
       planet_attacks: [
@@ -144,8 +144,12 @@ defmodule Helldivers2.WarSeasonFixtures do
           portrait_id_32: 0,
           title: "SUCCESS",
           title_32: 2_998_873_950,
-          message:
-            "The path to the Barrier Planets is clear. \n\nUpon each Barrier Planet, SEAF Engineers have begun construction of the Terminid Control System (TCS): a network of massive towers that will cover each planet in the well-tested neurotoxin known as Termicide.\n\nSoon, our citizens will be able to rest easy, knowing their children are safe from the threat of being eaten alive.",
+          message: %{
+            "en" =>
+              "Well done, Helldivers. SEAF Containment Teams will take over cleanup and inoculation operations from here. Colonists have been advised that there is absolutely zero threat of further Terminid violence, and to settle their families with total peace of mind.\n\nAdditionally, the pilots allocated to spore clearance on Veld have now been redirected to Helldiver support operations. \n<i=1>Extraction will be faster on all operations.</i> ",
+            "de" =>
+              "Gut gemacht, Helldivers. S.E.A.F.-Sicherungsteams übernehmen ab hier die Säuberungs- und Impfaufgaben. Die Kolonisten wurden darüber informiert, dass absolut keine Gefahr weiterer Bedrohungen durch Terminiden besteht und dass sie sich in aller Ruhe mit ihren Familien niederlassen können.\n\nDarüber hinaus wurden die Piloten, die die Sporen auf Veld beseitigen sollten, nun angewiesen, die Helldivers bei ihren Bemühungen zu unterstützen.\n<i=1>Die Evakuierung geht bei allen Operationen schneller vonstatten.</i>"
+          },
           message_id_32: 2_450_763_514,
           race: "Humans",
           flag: 2,
@@ -159,8 +163,12 @@ defmodule Helldivers2.WarSeasonFixtures do
           portrait_id_32: 0,
           title: "BRIEFING",
           title_32: 2_908_633_975,
-          message:
-            "The Automatons have launched cowardly surprise attacks on multiple highly-populated Super Earth planets. The Super Earth Armed Forces in the region have been overrun. Millions of citizens are in grave danger of death, or disenfranchisement.\n\nThis grievous attack on Freedom will not go unanswered. The homes of our citizens must be defended.",
+          message: %{
+            "en" =>
+              "Despite the valorous efforts of the Helldivers, Automaton marauders have invaded Super Earth territory. Patriotic citizens mourn as their sufficiently-sized homes burn to the ground.\n\nSuper Earth citizens demand justice, and they will receive it.",
+            "de" =>
+              "Trotz der mutigen Anstrengungen der Helldivers konnten Roboter-Marodeure in Über-Erde-Gebiete eindringen. Patriotische Bürger verfallen in tiefe Trauer, während ihre ausreichend großen Behausungen niederbrennen.\n\nDie Bürger von Über-Erde verlangen Gerechtigkeit und sie werden sie bekommen."
+          },
           message_id_32: 2_667_498_758,
           race: "Humans",
           flag: 1,

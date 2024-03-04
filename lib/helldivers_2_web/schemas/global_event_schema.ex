@@ -3,6 +3,8 @@ defmodule Helldivers2Web.Schemas.GlobalEventSchema do
   alias OpenApiSpex.Schema
   require OpenApiSpex
 
+  @languages Application.compile_env(:helldivers_2, :languages)
+
   @doc "Generates a schema for a single homeworld schema response"
   def response(),
     do:
@@ -29,7 +31,8 @@ defmodule Helldivers2Web.Schemas.GlobalEventSchema do
       },
       title: %Schema{
         type: :string,
-        description: "The title text, for some reason this may not always be English"
+        description: "The title of the global event, appears to be more a status than an actual title",
+        enum: ["BRIEFING", "SUCCESS", "FAILED"]
       },
       title_32: %Schema{
         type: :integer,
@@ -37,8 +40,15 @@ defmodule Helldivers2Web.Schemas.GlobalEventSchema do
           "Internal identifier of the title, this always remains the same regardless of language"
       },
       message: %Schema{
-        type: :string,
-        description: "The message from Super Earth about the global event"
+        type: :object,
+        properties:
+          Map.new(@languages, fn {key, lang} ->
+            {key,
+             %Schema{
+               type: :string,
+               description: "The message from Super Earth about the global event in #{lang}"
+             }}
+          end)
       },
       message_id_32: %Schema{
         type: :integer,
