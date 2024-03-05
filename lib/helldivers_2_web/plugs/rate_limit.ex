@@ -23,7 +23,7 @@ defmodule Helldivers2Web.Plugs.RateLimit do
   # If the limit is zero we simply return OK for all rate limits
   @spec check_rate(Plug.Conn.t(), non_neg_integer(), non_neg_integer()) ::
           {:ok, count :: non_neg_integer(), until_expiration :: non_neg_integer()}
-          | {:error, any()}
+          | {:error, non_neg_integer(), non_neg_integer()}
   defp check_rate(_, _, 0), do: {:ok, :infinity, 0}
 
   defp check_rate(conn, interval, limit) do
