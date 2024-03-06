@@ -5,7 +5,10 @@ defmodule Helldivers2Web.Schemas.WarInfoSchema do
   alias Helldivers2Web.Schemas.{PlanetSchema, HomeWorldSchema}
 
   @doc "Generates a schema for a single war info schema response"
-  def response(), do: {"War info response", "application/json", __MODULE__, Helldivers2Web.ApiSpec.default_options()}
+  def response(),
+    do:
+      {"War info response", "application/json", __MODULE__,
+       Helldivers2Web.ApiSpec.default_options()}
 
   OpenApiSpex.schema(%{
     description: "Global overview of the war, it's planets, capitals etc",
@@ -40,8 +43,16 @@ defmodule Helldivers2Web.Schemas.WarInfoSchema do
         items: HomeWorldSchema,
         description: "All homeworlds present in this war season"
       },
-      capitals: %Schema{type: :array, description: "Empty, not been mapped yet"},
-      planet_permanent_effects: %Schema{type: :array, description: "Empty, not been mapped yet"}
+      capitals: %Schema{
+        type: :array,
+        items: %Schema{type: :integer},
+        description: "Empty, not been mapped yet"
+      },
+      planet_permanent_effects: %Schema{
+        type: :array,
+        items: %Schema{type: :integer},
+        description: "Empty, not been mapped yet"
+      }
     }
   })
 end

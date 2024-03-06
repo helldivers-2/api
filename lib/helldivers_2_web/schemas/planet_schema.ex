@@ -36,6 +36,7 @@ defmodule Helldivers2Web.Schemas.PlanetSchema do
       },
       waypoints: %Schema{
         type: :array,
+        items: %Schema{type: :integer},
         description: "Waypoints, seems to link planets together but purpose unclear"
       },
       max_health: %Schema{

@@ -10,7 +10,10 @@ defmodule Helldivers2Web.Schemas.WarStatusSchema do
   alias OpenApiSpex.Schema
 
   @doc "Generates a schema for a single war info schema response"
-  def response(), do: {"War status response", "application/json", __MODULE__, Helldivers2Web.ApiSpec.default_options()}
+  def response(),
+    do:
+      {"War status response", "application/json", __MODULE__,
+       Helldivers2Web.ApiSpec.default_options()}
 
   OpenApiSpex.schema(%{
     description: "Current status of the Helldivers offensive in the galactic war",
@@ -50,16 +53,19 @@ defmodule Helldivers2Web.Schemas.WarStatusSchema do
       },
       community_targets: %Schema{
         type: :array,
+        items: %Schema{type: :integer},
         description: "Always empty AFAIK, haven't figured this out"
       },
       joint_operations: %Schema{type: :array, items: JointOperationSchema},
       planet_events: %Schema{type: :array, items: PlanetEventSchema},
       planet_active_effects: %Schema{
         type: :array,
+        items: %Schema{type: :integer},
         description: "Always empty AFAIK, haven't figured this out"
       },
       active_election_policy_effects: %Schema{
         type: :array,
+        items: %Schema{type: :integer},
         description: "Always empty AFAIK, haven't figured this out"
       },
       global_events: %Schema{type: :array, items: GlobalEventSchema}
