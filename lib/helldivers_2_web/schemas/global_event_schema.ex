@@ -24,9 +24,9 @@ defmodule Helldivers2Web.Schemas.GlobalEventSchema do
         type: :integer,
         description: "The identifier of this campaign"
       },
-      id_32: %Schema{type: :integer, description: "Internal identifier of this campaign, stable"},
+      id_32: %Schema{type: :number, description: "Internal identifier of this campaign, stable"},
       portrait_id_32: %Schema{
-        type: :integer,
+        type: :number,
         description: "I suspect identifier of an in game image"
       },
       title: %Schema{
@@ -35,7 +35,7 @@ defmodule Helldivers2Web.Schemas.GlobalEventSchema do
         enum: ["BRIEFING", "SUCCESS", "FAILED"]
       },
       title_32: %Schema{
-        type: :integer,
+        type: :number,
         description:
           "Internal identifier of the title, this always remains the same regardless of language"
       },
@@ -51,7 +51,7 @@ defmodule Helldivers2Web.Schemas.GlobalEventSchema do
           end)
       },
       message_id_32: %Schema{
-        type: :integer,
+        type: :number,
         description:
           "Internal identifier of the message, this always remains the same regardless of language"
       },
@@ -64,7 +64,7 @@ defmodule Helldivers2Web.Schemas.GlobalEventSchema do
         description: "The identifier of the flag for this campaign (flags haven't been mapped)"
       },
       assignment_id_32: %Schema{
-        type: :integer,
+        type: :number,
         description: "Internal identifier, haven't figured this out"
       },
       effects: %Schema{

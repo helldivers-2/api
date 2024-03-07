@@ -7,7 +7,7 @@ defmodule Helldivers2.Models.WarInfo.Planet do
   @type t() :: %__MODULE__{
           index: non_neg_integer(),
           name: String.t(),
-          hash: String.t(),
+          hash: non_neg_integer(),
           position: {float(), float()},
           waypoints: list(non_neg_integer()),
           sector: Sector.t(),

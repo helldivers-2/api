@@ -23,7 +23,7 @@ defmodule Helldivers2Web.Schemas.PlanetSchema do
         description: "The human readable name of the planet, or unknown if it's not a known name"
       },
       hash: %Schema{
-        type: :integer,
+        type: :number,
         description: "A hash retrieved from the official API, purpose unknown"
       },
       position: %Schema{
