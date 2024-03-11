@@ -44,13 +44,14 @@ defmodule Helldivers2.Models.WarStatus.GlobalEvent do
   def parse(war_id, map, translations \\ %{}) when is_map(map) do
     # Get the ID of the base entity so we can fetch all matching entities from translations.
     id = Map.get(map, "eventId")
+    {title, _message} = get_title_and_message(map)
 
     # Filter out our translations map to only include the currently being processed message.
     translations = translations
     |> Map.new(fn {lang, events} ->
-      event = events
+      {_title, event} = events
       |> Enum.find(%{}, fn event -> Map.get(event, "eventId") == id end)
-      |> Map.get("message")
+      |> get_title_and_message()
 
       {lang, event}
     end)
@@ -59,7 +60,7 @@ defmodule Helldivers2.Models.WarStatus.GlobalEvent do
       id: id,
       id_32: Map.get(map, "id32"),
       portrait_id_32: Map.get(map, "portraitId32"),
-      title: Map.get(map, "title"),
+      title: title,
       title_32: Map.get(map, "titleId32"),
       message: translations,
       message_id_32: Map.get(map, "messageId32"),
@@ -70,4 +71,13 @@ defmodule Helldivers2.Models.WarStatus.GlobalEvent do
       planets: Enum.map(Map.get(map, "planetIndices"), &WarSeason.get_planet!(war_id, &1))
     }
   end
+
+  @spec get_title_and_message(map()) :: {String.t(), String.t()}
+  defp get_title_and_message(%{"message" => "", "title" => title}) do
+    [title | message] = String.split(title, "\n")
+
+    {title, Enum.join(message, "\n")}
+  end
+
+  defp get_title_and_message(%{"message" => message, "title" => title}), do: {title, message}
 end
