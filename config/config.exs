@@ -21,7 +21,8 @@ config :helldivers_2,
     ru: "ru-RU",
     fr: "fr-FR",
     it: "it-IT",
-    pl: "pl-PL"
+    pl: "pl-PL",
+    zh: "zh-Hans"
   ]
 
 # Configures the endpoint
