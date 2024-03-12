@@ -78,7 +78,7 @@ podman build -t helldivers2:latest .
 ```
 
 Now to run this container, you'll need a few variables to configure how the API behaves (TLDR below!):
-- `SECRET_KEY_BASE` used by the application for singing private or sensitive information, if you're running a private instance publicly you'll want a secure random string of 64 characters
+- `SECRET_KEY_BASE` used by the application for signing private or sensitive information, if you're running a private instance publicly you'll want a secure random string of 64 characters
 - `FLY_APP_NAME` used internally for networking code to find other instances (you can just use `helldivers-2` for this)
 - `FLY_IMAGE_REF` the container reference, this helps cluster to only the same version of the app (you can set this to `0`)
 - `FLY_PRIVATE_IP` - used to uniquely identify this node in the cluster (if you're running a single instance you can use `127.0.0.1`)
