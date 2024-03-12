@@ -39,6 +39,7 @@ defmodule Helldivers2Web.Schemas.PlanetSchema do
         items: %Schema{type: :integer},
         description: "Waypoints, seems to link planets together but purpose unclear"
       },
+      sector: %Schema{type: :string, description: "The name of the sector this planet resides in (or the identifier as a string if it's not a known sector)"},
       max_health: %Schema{
         type: :integer,
         description: "The maximum health of this planet, used in conflict stats"
