@@ -9,6 +9,7 @@ defmodule Helldivers2Web.Api.WarSeasonController do
   alias Helldivers2Web.Schemas.WarInfoSchema
   alias Helldivers2Web.Schemas.WarStatusSchema
   alias Helldivers2Web.Schemas.WarSeasonOverview
+  alias Helldivers2Web.Schemas.NewsFeedMessageSchema
 
   operation :index,
     summary: "Get an overview of all available war seasons",
@@ -66,6 +67,28 @@ defmodule Helldivers2Web.Api.WarSeasonController do
   def show_status(conn, %{war_id: war_id}) do
     with {:ok, war_status} <- WarSeason.get_war_status(war_id) do
       render(conn, :show, war_status: war_status)
+    end
+  end
+
+  operation :news_feed,
+    summary: "Gets the newsfeed shown in-game under 'Dispatch'",
+    externalDocs: %OpenApiSpex.ExternalDocumentation{
+      description: "This is a mapped version of the official NewsFeed object",
+      url: "https://api.live.prod.thehelldiversgame.com/api/NewsFeed/801"
+    },
+    parameters: [
+      war_id: [in: :path, description: "The war ID", type: :integer, example: 801]
+    ],
+    responses: [
+      ok: NewsFeedMessageSchema.responses(),
+      not_found: NotFoundSchema.response(),
+      too_many_requests: TooManyRequestsSchema.response(),
+      unprocessable_entity: JsonErrorResponse.response()
+    ]
+
+  def news_feed(conn, %{war_id: war_id}) do
+    with {:ok, news_feed} <- WarSeason.get_news_feed(war_id) do
+      render(conn, :show, news_feed: news_feed)
     end
   end
 end

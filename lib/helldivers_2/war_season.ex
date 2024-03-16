@@ -7,6 +7,9 @@ defmodule Helldivers2.WarSeason do
   """
   use GenServer
   require Logger
+
+  alias Helldivers2.Models.NewsFeed.Message
+  alias Helldivers2.Models.NewsFeed
   alias Helldivers2.Models.WarStatus.PlanetStatus
   alias Helldivers2.Models.WarInfo.Planet
   alias Helldivers2.Models.WarStatus
@@ -44,7 +47,7 @@ defmodule Helldivers2.WarSeason do
     end
   end
 
-  @spec store(String.t(), WarInfo.t() | WarStatus.t()) :: :ok | :error
+  @spec store(String.t(), WarInfo.t() | WarStatus.t() | NewsFeed.t()) :: :ok | :error
   def store(war_id, data) do
     GenServer.call({:via, Registry, {__MODULE__.Registry, war_id}}, {:store, data})
   end
@@ -131,6 +134,16 @@ defmodule Helldivers2.WarSeason do
     end
   end
 
+  def get_news_feed(war_id) do
+    case :ets.lookup(table_name(war_id), NewsFeed) do
+      [] ->
+        {:error, :not_found}
+
+      [{NewsFeed, news_feed}] ->
+        {:ok, news_feed}
+    end
+  end
+
   @impl GenServer
   def init(opts) do
     war_id = Keyword.get(opts, :war_id)
@@ -161,6 +174,17 @@ defmodule Helldivers2.WarSeason do
 
     for planet_status <- status.planet_status do
       :ets.insert(table, {{PlanetStatus, planet_status.planet.index}, planet_status})
+    end
+
+    {:reply, :ok, state}
+  end
+
+  @impl GenServer
+  def handle_call({:store, news_feed}, _from, %{table: table} = state) when is_list(news_feed) do
+    :ets.insert(table, {NewsFeed, news_feed})
+
+    for message <- news_feed do
+      :ets.insert(table, {{Message, message.id}, message})
     end
 
     {:reply, :ok, state}
