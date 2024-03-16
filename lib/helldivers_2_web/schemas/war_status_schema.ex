@@ -24,11 +24,17 @@ defmodule Helldivers2Web.Schemas.WarStatusSchema do
         description:
           "The identifier for this war, this ID must be passed for all resources under this war"
       },
+      started_at: %Schema{
+        type: :string,
+        format: :"date-time",
+        description:
+          "The timestamp (UTC) this season was started, as returned by the Helldivers API"
+      },
       snapshot_at: %Schema{
         type: :string,
         format: :"date-time",
         description:
-          "The timestamp this status was snapshotted, as returned by the Helldivers API"
+          "The timestamp (UTC) this status was snapshotted"
       },
       impact_multiplier: %Schema{
         type: :number,

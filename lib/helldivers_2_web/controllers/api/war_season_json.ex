@@ -26,6 +26,7 @@ defmodule Helldivers2Web.Api.WarSeasonJSON do
   def show(%WarStatus{} = war_status) do
     %{
       "war_id" => war_status.war_id,
+      "started_at" => war_status.started_at,
       "snapshot_at" => war_status.snapshot_at,
       "impact_multiplier" => war_status.impact_multiplier,
       "planet_status" => Enum.map(war_status.planet_status, &PlanetsJSON.show_status/1),

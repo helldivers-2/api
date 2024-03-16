@@ -17,6 +17,7 @@ defmodule Helldivers2.Models.WarStatus do
 
   @type t :: %__MODULE__{
           war_id: String.t(),
+          started_at: DateTime.t(),
           snapshot_at: DateTime.t(),
           impact_multiplier: float(),
           planet_status: list(PlanetStatus.t()),
@@ -32,6 +33,7 @@ defmodule Helldivers2.Models.WarStatus do
 
   defstruct [
     :war_id,
+    :started_at,
     :snapshot_at,
     :impact_multiplier,
     :planet_status,
@@ -68,6 +70,7 @@ defmodule Helldivers2.Models.WarStatus do
   @spec parse(map(), %{atom() => map()}) :: t()
   def parse(map, translations \\ %{}) when is_map(map) do
     war_id = Map.get(map, "warId")
+    snapshot_at = DateTime.utc_now()
     campaigns = Enum.map(Map.get(map, "campaigns"), &Campaign.parse(war_id, &1))
 
     joint_operations =
@@ -79,7 +82,8 @@ defmodule Helldivers2.Models.WarStatus do
 
     %__MODULE__{
       war_id: war_id,
-      snapshot_at: DateTime.from_unix!(Map.get(map, "time")),
+      started_at: DateTime.add(snapshot_at, - Map.get(map, "time")),
+      snapshot_at: snapshot_at,
       impact_multiplier: Map.get(map, "impactMultiplier"),
       planet_status: Enum.map(Map.get(map, "planetStatus"), &PlanetStatus.parse(war_id, &1)),
       planet_attacks:
