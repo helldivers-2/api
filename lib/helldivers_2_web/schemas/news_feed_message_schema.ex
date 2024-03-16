@@ -1,7 +1,6 @@
 defmodule Helldivers2Web.Schemas.NewsFeedMessageSchema do
   require OpenApiSpex
 
-  alias Helldivers2.Models.NewsFeed.Message
   alias OpenApiSpex.Schema
 
   @languages Application.compile_env(:helldivers_2, :languages)

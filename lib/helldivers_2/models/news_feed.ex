@@ -29,7 +29,7 @@ defmodule Helldivers2.Models.NewsFeed do
   defp download_language!(war_id, language) do
     response =
       [
-        url: "https://api.live.prod.thehelldiversgame.com/api/NewsFeed/#{war_id}",
+        url: "https://api.live.prod.thehelldiversgame.com/api/NewsFeed/#{war_id}?fromTimestamp=0",
         retry: :transient
       ]
       |> Req.new()

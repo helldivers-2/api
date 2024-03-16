@@ -65,6 +65,7 @@ defmodule Helldivers2.WarSeasonFixtures do
   def war_status_fixture do
     %Helldivers2.Models.WarStatus{
       war_id: 801,
+      started_at: ~U[1970-01-22 10:22:30Z],
       snapshot_at: ~U[1970-01-22 10:22:30Z],
       impact_multiplier: 9.453553e-4,
       planet_status: [
