@@ -37,5 +37,5 @@ kill_signal = 'SIGTERM'
     path = "/api/801/status"
 
 [[vm]]
-  memory = "512mb"
+  memory = "256mb"
   size = 'shared-cpu-1x'
