@@ -1,4 +1,4 @@
-defmodule Helldivers2.Models.Assignment.Reward do
+defmodule Helldivers2.Models.Assignments.Assignment.Reward do
   @type t :: %__MODULE__{
     amount: non_neg_integer(),
     id32: non_neg_integer(),

@@ -8,7 +8,7 @@ defmodule Helldivers2.WarSync do
   The resulting information is then sent to the `Helldivers2.WarSeason` process
   responsible for the season being synced.
   """
-  alias Helldivers2.Models.Assignment
+  alias Helldivers2.Models.Assignments
   alias Helldivers2.Models.NewsFeed
   alias Helldivers2.Models.WarStatus
   alias Helldivers2.Models.WarInfo
@@ -75,8 +75,8 @@ defmodule Helldivers2.WarSync do
          :ok <- WarSeason.store(war_id, war_status),
          {:ok, news_feed} <- NewsFeed.download(war_id),
          :ok <- WarSeason.store(war_id, news_feed, :news_feed),
-         {:ok, assignment} <- Assignment.download(war_id),
-         :ok <- WarSeason.store(war_id, assignment, :assignment) do
+         {:ok, assignment} <- Assignments.download(war_id),
+         :ok <- WarSeason.store(war_id, assignment, :assignments) do
       Logger.info("Finished synchronizing API #{war_id}")
     end
 

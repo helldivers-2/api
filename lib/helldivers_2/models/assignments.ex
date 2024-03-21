@@ -1,17 +1,17 @@
-defmodule Helldivers2.Models.Assignment do
-  alias Helldivers2.Models.Assignment.Message
+defmodule Helldivers2.Models.Assignments do
+  alias Helldivers2.Models.Assignments.Assignment
 
-  @type t :: list(Message.t())
+  @type t :: list(Assignment.t())
 
-  @spec download(String.t()) :: {:error, any()} | {:ok, list(Message.t())}
+  @spec download(String.t()) :: {:error, any()} | {:ok, list(Assignment.t())}
   def download(war_id) do
     base = do_download!(war_id)
     {:ok, parse(base)}
   end
 
-  @spec parse(list(map())) :: list(Message.t())
+  @spec parse(list(map())) :: list(Assignment.t())
   def parse(list) when is_list(list) do
-    Enum.map(list, &Message.parse(&1))
+    Enum.map(list, &Assignment.parse(&1))
   end
 
   @spec do_download!(String.t()) :: map() | no_return()

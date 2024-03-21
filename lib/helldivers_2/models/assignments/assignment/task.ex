@@ -1,4 +1,4 @@
-defmodule Helldivers2.Models.Assignment.Task do
+defmodule Helldivers2.Models.Assignments.Assignment.Task do
   @type t :: %__MODULE__{
     type: non_neg_integer(),
     values: list(non_neg_integer()),

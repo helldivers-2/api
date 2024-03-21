@@ -8,14 +8,14 @@ defmodule Helldivers2.WarSeason do
   use GenServer
   require Logger
 
-  alias Helldivers2.Models.Assignment.Message, as: AssignmentMessage
-  alias Helldivers2.Models.Assignment
-  alias Helldivers2.Models.NewsFeed.Message, as: NewsFeedMessage
+  alias Helldivers2.Models.Assignments
+  alias Helldivers2.Models.Assignments.Assignment
   alias Helldivers2.Models.NewsFeed
-  alias Helldivers2.Models.WarStatus.PlanetStatus
+  alias Helldivers2.Models.NewsFeed.Message
+  alias Helldivers2.Models.WarInfo
   alias Helldivers2.Models.WarInfo.Planet
   alias Helldivers2.Models.WarStatus
-  alias Helldivers2.Models.WarInfo
+  alias Helldivers2.Models.WarStatus.PlanetStatus
 
   @options [
     war_id: [
@@ -54,22 +54,22 @@ defmodule Helldivers2.WarSeason do
     GenServer.call({:via, Registry, {__MODULE__.Registry, war_id}}, {:store, data})
   end
 
-  @spec store(String.t(), NewsFeed.t() | Assignment.t(), :news_feed | :assignment) :: :ok | :error
+  @spec store(String.t(), NewsFeed.t() | Assignments.t(), :news_feed | :assignments) :: :ok | :error
   def store(war_id, data, what) do
     GenServer.call({:via, Registry, {__MODULE__.Registry, war_id}}, {:store, data, what})
   end
 
   @doc """
-  Lookup the `Assignment` associated with the given `war_id`.
+  Lookup the `Assignments` associated with the given `war_id`.
   """
-  @spec get_assignments(String.t()) :: {:ok, Assignment.t()} | {:error, term()}
+  @spec get_assignments(String.t()) :: {:ok, Assignments.t()} | {:error, term()}
   def get_assignments(war_id) do
-    case :ets.lookup(table_name(war_id), Assignment) do
+    case :ets.lookup(table_name(war_id), Assignments) do
       [] ->
         {:error, :not_found}
 
-      [{Assignment, assignment}] ->
-        {:ok, assignment}
+      [{Assignments, assignments}] ->
+        {:ok, assignments}
     end
   end
 
@@ -206,19 +206,19 @@ defmodule Helldivers2.WarSeason do
     :ets.insert(table, {NewsFeed, news_feed})
 
     for message <- news_feed do
-      :ets.insert(table, {{NewsFeedMessage, message.id}, message})
+      :ets.insert(table, {{Message, message.id}, message})
     end
 
     {:reply, :ok, state}
   end
 
   @impl GenServer
-  def handle_call({:store, assignment, :assignment}, _from, %{table: table} = state)
-      when is_list(assignment) do
-    :ets.insert(table, {Assignment, assignment})
+  def handle_call({:store, assignments, :assignments}, _from, %{table: table} = state)
+      when is_list(assignments) do
+    :ets.insert(table, {Assignments, assignments})
 
-    for message <- assignment do
-      :ets.insert(table, {{AssignmentMessage, message.id32}, message})
+    for assignment <- assignments do
+      :ets.insert(table, {{Assignments, assignment.id32}, assignment})
     end
 
     {:reply, :ok, state}

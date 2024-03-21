@@ -1,6 +1,6 @@
-defmodule Helldivers2.Models.Assignment.Setting do
-  alias Helldivers2.Models.Assignment.Reward
-  alias Helldivers2.Models.Assignment.Task
+defmodule Helldivers2.Models.Assignments.Assignment.Setting do
+  alias Helldivers2.Models.Assignments.Assignment.Reward
+  alias Helldivers2.Models.Assignments.Assignment.Task
 
   @type t :: %__MODULE__{
     type: non_neg_integer(),

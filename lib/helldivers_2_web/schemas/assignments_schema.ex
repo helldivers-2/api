@@ -5,10 +5,10 @@ defmodule Helldivers2Web.Schemas.AssignmentsMessageSchema do
 
   @languages Application.compile_env(:helldivers_2, :languages)
 
-  @doc "Generates a schema for a single newsfeed message response"
+  @doc "Generates a schema for a single assignment response"
   def response(),
     do:
-      {"Assignment message response", "application/json", __MODULE__,
+      {"Assignment response", "application/json", __MODULE__,
        Helldivers2Web.ApiSpec.default_options()}
 
   def responses(),
@@ -20,38 +20,85 @@ defmodule Helldivers2Web.Schemas.AssignmentsMessageSchema do
     description: "Represents an assignment in a list of assignments",
     type: :object,
     properties: %{
-      id: %Schema{
+      id32: %Schema{
         type: :integer,
         description: "The identifier of this campaign"
       },
-      published: %Schema{
+      progress: %Schema{
         type: :string,
         format: :"date-time",
-        description: "When this message was published"
+        description: "Progress of the assignment. Suspected that it's a tuple of length equal to the checkboxes in the UI. 0 is uncompleted and 1 is completed?"
       },
-      type: %Schema{
+      expiresIn: %Schema{
         type: :integer,
-        description:
-          "A type identifier, haven't figured out what they mean (seems to be 0 mostly)"
+        description: "When the assignment expires. Probably in seconds."
       },
-      tag_ids: %Schema{
-        type: :array,
-        items: %Schema{
-          type: :integer,
-          description: "Tag identifiers, always empty so no idea what they mean"
+      setting: %Schema{
+        type: :object,
+        properties: %{
+          type: %Schema{
+            type: :integer,
+            description: "TODO unknown"
+          },
+          overrideTitle: %Schema{
+            type: :string,
+            description: "The title of the assignment. \"MAJOR ORDER\" is one option.",
+          },
+          overrideBrief: %Schema{
+            type: :string,
+            description: "Thematic text for what is happening.",
+          },
+          taskDescription: %Schema{
+            type: :string,
+            description: "The specific task to perform.",
+          },
+          tasks: %Schema{
+            type: :array,
+            items: %Schema{
+              type: :object,
+              properties: %{
+                type: %Schema{
+                  type: :integer,
+                  description: "Probably keyed to some task string.",
+                },
+                values: %Schema{
+                  type: :array,
+                  items: %Schema{
+                    type: :integer,
+                  }
+                },
+                valuesTypes: %Schema{
+                  type: :array,
+                  items: %Schema{
+                    type: :integer,
+                  }
+                },
+              },
+            },
+          },
+          reward: %Schema{
+            type: :object,
+            properties: %{
+              amount: %Schema{
+                type: :integer,
+                description: "",
+              },
+              id32: %Schema{
+                type: :integer,
+                description: "",
+              },
+              type: %Schema{
+                type: :integer,
+                description: "",
+              },
+            },
+          },
+          flags: %Schema{
+            type: :integer,
+            description: "TODO what is this.",
+          }
         }
       },
-      message: %Schema{
-        type: :object,
-        properties:
-          Map.new(@languages, fn {key, lang} ->
-            {key,
-             %Schema{
-               type: :string,
-               description: "The message from Super Earth about the news in #{lang}"
-             }}
-          end)
-      }
     }
   })
 end

@@ -1,5 +1,5 @@
 defmodule Helldivers2Web.Api.WarSeasonJSON do
-  alias Helldivers2.Models.Assignment
+  alias Helldivers2.Models.Assignments
   alias Helldivers2.Models.NewsFeed
   alias Helldivers2Web.Api.GlobalEventsJSON
   alias Helldivers2Web.Api.JointOperationsJSON
@@ -60,12 +60,12 @@ defmodule Helldivers2Web.Api.WarSeasonJSON do
     }
   end
 
-  def show(%Assignment.Message{} = message) do
+  def show(%Assignments.Assignment{} = assignment) do
     %{
-      "id32" => message.id32,
-      "progress" => message.progress,
-      "expiresIn" => message.expiresIn,
-      "setting" => message.setting,
+      "id32" => assignment.id32,
+      "progress" => assignment.progress,
+      "expiresIn" => assignment.expiresIn,
+      "setting" => assignment.setting,
     }
   end
 end
