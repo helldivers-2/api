@@ -4,7 +4,7 @@ with pkgs;
 let
   inputs = [
     curl
-    elixir_1_15
+    elixir_1_14
     flyctl
     gcc
     glibcLocales
