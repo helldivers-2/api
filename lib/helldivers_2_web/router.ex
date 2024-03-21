@@ -40,6 +40,7 @@ defmodule Helldivers2Web.Router do
     pipe_through :api
 
     get "/", WarSeasonController, :index
+    get "/:war_id/assignment", WarSeasonController, :show_assignments
     get "/:war_id/info", WarSeasonController, :show_info
     get "/:war_id/status", WarSeasonController, :show_status
 

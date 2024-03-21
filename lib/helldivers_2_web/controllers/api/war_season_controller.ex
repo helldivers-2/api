@@ -1,4 +1,5 @@
 defmodule Helldivers2Web.Api.WarSeasonController do
+  alias Helldivers2Web.Schemas.AssignmentsMessageSchema
   use Helldivers2Web, :controller
   use OpenApiSpex.ControllerSpecs
 
@@ -24,6 +25,28 @@ defmodule Helldivers2Web.Api.WarSeasonController do
       current: Application.get_env(:helldivers_2, :war_season),
       seasons: Application.get_env(:helldivers_2, :war_seasons)
     })
+  end
+
+  operation :show_assignments,
+    summary: "Get the assignments",
+    externalDocs: %OpenApiSpex.ExternalDocumentation{
+      description: "",
+      url: "https://api.live.prod.thehelldiversgame.com/api/Assignment/War/801"
+    },
+    parameters: [
+      war_id: [in: :path, description: "The war ID", type: :integer, example: 801]
+    ],
+    responses: [
+      ok: AssignmentsMessageSchema.response(),
+      not_found: NotFoundSchema.response(),
+      too_many_requests: TooManyRequestsSchema.response(),
+      unprocessable_entity: JsonErrorResponse.response()
+    ]
+
+  def show_assignments(conn, %{war_id: war_id}) do
+    with {:ok, assignments} <- WarSeason.get_assignments(war_id) do
+      render(conn, :show, assignments: assignments)
+    end
   end
 
   operation :show_info,

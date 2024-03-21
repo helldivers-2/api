@@ -8,6 +8,7 @@ defmodule Helldivers2.WarSync do
   The resulting information is then sent to the `Helldivers2.WarSeason` process
   responsible for the season being synced.
   """
+  alias Helldivers2.Models.Assignment
   alias Helldivers2.Models.NewsFeed
   alias Helldivers2.Models.WarStatus
   alias Helldivers2.Models.WarInfo
@@ -29,10 +30,13 @@ defmodule Helldivers2.WarSync do
   ]
 
   def child_spec(options) do
-    Supervisor.child_spec(%{
-      id: Keyword.get(options, :war_id),
-      start: {__MODULE__, :start_link, [options]}
-    }, [])
+    Supervisor.child_spec(
+      %{
+        id: Keyword.get(options, :war_id),
+        start: {__MODULE__, :start_link, [options]}
+      },
+      []
+    )
   end
 
   @doc "Supported options:\n#{NimbleOptions.docs(@options)}"
@@ -70,7 +74,9 @@ defmodule Helldivers2.WarSync do
          {:ok, war_status} <- WarStatus.download(war_id),
          :ok <- WarSeason.store(war_id, war_status),
          {:ok, news_feed} <- NewsFeed.download(war_id),
-         :ok <- WarSeason.store(war_id, news_feed) do
+         :ok <- WarSeason.store(war_id, news_feed, :news_feed),
+         {:ok, assignment} <- Assignment.download(war_id),
+         :ok <- WarSeason.store(war_id, assignment, :assignment) do
       Logger.info("Finished synchronizing API #{war_id}")
     end
 

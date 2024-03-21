@@ -35,3 +35,7 @@ helldivers_2-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# nix stuff
+.direnv
+.nix-hex
+.nix-mix

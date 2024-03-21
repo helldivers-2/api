@@ -1,4 +1,5 @@
 defmodule Helldivers2Web.Api.WarSeasonJSON do
+  alias Helldivers2.Models.Assignment
   alias Helldivers2.Models.NewsFeed
   alias Helldivers2Web.Api.GlobalEventsJSON
   alias Helldivers2Web.Api.JointOperationsJSON
@@ -11,6 +12,7 @@ defmodule Helldivers2Web.Api.WarSeasonJSON do
   def show(%{war_info: war_info}), do: show(war_info)
   def show(%{war_status: war_status}), do: show(war_status)
   def show(%{news_feed: news_feed}), do: Enum.map(news_feed, &show/1)
+  def show(%{assignments: assignments}), do: Enum.map(assignments, &show/1)
 
   def show(%WarInfo{} = war_info) do
     %{
@@ -55,6 +57,15 @@ defmodule Helldivers2Web.Api.WarSeasonJSON do
       "type" => message.type,
       "tag_ids" => message.tag_ids,
       "message" => message.messages
+    }
+  end
+
+  def show(%Assignment.Message{} = message) do
+    %{
+      "id32" => message.id32,
+      "progress" => message.progress,
+      "expiresIn" => message.expiresIn,
+      "setting" => message.setting,
     }
   end
 end

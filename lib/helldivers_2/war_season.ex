@@ -8,7 +8,9 @@ defmodule Helldivers2.WarSeason do
   use GenServer
   require Logger
 
-  alias Helldivers2.Models.NewsFeed.Message
+  alias Helldivers2.Models.Assignment.Message, as: AssignmentMessage
+  alias Helldivers2.Models.Assignment
+  alias Helldivers2.Models.NewsFeed.Message, as: NewsFeedMessage
   alias Helldivers2.Models.NewsFeed
   alias Helldivers2.Models.WarStatus.PlanetStatus
   alias Helldivers2.Models.WarInfo.Planet
@@ -47,9 +49,28 @@ defmodule Helldivers2.WarSeason do
     end
   end
 
-  @spec store(String.t(), WarInfo.t() | WarStatus.t() | NewsFeed.t()) :: :ok | :error
+  @spec store(String.t(), WarInfo.t() | WarStatus.t()) :: :ok | :error
   def store(war_id, data) do
     GenServer.call({:via, Registry, {__MODULE__.Registry, war_id}}, {:store, data})
+  end
+
+  @spec store(String.t(), NewsFeed.t() | Assignment.t(), :news_feed | :assignment) :: :ok | :error
+  def store(war_id, data, what) do
+    GenServer.call({:via, Registry, {__MODULE__.Registry, war_id}}, {:store, data, what})
+  end
+
+  @doc """
+  Lookup the `Assignment` associated with the given `war_id`.
+  """
+  @spec get_assignments(String.t()) :: {:ok, Assignment.t()} | {:error, term()}
+  def get_assignments(war_id) do
+    case :ets.lookup(table_name(war_id), Assignment) do
+      [] ->
+        {:error, :not_found}
+
+      [{Assignment, assignment}] ->
+        {:ok, assignment}
+    end
   end
 
   @doc """
@@ -180,11 +201,24 @@ defmodule Helldivers2.WarSeason do
   end
 
   @impl GenServer
-  def handle_call({:store, news_feed}, _from, %{table: table} = state) when is_list(news_feed) do
+  def handle_call({:store, news_feed, :news_feed}, _from, %{table: table} = state)
+      when is_list(news_feed) do
     :ets.insert(table, {NewsFeed, news_feed})
 
     for message <- news_feed do
-      :ets.insert(table, {{Message, message.id}, message})
+      :ets.insert(table, {{NewsFeedMessage, message.id}, message})
+    end
+
+    {:reply, :ok, state}
+  end
+
+  @impl GenServer
+  def handle_call({:store, assignment, :assignment}, _from, %{table: table} = state)
+      when is_list(assignment) do
+    :ets.insert(table, {Assignment, assignment})
+
+    for message <- assignment do
+      :ets.insert(table, {{AssignmentMessage, message.id32}, message})
     end
 
     {:reply, :ok, state}
