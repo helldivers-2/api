@@ -1,4 +1,5 @@
 using Helldivers.API.Controllers;
+using Helldivers.Models;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
@@ -12,7 +13,7 @@ builder.Services.AddOpenApiDocument();
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
-    // options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
+    options.SerializerOptions.TypeInfoResolverChain.Add(HelldiversJsonSerializerContext.Default);
 });
 
 var app = builder.Build();
@@ -21,4 +22,4 @@ app.UseStaticFiles();
 
 app.MapGet("/war-season", WarSeasonController.Current);
 
-app.Run();
+await app.RunAsync();
