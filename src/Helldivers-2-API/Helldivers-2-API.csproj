@@ -5,6 +5,7 @@
         <RootNamespace>Helldivers.API</RootNamespace>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+        <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
     </PropertyGroup>
 
     <!-- Only generate OpenAPI docs for DEBUG builds -->
@@ -20,9 +21,14 @@
         </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
+    </ItemGroup>
+
     <!-- Dependencies for all build configurations -->
     <ItemGroup>
         <ProjectReference Include="..\Helldivers-2-Models\Helldivers-2-Models.csproj" />
+        <ProjectReference Include="..\Helldivers-2-Sync\Helldivers-2-Sync.csproj" />
         <TrimmerRootAssembly Include="Helldivers-2-Models" />
     </ItemGroup>
 
