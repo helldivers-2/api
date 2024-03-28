@@ -2,10 +2,21 @@ using Helldivers.API.Controllers;
 using Helldivers.Models;
 using Helldivers.Sync.Configuration;
 using Helldivers.Sync.Extensions;
+using System.Globalization;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
 builder.Services.AddProblemDetails();
+builder.Services.AddRequestLocalization(options =>
+{
+    var languages = builder
+        .Configuration
+        .GetSection("Helldivers:Synchronization:Languages")
+        .Get<List<string>>()!;
+
+    options.ApplyCurrentCultureToResponseHeaders = true;
+    options.SupportedCultures = languages.Select(iso => new CultureInfo(iso)).ToList();
+});
 
 // This configuration is bound here so that source generators kick in.
 builder.Services.Configure<HelldiversSyncConfiguration>(builder.Configuration.GetSection("Helldivers:Synchronization"));
@@ -42,6 +53,9 @@ var app = builder.Build();
 
 // We host our OpenAPI spec and preview files from wwwroot/
 app.UseStaticFiles();
+
+// select the correct culture for incoming requests
+app.UseRequestLocalization();
 
 app.MapGet("/war-season", WarSeasonController.Current);
 
