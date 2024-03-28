@@ -2,6 +2,7 @@
 using Helldivers.Models.ArrowHead;
 using Helldivers.Sync.Configuration;
 using Microsoft.Extensions.Options;
+using System.Globalization;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
@@ -23,8 +24,12 @@ public sealed class ApiService(
     {
         var request = BuildRequest("/api/WarSeason/current/WarID");
         using var response = await http.SendAsync(request, cancellationToken);
+        await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
+        var warId = await JsonSerializer
+                        .DeserializeAsync(stream, HelldiversJsonSerializerContext.Default.WarId, cancellationToken)
+                    ?? throw new InvalidOperationException();
 
-        return await response.Content.ReadAsStringAsync(cancellationToken);
+        return warId.Id.ToString(CultureInfo.InvariantCulture);
     }
 
     /// <summary>
@@ -37,30 +42,31 @@ public sealed class ApiService(
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
 
         return await JsonSerializer
-            .DeserializeAsync(stream, HelldiversJsonSerializerContext.Default.WarInfo, cancellationToken)
-            ?? throw new InvalidOperationException();
+                   .DeserializeAsync(stream, HelldiversJsonSerializerContext.Default.WarInfo, cancellationToken)
+               ?? throw new InvalidOperationException();
     }
 
     /// <summary>
     /// Fetch <see cref="WarStatus" /> from ArrowHead's API.
     /// </summary>
-    public async Task<WarStatus> GetWarStatus(string season, CancellationToken cancellationToken)
+    public async Task<WarStatus> GetWarStatus(string season, string language, CancellationToken cancellationToken)
     {
-        var request = BuildRequest($"/api/WarSeason/{season}/Status");
+        var request = BuildRequest($"/api/WarSeason/{season}/Status", language);
         using var response = await http.SendAsync(request, cancellationToken);
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
 
         return await JsonSerializer
-                .DeserializeAsync(stream, HelldiversJsonSerializerContext.Default.WarStatus, cancellationToken)
+                   .DeserializeAsync(stream, HelldiversJsonSerializerContext.Default.WarStatus, cancellationToken)
                ?? throw new InvalidOperationException();
     }
 
     /// <summary>
     /// Fetch the newsfeed of a given <paramref name="season" /> in <paramref name="language" />.
     /// </summary>
-    public async IAsyncEnumerable<NewsFeedItem> LoadFeed(string season, string language, [EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<NewsFeedItem> LoadFeed(string season, string language,
+        [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        var request = BuildRequest($"/api/WarSeason/{season}/Status", language);
+        var request = BuildRequest($"/api/NewsFeed/{season}", language);
         using var response = await http.SendAsync(request, cancellationToken);
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
 
@@ -78,7 +84,8 @@ public sealed class ApiService(
     /// <summary>
     /// Loads assignments of a given <paramref name="season" /> in <paramref name="language" />.
     /// </summary>
-    public async IAsyncEnumerable<Assignment> LoadAssignments(string season, string language, [EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<Assignment> LoadAssignments(string season, string language,
+        [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         var request = BuildRequest($"/api/v2/Assignment/War/{season}", language);
         using var response = await http.SendAsync(request, cancellationToken);
@@ -102,13 +109,7 @@ public sealed class ApiService(
 
         return new HttpRequestMessage(HttpMethod.Get, url)
         {
-            Headers =
-            {
-                AcceptLanguage =
-                {
-                    StringWithQualityHeaderValue.Parse(language)
-                }
-            }
+            Headers = { AcceptLanguage = { StringWithQualityHeaderValue.Parse(language) } }
         };
     }
 }
