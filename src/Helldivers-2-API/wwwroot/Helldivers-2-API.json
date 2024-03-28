@@ -304,6 +304,69 @@
           }
         }
       }
+    },
+    "/api/v1/news": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Gets all newsfeed items.",
+        "operationId": "GetApiV1NewsAll",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NewsItem"
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Thrown when the server hasn't finished it's sync and has no information."
+          }
+        }
+      }
+    },
+    "/api/v1/news/{index}": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Returns a specific newsfeed item.",
+        "operationId": "GetApiV1News",
+        "parameters": [
+          {
+            "name": "index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewsItem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Thrown when the server hasn't finished it's sync and has no information."
+          }
+        }
+      }
     }
   },
   "components": {
@@ -957,6 +1020,32 @@
                 "$ref": "#/components/schemas/Planet"
               }
             ]
+          }
+        }
+      },
+      "NewsItem": {
+        "type": "object",
+        "description": "Represents an item in the news feed (shown as 'dispatch' in the game).",
+        "additionalProperties": false,
+        "properties": {
+          "index": {
+            "type": "integer",
+            "description": "Numerical identifier of this message.",
+            "format": "int32"
+          },
+          "publishedAt": {
+            "type": "string",
+            "description": "When this news item was published.",
+            "format": "date-time"
+          },
+          "type": {
+            "type": "integer",
+            "description": "A numerical type, purpose unknown.",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "The message for this news item."
           }
         }
       }

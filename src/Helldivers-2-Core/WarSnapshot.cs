@@ -48,6 +48,11 @@ public sealed class WarSnapshot
     public GalacticWar? GalacticWar { get; set; }
 
     /// <summary>
+    /// A dictionary of <see cref="NewsItem" /> items.
+    /// </summary>
+    public CultureDictionary<List<NewsItem>>? NewsFeed { get; set; }
+
+    /// <summary>
     /// Called after a sync to update the currently active snapshot information.
     /// </summary>
     public void UpdateSnapshot(
@@ -61,11 +66,21 @@ public sealed class WarSnapshot
     {
         Season = season;
         ArrowHeadWarInfo = warInfo;
-        ArrowHeadWarStatus = new (warStatus);
+        ArrowHeadWarStatus = new(warStatus);
         ArrowHeadWarSummary = summary;
-        ArrowHeadNewsFeed = new (feed);
-        ArrowHeadAssignments = new (assignments);
+        ArrowHeadNewsFeed = new(feed);
+        ArrowHeadAssignments = new(assignments);
 
         GalacticWar = GalacticWarMapper.MapToDomain(season, warInfo, summary, warStatus, feed, assignments);
+        NewsFeed = new(feed.Select(pair =>
+        {
+            var values = pair
+                .Value
+                .Select(item => NewsItemMapper.MapToDomain(item, GalacticWar))
+                .OrderByDescending(item => item.PublishedAt)
+                .ToList();
+
+            return new KeyValuePair<string, List<NewsItem>>(pair.Key, values);
+        }));
     }
 }

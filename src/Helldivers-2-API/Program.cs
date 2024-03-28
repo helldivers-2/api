@@ -116,7 +116,9 @@ v1.MapGet("/planets", PlanetsController.Index);
 v1.MapGet("/planets/{index:int}", PlanetsController.Show);
 v1.MapGet("/planets/{index:int}/statistics", PlanetsController.ShowStatistics);
 
-#endregion
+v1.MapGet("/news", NewsFeedController.Index);
+v1.MapGet("/news/{index:int}", NewsFeedController.Show);
 
+#endregion
 
 await app.RunAsync();
