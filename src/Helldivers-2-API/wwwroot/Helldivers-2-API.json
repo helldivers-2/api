@@ -180,6 +180,130 @@
           }
         }
       }
+    },
+    "/api/v1/war-id": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Gets the current war season.",
+        "operationId": "GetApiV1WarId",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Thrown when the server hasn't finished it's sync and has no information."
+          }
+        }
+      }
+    },
+    "/api/v1/planets": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Retrieves a list of all planets currently involved in the galactic war.",
+        "operationId": "GetApiV1PlanetsAll",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Planet"
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Thrown when the server hasn't finished it's sync and has no information."
+          }
+        }
+      }
+    },
+    "/api/v1/planets/{index}": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Retrieves a specific planet by it's planet ID.",
+        "operationId": "GetApiV1Planets",
+        "parameters": [
+          {
+            "name": "index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Planet"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Thrown when the server hasn't finished it's sync and has no information."
+          }
+        }
+      }
+    },
+    "/api/v1/planets/{index}/statistics": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Retrieves a specific planet's statistics by it's planet ID.",
+        "operationId": "GetApiV1PlanetsStatistics",
+        "parameters": [
+          {
+            "name": "index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Statistics"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Thrown when the server hasn't finished it's sync and has no information."
+          }
+        }
+      }
     }
   },
   "components": {

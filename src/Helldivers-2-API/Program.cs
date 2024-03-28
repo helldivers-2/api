@@ -102,7 +102,7 @@ raw.MapGet("/api/v2/Assignment/War/801", ArrowHeadController.Assignment);
 
 #endregion
 
-#region Galaxy War endpoints
+#region API v1
 
 var v1 = app
     .MapGroup("/api/v1")
@@ -110,6 +110,11 @@ var v1 = app
     .WithTags("v1");
 
 v1.MapGet("/", GalaxyWarController.Show);
+v1.MapGet("/war-id", GalaxyWarController.ShowWarId);
+
+v1.MapGet("/planets", PlanetsController.Index);
+v1.MapGet("/planets/{index:int}", PlanetsController.Show);
+v1.MapGet("/planets/{index:int}/statistics", PlanetsController.ShowStatistics);
 
 #endregion
 

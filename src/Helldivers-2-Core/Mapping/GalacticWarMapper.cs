@@ -24,7 +24,9 @@ public static class GalacticWarMapper
     {
         // Choose one WarStatus as 'invariant', aka the instance we grab non-localized data from.
         var invariantStatus = warStatus.First().Value;
-        var planets = MapPlanets(warInfo, invariantStatus, summary).ToList();
+        var planets = MapPlanets(warInfo, invariantStatus, summary)
+            .OrderBy(planet => planet.Index)
+            .ToList();
 
         return new GalacticWar(
             WarId: warInfo.WarId,
