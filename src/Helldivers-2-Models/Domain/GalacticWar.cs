@@ -15,5 +15,6 @@ public sealed record GalacticWar(
     double ImpactMultiplier,
     List<Planet> Planets,
     List<Faction> Factions,
-    List<Attack> Attacks
+    List<Attack> Attacks,
+    Statistics Statistics
 );
