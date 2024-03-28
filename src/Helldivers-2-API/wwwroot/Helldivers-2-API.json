@@ -1,0 +1,29 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Helldivers-2-API",
+    "version": "1.0"
+  },
+  "paths": {
+    "/war-season": {
+      "get": {
+        "tags": [
+          "WarSeasonController"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": { }
+}
