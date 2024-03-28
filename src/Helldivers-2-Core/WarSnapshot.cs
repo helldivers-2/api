@@ -26,6 +26,11 @@ public sealed class WarSnapshot
     public Dictionary<string, WarStatus>? ArrowHeadWarStatus { get; set; }
 
     /// <summary>
+    /// Gets a snapshot of the current <see cref="WarSummary" /> statistics.
+    /// </summary>
+    public WarSummary? ArrowHeadWarSummary { get; set; }
+
+    /// <summary>
     /// A dictionary of <see cref="NewsFeedItem" /> (the value) for languages (the keys) as returned by the ArrowHead API.
     /// </summary>
     public Dictionary<string, List<NewsFeedItem>>? ArrowHeadNewsFeed { get; set; }
@@ -38,6 +43,7 @@ public sealed class WarSnapshot
     public void UpdateSnapshot(
         string season,
         WarInfo warInfo,
+        WarSummary summary,
         Dictionary<string, WarStatus> warStatus,
         Dictionary<string, List<NewsFeedItem>> feed,
         Dictionary<string, List<Assignment>> assignments
@@ -46,6 +52,7 @@ public sealed class WarSnapshot
         Season = season;
         ArrowHeadWarInfo = warInfo;
         ArrowHeadWarStatus = warStatus;
+        ArrowHeadWarSummary = summary;
         ArrowHeadNewsFeed = feed;
         ArrowHeadAssignments = assignments;
     }

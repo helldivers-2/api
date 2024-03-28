@@ -69,6 +69,7 @@ public sealed partial class ArrowHeadSyncService(
 
         var season = await api.GetCurrentSeason(cancellationToken);
         var warInfo = await api.GetWarInfo(season, cancellationToken);
+        var warSummary = await api.GetSummary(season, cancellationToken);
 
         // For each language, load war status.
         // If a language fails it's skipped.
@@ -98,6 +99,7 @@ public sealed partial class ArrowHeadSyncService(
         snapshot.UpdateSnapshot(
             season,
             warInfo,
+            warSummary,
             statuses,
             feeds,
             assignments
