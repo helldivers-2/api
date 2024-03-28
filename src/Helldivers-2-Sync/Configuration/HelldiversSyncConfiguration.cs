@@ -6,4 +6,6 @@
 public sealed class HelldiversSyncConfiguration
 {
     public int IntervalSeconds { get; set; } = 10;
+
+    public List<string> Languages { get; set; } = new(0);
 }

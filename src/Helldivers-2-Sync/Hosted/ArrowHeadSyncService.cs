@@ -10,7 +10,7 @@ public sealed partial class ArrowHeadSyncService(
     IOptions<HelldiversSyncConfiguration> configuration
 ) : BackgroundService
 {
-    [LoggerMessage(Level = LogLevel.Information, Message = "")]
+    [LoggerMessage(Level = LogLevel.Information, Message = "Running sync service")]
     private static partial void LogExecuting(ILogger logger);
 
     /// <inheritdoc cref="BackgroundService.ExecuteAsync(CancellationToken)" />
