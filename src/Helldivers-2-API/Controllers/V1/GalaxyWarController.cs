@@ -1,5 +1,6 @@
 ﻿using Helldivers.Core;
 using Helldivers.Models.Domain;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Helldivers.API.Controllers.V1;
 
@@ -12,6 +13,8 @@ public static class GalaxyWarController
     /// Gets the current galactic war information.
     /// </summary>
     /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
+    [ProducesResponseType<GalacticWar>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
     public static IResult Show(WarSnapshot snapshot)
     {
         if (snapshot.GalacticWar is { } war)
