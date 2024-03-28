@@ -6,9 +6,13 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/war-season": {
+    "/api/WarSeason/current/WarID": {
       "get": {
-        "operationId": "GetWarSeason",
+        "tags": [
+          "arrowhead"
+        ],
+        "summary": "Returns the currently active war season ID.",
+        "operationId": "GetApiWarSeasonCurrentWarID",
         "responses": {
           "200": {
             "description": "",
@@ -19,10 +23,524 @@
                 }
               }
             }
+          },
+          "503": {
+            "description": "Thrown when the server hasn't finished it's sync and has no information."
+          }
+        }
+      }
+    },
+    "/api/WarSeason/801/Status": {
+      "get": {
+        "tags": [
+          "arrowhead"
+        ],
+        "summary": "Get a snapshot of the current war status.",
+        "operationId": "GetApiWarSeason801Status",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WarStatus"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Thrown when the server hasn't finished it's sync and has no information."
+          }
+        }
+      }
+    },
+    "/api/WarSeason/801/WarInfo": {
+      "get": {
+        "tags": [
+          "arrowhead"
+        ],
+        "summary": "Gets the current war info.",
+        "operationId": "GetApiWarSeason801WarInfo",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WarInfo"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Thrown when the server hasn't finished it's sync and has no information."
+          }
+        }
+      }
+    },
+    "/api/NewsFeed/801": {
+      "get": {
+        "tags": [
+          "arrowhead"
+        ],
+        "summary": "test",
+        "operationId": "GetApiNewsFeed801",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NewsFeedItem"
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Thrown when the server hasn't finished it's sync and has no information."
+          }
+        }
+      }
+    },
+    "/api/v2/Assignment/War/801": {
+      "get": {
+        "tags": [
+          "arrowhead"
+        ],
+        "summary": "test",
+        "operationId": "GetApiV2AssignmentWar801",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Assignment"
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Thrown when the server hasn't finished it's sync and has no information."
           }
         }
       }
     }
   },
-  "components": {}
+  "components": {
+    "schemas": {
+      "WarStatus": {
+        "type": "object",
+        "description": "Represents a snapshot of the current status of the galactic war.",
+        "additionalProperties": false,
+        "properties": {
+          "warId": {
+            "type": "integer",
+            "description": "The war season this snapshot refers to.",
+            "format": "int32"
+          },
+          "time": {
+            "type": "integer",
+            "description": "The time this snapshot was taken.",
+            "format": "int64"
+          },
+          "impactMultiplier": {
+            "type": "number",
+            "description": "This is the factor by which XP at the end of a mission is multiplied to calculate the impact on liberation",
+            "format": "double"
+          },
+          "storyBeatId32": {
+            "type": "integer",
+            "description": "Internal identifier, purpose unknown.",
+            "format": "int64"
+          },
+          "planetStatus": {
+            "type": "array",
+            "description": "A list of statuses for planets.",
+            "items": {
+              "$ref": "#/components/schemas/PlanetStatus"
+            }
+          },
+          "planetAttacks": {
+            "type": "array",
+            "description": "A list of attacks currently ongoing.",
+            "items": {
+              "$ref": "#/components/schemas/PlanetAttack"
+            }
+          },
+          "campaigns": {
+            "type": "array",
+            "description": "A list of ongoing campaigns in the galactic war.",
+            "items": {
+              "$ref": "#/components/schemas/Campaign"
+            }
+          }
+        }
+      },
+      "PlanetStatus": {
+        "type": "object",
+        "description": "Represents the 'current' status of a planet in the galactic war.",
+        "additionalProperties": false,
+        "properties": {
+          "index": {
+            "type": "integer",
+            "description": "The identifier of the PlanetInfo this status refers to.",
+            "format": "int32"
+          },
+          "owner": {
+            "type": "integer",
+            "description": "The faction currently owning the planet.",
+            "format": "int32"
+          },
+          "health": {
+            "type": "integer",
+            "description": "The current health / liberation of a planet.",
+            "format": "int64"
+          },
+          "regenPerSecond": {
+            "type": "number",
+            "description": "If left alone, how much the health of the planet would regenerate.",
+            "format": "double"
+          },
+          "players": {
+            "type": "integer",
+            "description": "The amount of helldivers currently active on this planet.",
+            "format": "int64"
+          }
+        }
+      },
+      "PlanetAttack": {
+        "type": "object",
+        "description": "Represents an attack on a PlanetInfo.",
+        "additionalProperties": false,
+        "properties": {
+          "source": {
+            "type": "integer",
+            "description": "Where the attack originates from.",
+            "format": "int32"
+          },
+          "target": {
+            "type": "integer",
+            "description": "The planet under attack.",
+            "format": "int32"
+          }
+        }
+      },
+      "Campaign": {
+        "type": "object",
+        "description": "Contains information of ongoing campaigns.",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The identifier of this campaign.",
+            "format": "int32"
+          },
+          "planetIndex": {
+            "type": "integer",
+            "description": "The Index of the planet this campaign refers to.",
+            "format": "int32"
+          },
+          "type": {
+            "type": "integer",
+            "description": "A numerical type, purpose unknown.",
+            "format": "int32"
+          },
+          "count": {
+            "type": "integer",
+            "description": "A numerical count, unknown what it counts.",
+            "format": "int32"
+          }
+        }
+      },
+      "WarInfo": {
+        "type": "object",
+        "description": "Represents mostly static information of the current galactic war.",
+        "additionalProperties": false,
+        "properties": {
+          "warId": {
+            "type": "integer",
+            "description": "The identifier of the war season this WarInfo represents.",
+            "format": "int32"
+          },
+          "startDate": {
+            "type": "integer",
+            "description": "A unix timestamp (in seconds) when this season started.",
+            "format": "int64"
+          },
+          "endDate": {
+            "type": "integer",
+            "description": "A unix timestamp (in seconds) when this season will end.",
+            "format": "int64"
+          },
+          "minimumClientVersion": {
+            "type": "string",
+            "description": "A version string indicating the minimum game client version the API supports."
+          },
+          "planetInfos": {
+            "type": "array",
+            "description": "A list of planets involved in this season's war.",
+            "items": {
+              "$ref": "#/components/schemas/PlanetInfo"
+            }
+          },
+          "homeWorlds": {
+            "type": "array",
+            "description": "A list of homeworlds for the races (factions) involved in this war.",
+            "items": {
+              "$ref": "#/components/schemas/HomeWorld"
+            }
+          }
+        }
+      },
+      "PlanetInfo": {
+        "type": "object",
+        "description": "Represents information of a planet from the 'WarInfo' endpoint returned by ArrowHead's API.",
+        "additionalProperties": false,
+        "properties": {
+          "index": {
+            "type": "integer",
+            "description": "The numerical identifier for this planet, used as reference by other properties throughout the API (like Waypoints).",
+            "format": "int32"
+          },
+          "settingsHash": {
+            "type": "integer",
+            "description": "Purpose unknown at this time.",
+            "format": "int64"
+          },
+          "position": {
+            "description": "A set of X/Y coordinates specifying the position of this planet on the galaxy map.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PlanetCoordinates"
+              }
+            ]
+          },
+          "waypoints": {
+            "type": "array",
+            "description": "A list of links to other planets (supply lines).",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "sector": {
+            "type": "integer",
+            "description": "The identifier of the sector this planet is located in.",
+            "format": "int32"
+          },
+          "maxHealth": {
+            "type": "integer",
+            "description": "The 'health' of this planet, indicates how much liberation it needs to switch sides.",
+            "format": "int64"
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "Whether this planet is currently considered active in the galactic war."
+          },
+          "initialOwner": {
+            "type": "integer",
+            "description": "The identifier of the faction that initially owned this planet.",
+            "format": "int32"
+          }
+        }
+      },
+      "PlanetCoordinates": {
+        "type": "object",
+        "description": "Represents a set of coordinates returned by ArrowHead's API.",
+        "additionalProperties": false,
+        "properties": {
+          "x": {
+            "type": "number",
+            "description": "The X coordinate",
+            "format": "double"
+          },
+          "y": {
+            "type": "number",
+            "description": "The Y coordinate",
+            "format": "double"
+          }
+        }
+      },
+      "HomeWorld": {
+        "type": "object",
+        "description": "Represents information about the homeworld(s) of a given race.",
+        "additionalProperties": false,
+        "properties": {
+          "race": {
+            "type": "integer",
+            "description": "The identifier of the race (faction) this describes the homeworld of.",
+            "format": "int32"
+          },
+          "planetIndices": {
+            "type": "array",
+            "description": "A list of Index identifiers.",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "NewsFeedItem": {
+        "type": "object",
+        "description": "Represents an item in the newsfeed of Super Earth.",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The identifier of this newsfeed item.",
+            "format": "int32"
+          },
+          "published": {
+            "type": "integer",
+            "description": "A unix timestamp (in seconds) when this item was published.",
+            "format": "int64"
+          },
+          "type": {
+            "type": "integer",
+            "description": "A numerical type, purpose unknown.",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "The message containing a human readable text."
+          }
+        }
+      },
+      "Assignment": {
+        "type": "object",
+        "description": "Represents an assignment given from Super Earth to the Helldivers.",
+        "additionalProperties": false,
+        "properties": {
+          "id32": {
+            "type": "integer",
+            "description": "Internal identifier of this assignment.",
+            "format": "int64"
+          },
+          "progress": {
+            "type": "array",
+            "description": "A list of numbers, how they represent progress is unknown.",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "expiresIn": {
+            "type": "integer",
+            "description": "The amount of seconds until this assignment expires.",
+            "format": "int64"
+          },
+          "setting": {
+            "description": "Contains detailed information on this assignment like briefing, rewards, ...",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Setting"
+              }
+            ]
+          }
+        }
+      },
+      "Setting": {
+        "type": "object",
+        "description": "Contains the details of an Assignment like reward and requirements.",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "integer",
+            "description": "The type of assignment, values unknown at the moment.",
+            "format": "int32"
+          },
+          "overrideTitle": {
+            "type": "string",
+            "description": "The title of this assignment."
+          },
+          "overrideBrief": {
+            "type": "string",
+            "description": "The briefing (description) of this assignment."
+          },
+          "taskDescription": {
+            "type": "string",
+            "description": "A description of what is expected of Helldivers to complete the assignment."
+          },
+          "tasks": {
+            "type": "array",
+            "description": "A list of Tasks describing the assignment requirements.",
+            "items": {
+              "$ref": "#/components/schemas/Task"
+            }
+          },
+          "reward": {
+            "description": "Contains information on the rewards players willr eceive upon completion.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Reward"
+              }
+            ]
+          },
+          "flags": {
+            "type": "integer",
+            "description": "Flags, suspected to be a binary OR'd value, purpose unknown.",
+            "format": "int32"
+          }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "description": "Represents a task in an Assignment.\nIt's exact values are not known, therefor little of it's purpose is clear.",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "integer",
+            "description": "A numerical value, purpose unknown.",
+            "format": "int32"
+          },
+          "values": {
+            "type": "array",
+            "description": "A list of numerical values, purpose unknown.",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "valueTypes": {
+            "type": "array",
+            "description": "A list of numerical values, purpose unknown.",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "Reward": {
+        "type": "object",
+        "description": "Represents the reward of an Assignment.",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "integer",
+            "description": "The type of reward, currently only one value is known: 1 which represents Medals",
+            "format": "int32"
+          },
+          "id32": {
+            "type": "integer",
+            "description": "Internal identifier of this Reward.",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The amount of Type the players will receive upon completion.",
+            "format": "int32"
+          }
+        }
+      }
+    }
+  }
 }

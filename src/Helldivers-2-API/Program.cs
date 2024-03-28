@@ -1,4 +1,5 @@
 using Helldivers.API.Controllers;
+using Helldivers.Core.Extensions;
 using Helldivers.Models;
 using Helldivers.Sync.Configuration;
 using Helldivers.Sync.Extensions;
@@ -14,6 +15,7 @@ var isRunningAsTool = args.FirstOrDefault(arg => arg.StartsWith("--applicationNa
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
+builder.Services.AddHelldivers();
 builder.Services.AddProblemDetails();
 builder.Services.AddRequestLocalization(options =>
 {
@@ -69,6 +71,19 @@ app.UseRequestLocalization();
 // Ensure web applications can access the API by setting CORS headers.
 app.UseCors();
 
-app.MapGet("/war-season", WarSeasonController.Current);
+#region ArrowHead API endpoints ('raw' API)
+
+var raw = app
+    .MapGroup("/")
+    .WithTags("arrowhead");
+
+raw.MapGet("/api/WarSeason/current/WarID", ArrowHeadController.WarId);
+raw.MapGet("/api/WarSeason/801/Status", ArrowHeadController.Status);
+raw.MapGet("/api/WarSeason/801/WarInfo", ArrowHeadController.WarInfo);
+raw.MapGet("/api/NewsFeed/801", ArrowHeadController.NewsFeed);
+raw.MapGet("/api/v2/Assignment/War/801", ArrowHeadController.Assignment);
+
+#endregion
+
 
 await app.RunAsync();

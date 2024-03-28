@@ -10,7 +10,7 @@ namespace Helldivers.Models.ArrowHead;
 /// <param name="ExpiresIn">The amount of seconds until this assignment expires.</param>
 /// <param name="Setting">Contains detailed information on this assignment like briefing, rewards, ...</param>
 public sealed record Assignment(
-    int Id32,
+    long Id32,
     List<int> Progress,
     long ExpiresIn,
     Setting Setting

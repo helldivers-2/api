@@ -10,6 +10,7 @@ WORKDIR /src
 COPY ["src/Helldivers-2-API/Helldivers-2-API.csproj", "src/Helldivers-2-API/"]
 COPY ["src/Helldivers-2-Models/Helldivers-2-Models.csproj", "src/Helldivers-2-Models/"]
 COPY ["src/Helldivers-2-Sync/Helldivers-2-Sync.csproj", "src/Helldivers-2-Sync/"]
+COPY ["src/Helldivers-2-Core/Helldivers-2-Core.csproj", "src/Helldivers-2-Core/"]
 RUN dotnet restore "src/Helldivers-2-API/Helldivers-2-API.csproj"
 COPY . .
 WORKDIR "/src/src/Helldivers-2-API"

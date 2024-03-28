@@ -11,6 +11,11 @@ public sealed class HelldiversSyncConfiguration
     public int IntervalSeconds { get; set; } = 10;
 
     /// <summary>
+    /// The default language which the API will use.
+    /// </summary>
+    public string DefaultLanguage { get; set; } = "en-US";
+
+    /// <summary>
     /// A list of language codes for which translations will be provided.
     /// </summary>
     public List<string> Languages { get; set; } = new(0);
