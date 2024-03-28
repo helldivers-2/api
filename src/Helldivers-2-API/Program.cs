@@ -4,6 +4,14 @@ using Helldivers.Sync.Configuration;
 using Helldivers.Sync.Extensions;
 using System.Globalization;
 
+#if DEBUG
+// When generating an OpenAPI document, get-document runs with the "--applicationName" flag.
+// While detecting it this way isn't the 'prettiest' way, we *need* this information for following reasons:
+// We don't want to start background services for sync etc when this flag is active
+// And we *only* want to include OpenAPI generation stuff when this flag is active.
+var isRunningAsTool = args.FirstOrDefault(arg => arg.StartsWith("--applicationName")) is not null;
+#endif
+
 var builder = WebApplication.CreateSlimBuilder(args);
 
 builder.Services.AddProblemDetails();
@@ -17,18 +25,19 @@ builder.Services.AddRequestLocalization(options =>
     options.ApplyCurrentCultureToResponseHeaders = true;
     options.SupportedCultures = languages.Select(iso => new CultureInfo(iso)).ToList();
 });
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy => policy
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+    );
+});
 
 // This configuration is bound here so that source generators kick in.
 builder.Services.Configure<HelldiversSyncConfiguration>(builder.Configuration.GetSection("Helldivers:Synchronization"));
 
 // Swagger is generated at compile time, so we don't include Swagger dependencies in Release builds.
 #if DEBUG
-// When generating an OpenAPI document, get-document runs with the "--applicationName" flag.
-// While detecting it this way isn't the 'prettiest' way, we *need* this information for following reasons:
-// We don't want to start background services for sync etc when this flag is active
-// And we *only* want to include OpenAPI generation stuff when this flag is active.
-var isRunningAsTool = args.FirstOrDefault(arg => arg.StartsWith("--applicationName")) is not null;
-
 // Only add OpenApi dependencies when generating 
 if (isRunningAsTool)
 {
@@ -56,6 +65,9 @@ app.UseStaticFiles();
 
 // select the correct culture for incoming requests
 app.UseRequestLocalization();
+
+// Ensure web applications can access the API by setting CORS headers.
+app.UseCors();
 
 app.MapGet("/war-season", WarSeasonController.Current);
 
