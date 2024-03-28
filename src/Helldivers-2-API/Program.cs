@@ -92,6 +92,7 @@ var raw = app
 raw.MapGet("/api/WarSeason/current/WarID", ArrowHeadController.WarId);
 raw.MapGet("/api/WarSeason/801/Status", ArrowHeadController.Status);
 raw.MapGet("/api/WarSeason/801/WarInfo", ArrowHeadController.WarInfo);
+raw.MapGet("/api/Stats/war/801/summary", ArrowHeadController.Summary);
 raw.MapGet("/api/NewsFeed/801", ArrowHeadController.NewsFeed);
 raw.MapGet("/api/v2/Assignment/War/801", ArrowHeadController.Assignment);
 

@@ -79,6 +79,30 @@
         }
       }
     },
+    "/api/Stats/war/801/summary": {
+      "get": {
+        "tags": [
+          "raw"
+        ],
+        "summary": "Gets the current war info.",
+        "operationId": "GetApiStatsWar801Summary",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WarInfo"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Thrown when the server hasn't finished it's sync and has no information."
+          }
+        }
+      }
+    },
     "/api/NewsFeed/801": {
       "get": {
         "tags": [

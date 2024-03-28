@@ -102,6 +102,20 @@ public sealed class ApiService(
             yield return assignment ?? throw new InvalidOperationException("Failed to deserialize assignment");
     }
 
+    /// <summary>
+    /// Fetch <see cref="WarSummary" /> from ArrowHead's API.
+    /// </summary>
+    public async Task<WarSummary> GetSummary(string season, CancellationToken cancellationToken)
+    {
+        var request = BuildRequest($"/api/Stats/war/{season}/summary");
+        using var response = await http.SendAsync(request, cancellationToken);
+        await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
+
+        return await JsonSerializer
+                   .DeserializeAsync(stream, HelldiversJsonSerializerContext.Default.WarSummary, cancellationToken)
+               ?? throw new InvalidOperationException();
+    }
+
     private HttpRequestMessage BuildRequest(string url, string? language = null)
     {
         if (string.IsNullOrWhiteSpace(language))
