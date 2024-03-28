@@ -166,7 +166,17 @@
         "operationId": "GetApiV1",
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GalacticWar"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Thrown when the server hasn't finished it's sync and has no information."
           }
         }
       }
@@ -577,6 +587,252 @@
             "type": "integer",
             "description": "The amount of Type the players will receive upon completion.",
             "format": "int32"
+          }
+        }
+      },
+      "GalacticWar": {
+        "type": "object",
+        "description": "Represents a snapshot of the current ongoing galactic war.",
+        "additionalProperties": false,
+        "properties": {
+          "warId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endsAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "snapshottedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "impactMultiplier": {
+            "type": "number",
+            "format": "double"
+          },
+          "planets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Planet"
+            }
+          },
+          "factions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "attacks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Attack"
+            }
+          },
+          "statistics": {
+            "$ref": "#/components/schemas/Statistics"
+          }
+        }
+      },
+      "Planet": {
+        "type": "object",
+        "description": "Represents a planet and it's current information.",
+        "additionalProperties": false,
+        "properties": {
+          "index": {
+            "type": "integer",
+            "description": "The numerical ID of this planet.",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "The human readable name of this planet."
+          },
+          "sector": {
+            "type": "string",
+            "description": "The name of the sector this planet resides in."
+          },
+          "hash": {
+            "type": "integer",
+            "description": "A hash of this planet.",
+            "format": "int64"
+          },
+          "position": {
+            "description": "A set of coordinates where this planet is located.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Position"
+              }
+            ]
+          },
+          "waypoints": {
+            "type": "array",
+            "description": "A list of indices of planets this planet is linked to (we can't link planet objects directly or it would cause circular references).",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "maxHealth": {
+            "type": "integer",
+            "description": "The maximum health pool this planet can have.",
+            "format": "int64"
+          },
+          "health": {
+            "type": "integer",
+            "description": "The current health this planet has, which indicates the control of the faction in CurrentOwner (so for humans you want it to go up, otherwise go down).",
+            "format": "int64"
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "Whether or not this planet is considered active in the current war effort."
+          },
+          "initialOwner": {
+            "type": "string",
+            "description": "Which faction owned this planet originally."
+          },
+          "currentOwner": {
+            "type": "string",
+            "description": "The faction that currently owns this planet."
+          },
+          "regenPerSecond": {
+            "type": "number",
+            "description": "If left alone, the planet will regenerate X% per second.",
+            "format": "double"
+          },
+          "players": {
+            "type": "integer",
+            "description": "The amount of players currently active on this planet.",
+            "format": "int64"
+          },
+          "statistics": {
+            "description": "Statistics of this planet (see Statistics for global stats).",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Statistics"
+              }
+            ]
+          }
+        }
+      },
+      "Position": {
+        "type": "object",
+        "description": "Represents a position on the galactic war map.",
+        "additionalProperties": false,
+        "properties": {
+          "x": {
+            "type": "number",
+            "description": "The X coordinate.",
+            "format": "double"
+          },
+          "y": {
+            "type": "number",
+            "description": "The Y coordinate.",
+            "format": "double"
+          }
+        }
+      },
+      "Statistics": {
+        "type": "object",
+        "description": "Contains statistics of missions, kills, success rate etc.",
+        "additionalProperties": false,
+        "properties": {
+          "missionsWon": {
+            "type": "integer",
+            "description": "The amount of missions won.",
+            "format": "uint64"
+          },
+          "missionsLost": {
+            "type": "integer",
+            "description": "The amount of missions lost.",
+            "format": "uint64"
+          },
+          "missionTime": {
+            "type": "integer",
+            "description": "The total amount of time spent planetside (in seconds).",
+            "format": "uint64"
+          },
+          "terminidKills": {
+            "type": "integer",
+            "description": "The total amount of bugs killed since start of the season.",
+            "format": "uint64"
+          },
+          "automatonKills": {
+            "type": "integer",
+            "description": "The total amount of automatons killed since start of the season.",
+            "format": "uint64"
+          },
+          "illuminateKills": {
+            "type": "integer",
+            "description": "The total amount of Illuminate killed since start of the season.",
+            "format": "uint64"
+          },
+          "bulletsFired": {
+            "type": "integer",
+            "description": "The total amount of bullets fired",
+            "format": "uint64"
+          },
+          "bulletsHit": {
+            "type": "integer",
+            "description": "The total amount of bullets hit",
+            "format": "uint64"
+          },
+          "timePlayed": {
+            "type": "integer",
+            "description": "The total amount of time played (including off-planet) in seconds.",
+            "format": "uint64"
+          },
+          "deaths": {
+            "type": "integer",
+            "description": "The amount of casualties on the side of humanity.",
+            "format": "uint64"
+          },
+          "revives": {
+            "type": "integer",
+            "description": "The amount of revives(?).",
+            "format": "uint64"
+          },
+          "friendlies": {
+            "type": "integer",
+            "description": "The amount of friendly fire casualties.",
+            "format": "uint64"
+          },
+          "missionSuccessRate": {
+            "type": "integer",
+            "description": "A percentage indicating how many started missions end in success.",
+            "format": "uint64"
+          },
+          "accuracy": {
+            "type": "integer",
+            "description": "A percentage indicating average accuracy of Helldivers.",
+            "format": "uint64"
+          }
+        }
+      },
+      "Attack": {
+        "type": "object",
+        "description": "Attacks are launched from one Planet onto another.",
+        "additionalProperties": false,
+        "properties": {
+          "from": {
+            "description": "The Planet from which the attack originates.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Planet"
+              }
+            ]
+          },
+          "to": {
+            "description": "The Planet at which the attack is targeted.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Planet"
+              }
+            ]
           }
         }
       }
