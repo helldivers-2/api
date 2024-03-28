@@ -1,7 +1,6 @@
 ﻿using Helldivers.Core;
 using Helldivers.Models.ArrowHead;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 
 namespace Helldivers.API.Controllers;
 
@@ -35,12 +34,10 @@ public static class ArrowHeadController
         if (snapshot.ArrowHeadWarStatus is null)
             return Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
 
-        // TODO: we probably want to use a better language detection (ex, 'en-GB' should also match for 'en-US' as both are English)
-        if (snapshot.ArrowHeadWarStatus.TryGetValue(CultureInfo.CurrentCulture.Name, out var status))
+        if (snapshot.ArrowHeadWarStatus.Get() is { } status)
             return Results.Ok(status);
 
-        status = snapshot.ArrowHeadWarStatus.Values.First();
-        return Results.Ok(status);
+        return Results.BadRequest();
     }
 
     /// <summary>
@@ -82,12 +79,10 @@ public static class ArrowHeadController
         if (snapshot.ArrowHeadNewsFeed is null)
             return Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
 
-        // TODO: we probably want to use a better language detection (ex, 'en-GB' should also match for 'en-US' as both are English)
-        if (snapshot.ArrowHeadNewsFeed.TryGetValue(CultureInfo.CurrentCulture.Name, out var status))
-            return Results.Ok(status);
+        if (snapshot.ArrowHeadNewsFeed.Get() is { } feed)
+            return Results.Ok(feed);
 
-        status = snapshot.ArrowHeadNewsFeed.Values.First();
-        return Results.Ok(status);
+        return Results.BadRequest();
     }
 
     /// <summary>
@@ -101,11 +96,9 @@ public static class ArrowHeadController
         if (snapshot.ArrowHeadAssignments is null)
             return Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
 
-        // TODO: we probably want to use a better language detection (ex, 'en-GB' should also match for 'en-US' as both are English)
-        if (snapshot.ArrowHeadAssignments.TryGetValue(CultureInfo.CurrentCulture.Name, out var status))
-            return Results.Ok(status);
+        if (snapshot.ArrowHeadAssignments.Get() is { } assignments)
+            return Results.Ok(assignments);
 
-        status = snapshot.ArrowHeadAssignments.Values.First();
-        return Results.Ok(status);
+        return Results.BadRequest();
     }
 }

@@ -25,7 +25,7 @@ public sealed class WarSnapshot
     /// <summary>
     /// A dictionary of <see cref="WarStatus" /> (the value) for languages (the keys) as returned by the ArrowHead API.
     /// </summary>
-    public Dictionary<string, WarStatus>? ArrowHeadWarStatus { get; set; }
+    public CultureDictionary<WarStatus>? ArrowHeadWarStatus { get; set; }
 
     /// <summary>
     /// Gets a snapshot of the current <see cref="WarSummary" /> statistics.
@@ -35,12 +35,12 @@ public sealed class WarSnapshot
     /// <summary>
     /// A dictionary of <see cref="NewsFeedItem" /> (the value) for languages (the keys) as returned by the ArrowHead API.
     /// </summary>
-    public Dictionary<string, List<NewsFeedItem>>? ArrowHeadNewsFeed { get; set; }
+    public CultureDictionary<List<NewsFeedItem>>? ArrowHeadNewsFeed { get; set; }
 
     /// <summary>
     /// A dictionary of <see cref="Assignment" /> (the value) for languages (the keys) as returned by the ArrowHead API.
     /// </summary>
-    public Dictionary<string, List<Assignment>>? ArrowHeadAssignments { get; set; }
+    public CultureDictionary<List<Assignment>>? ArrowHeadAssignments { get; set; }
 
     /// <summary>
     /// Current denormalized galactic war information.
@@ -61,10 +61,10 @@ public sealed class WarSnapshot
     {
         Season = season;
         ArrowHeadWarInfo = warInfo;
-        ArrowHeadWarStatus = warStatus;
+        ArrowHeadWarStatus = new (warStatus);
         ArrowHeadWarSummary = summary;
-        ArrowHeadNewsFeed = feed;
-        ArrowHeadAssignments = assignments;
+        ArrowHeadNewsFeed = new (feed);
+        ArrowHeadAssignments = new (assignments);
 
         GalacticWar = GalacticWarMapper.MapToDomain(season, warInfo, summary, warStatus, feed, assignments);
     }
