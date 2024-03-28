@@ -7,7 +7,7 @@ builder.Services.AddProblemDetails();
 #if DEBUG
 // Swagger is generated at compile time, so we don't include Swagger dependencies in Release builds.
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApiDocument();
 #endif
 
 builder.Services.ConfigureHttpJsonOptions(options =>
