@@ -21,25 +21,22 @@
         </Content>
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
-    </ItemGroup>
-
     <!-- Dependencies for all build configurations -->
     <ItemGroup>
-        <ProjectReference Include="..\Helldivers-2-Models\Helldivers-2-Models.csproj" />
-        <ProjectReference Include="..\Helldivers-2-Sync\Helldivers-2-Sync.csproj" />
-        <TrimmerRootAssembly Include="Helldivers-2-Models" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1"/>
+        <ProjectReference Include="..\Helldivers-2-Models\Helldivers-2-Models.csproj"/>
+        <ProjectReference Include="..\Helldivers-2-Sync\Helldivers-2-Sync.csproj"/>
+        <TrimmerRootAssembly Include="Helldivers-2-Models"/>
     </ItemGroup>
 
     <!-- Only include swagger dependencies in DEBUG builds -->
     <ItemGroup Condition="'$(Configuration)' == 'Debug'">
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.3" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.3"/>
         <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" Version="8.0.3">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="NSwag.AspNetCore" Version="14.0.4" />
+        <PackageReference Include="NSwag.AspNetCore" Version="14.0.4"/>
     </ItemGroup>
 
 </Project>

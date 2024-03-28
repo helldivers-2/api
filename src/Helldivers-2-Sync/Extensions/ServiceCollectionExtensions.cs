@@ -1,4 +1,5 @@
 ﻿using Helldivers.Sync.Hosted;
+using Helldivers.Sync.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Helldivers.Sync.Extensions;
@@ -14,6 +15,10 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddHelldiversSync(this IServiceCollection services)
     {
         services.AddHostedService<ArrowHeadSyncService>();
+        services.AddHttpClient<ApiService>(http =>
+        {
+            http.BaseAddress = new Uri("https://api.live.prod.thehelldiversgame.com");
+        });
 
         return services;
     }
