@@ -1,4 +1,6 @@
-﻿using Helldivers.Models.ArrowHead;
+﻿using Helldivers.Core.Mapping;
+using Helldivers.Models.ArrowHead;
+using Helldivers.Models.Domain;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Helldivers.Core;
@@ -40,6 +42,14 @@ public sealed class WarSnapshot
     /// </summary>
     public Dictionary<string, List<Assignment>>? ArrowHeadAssignments { get; set; }
 
+    /// <summary>
+    /// Current denormalized galactic war information.
+    /// </summary>
+    public GalacticWar? GalacticWar { get; set; }
+
+    /// <summary>
+    /// Called after a sync to update the currently active snapshot information.
+    /// </summary>
     public void UpdateSnapshot(
         string season,
         WarInfo warInfo,
@@ -55,5 +65,7 @@ public sealed class WarSnapshot
         ArrowHeadWarSummary = summary;
         ArrowHeadNewsFeed = feed;
         ArrowHeadAssignments = assignments;
+
+        GalacticWar = GalacticWarMapper.MapToDomain(season, warInfo, summary, warStatus, feed, assignments);
     }
 }

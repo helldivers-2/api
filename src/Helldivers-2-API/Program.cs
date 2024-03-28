@@ -1,9 +1,11 @@
 using Helldivers.API.Controllers;
+using Helldivers.API.Controllers.V1;
 using Helldivers.Core.Extensions;
 using Helldivers.Models;
 using Helldivers.Sync.Configuration;
 using Helldivers.Sync.Extensions;
 using System.Globalization;
+using System.Text.Json.Serialization;
 
 #if DEBUG
 // When generating an OpenAPI document, get-document runs with the "--applicationName" flag.
@@ -68,8 +70,10 @@ builder.Services.AddHelldiversSync();
 
 // Setup source generated JSON type information so the API knows how to serialize models.
 builder.Services.ConfigureHttpJsonOptions(options =>
-    options.SerializerOptions.TypeInfoResolverChain.Add(HelldiversJsonSerializerContext.Default)
-);
+{
+    options.SerializerOptions.TypeInfoResolverChain.Add(HelldiversJsonSerializerContext.Default);
+    options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 
 var app = builder.Build();
 
@@ -95,6 +99,17 @@ raw.MapGet("/api/WarSeason/801/WarInfo", ArrowHeadController.WarInfo);
 raw.MapGet("/api/Stats/war/801/summary", ArrowHeadController.Summary);
 raw.MapGet("/api/NewsFeed/801", ArrowHeadController.NewsFeed);
 raw.MapGet("/api/v2/Assignment/War/801", ArrowHeadController.Assignment);
+
+#endregion
+
+#region Galaxy War endpoints
+
+var v1 = app
+    .MapGroup("/api/v1")
+    .WithGroupName("community")
+    .WithTags("v1");
+
+v1.MapGet("/", GalaxyWarController.Show);
 
 #endregion
 

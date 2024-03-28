@@ -1,4 +1,6 @@
-﻿namespace Helldivers.Models.Domain;
+﻿using Helldivers.Models.Domain.War;
+
+namespace Helldivers.Models.Domain;
 
 /// <summary>
 /// Represents a snapshot of the current ongoing galactic war.
@@ -14,7 +16,7 @@ public sealed record GalacticWar(
     DateTime SnapshottedAt,
     double ImpactMultiplier,
     List<Planet> Planets,
-    List<Faction> Factions,
+    List<string> Factions,
     List<Attack> Attacks,
     Statistics Statistics
 );

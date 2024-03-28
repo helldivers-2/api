@@ -156,6 +156,20 @@
           }
         }
       }
+    },
+    "/api/v1": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Gets the current galactic war information.",
+        "operationId": "GetApiV1",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
     }
   },
   "components": {

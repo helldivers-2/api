@@ -1,4 +1,4 @@
-﻿namespace Helldivers.Models.Domain;
+﻿namespace Helldivers.Models.Domain.War;
 
 /// <summary>
 /// Attacks are launched from one <see cref="Planet" /> onto another.
