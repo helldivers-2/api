@@ -58,7 +58,7 @@ public static class ArrowHeadController
     }
 
     /// <summary>
-    /// test
+    /// Retrieves a list of news messages from Super Earth.
     /// </summary>
     /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
     [ProducesResponseType<List<NewsFeedItem>>(StatusCodes.Status200OK)]
@@ -77,7 +77,7 @@ public static class ArrowHeadController
     }
 
     /// <summary>
-    /// test
+    /// Retrieves a list of currently active assignments (like Major Orders).
     /// </summary>
     /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
     [ProducesResponseType<List<Assignment>>(StatusCodes.Status200OK)]
