@@ -10,11 +10,7 @@ kill_signal = 'SIGTERM'
 [build]
 
 [env]
-  PHX_HOST = 'helldivers-2.fly.dev'
-  PORT = '8080'
-  RATE_LIMIT_MAX_REQUESTS = "500"
-  RATE_LIMIT_INTERVAL = "60"
-  ENABLE_IPV6 = 'true'
+  ASPNETCORE_HTTP_PORTS = '8080'
 
 [http_service]
   internal_port = 8080
@@ -31,10 +27,10 @@ kill_signal = 'SIGTERM'
 
   [[http_service.checks]]
     grace_period = "1s"
-    interval = "60s"
+    interval = "10s"
     method = "GET"
     timeout = "5s"
-    path = "/api/801/status"
+    path = "/api/WarSeason/current/WarID"
 
 [[vm]]
   memory = "256mb"

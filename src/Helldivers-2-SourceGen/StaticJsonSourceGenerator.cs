@@ -30,7 +30,7 @@ public class StaticJsonSourceGenerator : ISourceGenerator
 
             try
             {
-                var json = file.GetText(context.CancellationToken)!.ToString();
+                var json = file.GetText(context.CancellationToken)?.ToString() ?? throw new InvalidOperationException($"Cannot generate C# from missing JSON file {file.Path}");
 
                 var (type, value) = name.ToLowerInvariant() switch
                 {
@@ -58,6 +58,19 @@ public static partial class Static
             catch (Exception exception)
             {
                 context.AddSource($"{name}.g.cs", $"// An exception was thrown processing {name}.json\n{exception.ToString()}");
+                context.ReportDiagnostic(
+                    Diagnostic.Create(
+                        new DiagnosticDescriptor(
+                            id: "HDJSON", // Unique ID for your error
+                            title: "JSON source generator failed", // Title of the error
+                            messageFormat: $"An error occured generating C# code from JSON files: {exception}", // Message format
+                            category: "HD2", // Category of the error
+                            DiagnosticSeverity.Error, // Severity of the error
+                            isEnabledByDefault: true // Whether the error is enabled by default
+                        ),
+                        Location.None // No specific location provided for simplicity
+                    )
+                );
             }
         }
     }
