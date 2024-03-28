@@ -43,7 +43,18 @@ builder.Services.Configure<HelldiversSyncConfiguration>(builder.Configuration.Ge
 // Only add OpenApi dependencies when generating 
 if (isRunningAsTool)
 {
-    builder.Services.AddOpenApiDocument();
+    builder.Services.AddOpenApiDocument(document =>
+    {
+        document.Title = "Helldivers 2";
+        document.Description = "Helldivers 2 Unofficial API";
+    });
+    builder.Services.AddOpenApiDocument(document =>
+    {
+        document.Title = "ArrowHead API";
+        document.Description = "An OpenAPI mapping of the official Helldivers API";
+        document.DocumentName = "arrowhead";
+        document.ApiGroupNames = ["arrowhead"];
+    });
     builder.Services.AddEndpointsApiExplorer();
 }
 else
@@ -75,7 +86,8 @@ app.UseCors();
 
 var raw = app
     .MapGroup("/")
-    .WithTags("arrowhead");
+    .WithGroupName("arrowhead")
+    .WithTags("raw");
 
 raw.MapGet("/api/WarSeason/current/WarID", ArrowHeadController.WarId);
 raw.MapGet("/api/WarSeason/801/Status", ArrowHeadController.Status);

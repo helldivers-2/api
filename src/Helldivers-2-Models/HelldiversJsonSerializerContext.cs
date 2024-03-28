@@ -11,7 +11,9 @@ namespace Helldivers.Models;
 [JsonSerializable(typeof(WarInfo))]
 [JsonSerializable(typeof(WarStatus))]
 [JsonSerializable(typeof(NewsFeedItem))]
+[JsonSerializable(typeof(List<NewsFeedItem>))]
 [JsonSerializable(typeof(Assignment))]
+[JsonSerializable(typeof(List<Assignment>))]
 [JsonSerializable(typeof(GalacticWar))]
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
 public sealed partial class HelldiversJsonSerializerContext : JsonSerializerContext
