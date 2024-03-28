@@ -1,4 +1,4 @@
-﻿namespace Helldivers.Models.Domain;
+﻿namespace Helldivers.Models.Domain.War;
 
 /// <summary>
 /// Represents a position on the galactic war map.

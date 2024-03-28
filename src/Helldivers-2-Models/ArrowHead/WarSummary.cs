@@ -8,9 +8,15 @@ namespace Helldivers.Models.ArrowHead;
 /// </summary>
 public sealed record WarSummary
 {
+    /// <summary>
+    /// Contains galaxy wide statistics aggregated from all planets.
+    /// </summary>
     [JsonPropertyName("galaxy_stats")]
     public GalaxyStats GalaxyStats { get; set; } = null!;
 
+    /// <summary>
+    /// Contains statistics for specific planets.
+    /// </summary>
     [JsonPropertyName("planets_stats")]
     public List<PlanetStats> PlanetsStats { get; set; } = null!;
 }

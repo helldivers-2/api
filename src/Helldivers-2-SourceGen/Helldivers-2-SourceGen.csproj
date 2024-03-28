@@ -1,0 +1,59 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <IsPackable>false</IsPackable>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <IsRoslynComponent>true</IsRoslynComponent>
+
+        <RootNamespace>Helldivers.SourceGen</RootNamespace>
+        <PackageId>Helldivers.SourceGen</PackageId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="System.Text.Json" Version="8.0.3" PrivateAssets="all" LocalSourceGenerators="true" />
+        <PackageReference Include="System.Text.Encodings.Web" Version="8.0.0" PrivateAssets="all" LocalSourceGenerators="true" />
+        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" PrivateAssets="all" LocalSourceGenerators="true" />
+    </ItemGroup>
+
+    <!-- Include each nuget reference with property 'LocalSourceGenerators' into final-->
+    <Target Name="AddLocalDependencies"
+            Inputs="@(RuntimeCopyLocalItems)"
+            Outputs="%(RuntimeCopyLocalItems.NuGetPackageId)"
+            AfterTargets="ResolvePackageAssets">
+        <!-- Get NuGetPackageId from  RuntimeCopyLocalItems-->
+        <ItemGroup>
+            <NuGetPackageId Include="@(RuntimeCopyLocalItems -> '%(NuGetPackageId)')"/>
+        </ItemGroup>
+        <!-- Distinc results -->
+        <PropertyGroup>
+            <NuGetPackageId>@(NuGetPackageId -&gt; Distinct())</NuGetPackageId>
+        </PropertyGroup>
+        <!-- Get all PackageReference matching names from NuGetPackageId -->
+        <ItemGroup>
+            <PackageReferenceDependency
+                Include="@(PackageReference -&gt; WithMetadataValue('Identity', '$(NuGetPackageId)'))"/>
+        </ItemGroup>
+        <!-- Get metadata 'LocalSourceGenerators' from  PackageReference-->
+        <PropertyGroup>
+            <NuGetPackageLocalSourceGen>@(PackageReferenceDependency -> '%(LocalSourceGenerators)')</NuGetPackageLocalSourceGen>
+        </PropertyGroup>
+        <!-- For packages with attribute LocalSourceGenerators add library to final solution-->
+        <ItemGroup Condition="'$(NuGetPackageLocalSourceGen)' == 'true'">
+            <TargetPathWithTargetPlatformMoniker Include="@(RuntimeCopyLocalItems)" IncludeRuntimeDependency="false"/>
+        </ItemGroup>
+    </Target>
+
+</Project>

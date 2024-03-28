@@ -1,4 +1,4 @@
-﻿namespace Helldivers.Models.Domain;
+﻿namespace Helldivers.Models.Domain.War;
 
 /// <summary>
 /// Contains statistics of missions, kills, success rate etc.

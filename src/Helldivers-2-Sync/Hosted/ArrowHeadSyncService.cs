@@ -10,6 +10,10 @@ using System.Diagnostics;
 
 namespace Helldivers.Sync.Hosted;
 
+/// <summary>
+/// The background synchronization service that pulls information from ArrowHead's API (through <see cref="ApiService" />)
+/// and updates the <see cref="WarSnapshot" />.
+/// </summary>
 public sealed partial class ArrowHeadSyncService(
     ILogger<ArrowHeadSyncService> logger,
     IServiceScopeFactory scopeFactory,

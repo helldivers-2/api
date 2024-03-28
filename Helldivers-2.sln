@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helldivers-2-Core", "src\He
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{154421CC-393F-4BDC-8D6D-7EECB28FD874}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helldivers-2-SourceGen", "src\Helldivers-2-SourceGen\Helldivers-2-SourceGen.csproj", "{32AE19FB-7D9E-4AC7-A0A5-80DED3680369}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{939EFFA5-462B-4F5F-969A-61B4C424407A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{939EFFA5-462B-4F5F-969A-61B4C424407A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{939EFFA5-462B-4F5F-969A-61B4C424407A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32AE19FB-7D9E-4AC7-A0A5-80DED3680369}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32AE19FB-7D9E-4AC7-A0A5-80DED3680369}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32AE19FB-7D9E-4AC7-A0A5-80DED3680369}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32AE19FB-7D9E-4AC7-A0A5-80DED3680369}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,5 +62,6 @@ Global
 		{939EFFA5-462B-4F5F-969A-61B4C424407A} = {154421CC-393F-4BDC-8D6D-7EECB28FD874}
 		{9B017849-C756-4B98-9B98-885AEBE9EAD4} = {154421CC-393F-4BDC-8D6D-7EECB28FD874}
 		{CB53B78C-7AB2-4B39-98B0-394778AF882F} = {154421CC-393F-4BDC-8D6D-7EECB28FD874}
+		{32AE19FB-7D9E-4AC7-A0A5-80DED3680369} = {154421CC-393F-4BDC-8D6D-7EECB28FD874}
 	EndGlobalSection
 EndGlobal
