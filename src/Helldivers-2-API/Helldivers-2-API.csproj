@@ -1,14 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>Helldivers.API</RootNamespace>
-        <InvariantGlobalization>true</InvariantGlobalization>
         <PublishAot>true</PublishAot>
+        <RootNamespace>Helldivers.API</RootNamespace>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
     </PropertyGroup>
 
@@ -20,9 +15,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
+    </ItemGroup>
+
+    <!-- Dependencies for all build configurations -->
+    <ItemGroup>
+        <ProjectReference Include="..\Helldivers-2-Models\Helldivers-2-Models.csproj" />
+        <TrimmerRootAssembly Include="Helldivers-2-Models" />
     </ItemGroup>
 
     <!-- Only include swagger dependencies in DEBUG builds -->

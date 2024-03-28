@@ -8,6 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/Helldivers-2-API/Helldivers-2-API.csproj", "src/Helldivers-2-API/"]
+COPY ["src/Helldivers-2-Models/Helldivers-2-Models.csproj", "src/Helldivers-2-Models/"]
 RUN dotnet restore "src/Helldivers-2-API/Helldivers-2-API.csproj"
 COPY . .
 WORKDIR "/src/src/Helldivers-2-API"
