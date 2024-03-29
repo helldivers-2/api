@@ -97,6 +97,8 @@ app.UseRequestLocalization();
 // Ensure web applications can access the API by setting CORS headers.
 app.UseCors();
 
+app.MapGet("/health", HealthController.Show).ExcludeFromDescription();
+
 #region ArrowHead API endpoints ('raw' API)
 
 var raw = app

@@ -31,7 +31,7 @@ kill_signal = 'SIGTERM'
     interval = "60s"
     method = "GET"
     timeout = "5s"
-    path = "/api/WarSeason/current/WarID"
+    path = "/health"
 
 [[vm]]
   memory = "256mb"
