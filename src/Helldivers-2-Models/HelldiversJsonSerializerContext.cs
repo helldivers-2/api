@@ -1,4 +1,5 @@
 ﻿using Helldivers.Models.Domain;
+using Helldivers.Models.Domain.Localization;
 using System.Text.Json.Serialization;
 
 namespace Helldivers.Models;
@@ -11,6 +12,7 @@ namespace Helldivers.Models;
 [JsonSerializable(typeof(GalacticWar))]
 [JsonSerializable(typeof(List<NewsItem>))]
 [JsonSerializable(typeof(List<Assignment>))]
+[JsonSerializable(typeof(LocalizedMessage))]
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true, UseStringEnumConverter = true)]
 public sealed partial class HelldiversJsonSerializerContext : JsonSerializerContext
 {

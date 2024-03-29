@@ -2,8 +2,11 @@ using Helldivers.API.Controllers;
 using Helldivers.API.Controllers.V1;
 using Helldivers.Core.Extensions;
 using Helldivers.Models;
+using Helldivers.Models.Domain.Localization;
 using Helldivers.Sync.Configuration;
 using Helldivers.Sync.Extensions;
+using NJsonSchema;
+using NJsonSchema.Generation.TypeMappers;
 using System.Globalization;
 using System.Text.Json.Serialization;
 
@@ -49,6 +52,13 @@ if (isRunningAsTool)
     {
         document.Title = "Helldivers 2";
         document.Description = "Helldivers 2 Unofficial API";
+        
+        document.SchemaSettings.TypeMappers.Add(
+            new PrimitiveTypeMapper(
+                typeof(LocalizedMessage),
+                schema => schema.Type = JsonObjectType.String
+            )
+        );
     });
     builder.Services.AddOpenApiDocument(document =>
     {
@@ -122,6 +132,12 @@ v1.MapGet("/news/{index:int}", NewsFeedController.Show);
 
 v1.MapGet("/assignments", AssignmentsController.Index);
 v1.MapGet("/assignments/{index:long}", AssignmentsController.Show);
+
+v1.MapGet("/test", () => LocalizedMessage.FromStrings(new Dictionary<string, string>
+{
+    { "en-US", "English" },
+    { "de-DE", "Deutsch" },
+})).Produces<string>();
 
 #endregion
 

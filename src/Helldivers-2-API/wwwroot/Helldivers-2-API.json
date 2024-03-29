@@ -430,6 +430,26 @@
           }
         }
       }
+    },
+    "/api/v1/test": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "operationId": "GetApiV1Test",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
