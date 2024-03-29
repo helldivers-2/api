@@ -92,7 +92,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WarInfo"
+                  "$ref": "#/components/schemas/WarSummary"
                 }
               }
             }
@@ -410,6 +410,187 @@
               "type": "integer",
               "format": "int32"
             }
+          }
+        }
+      },
+      "WarSummary": {
+        "type": "object",
+        "description": "Gets general statistics about the galaxy and specific planets.",
+        "additionalProperties": false,
+        "properties": {
+          "galaxy_stats": {
+            "description": "Contains galaxy wide statistics aggregated from all planets.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GalaxyStats"
+              }
+            ]
+          },
+          "planets_stats": {
+            "type": "array",
+            "description": "Contains statistics for specific planets.",
+            "items": {
+              "$ref": "#/components/schemas/PlanetStats"
+            }
+          }
+        }
+      },
+      "GalaxyStats": {
+        "type": "object",
+        "description": "Represents galaxy wide statistics.",
+        "additionalProperties": false,
+        "properties": {
+          "missionsWon": {
+            "type": "integer",
+            "description": "The amount of missions won.",
+            "format": "uint64"
+          },
+          "missionsLost": {
+            "type": "integer",
+            "description": "The amount of missions lost.",
+            "format": "uint64"
+          },
+          "missionTime": {
+            "type": "integer",
+            "description": "The total amount of time spent planetside (in seconds).",
+            "format": "uint64"
+          },
+          "bugKills": {
+            "type": "integer",
+            "description": "The total amount of bugs killed since start of the season.",
+            "format": "uint64"
+          },
+          "automatonKills": {
+            "type": "integer",
+            "description": "The total amount of automatons killed since start of the season.",
+            "format": "uint64"
+          },
+          "illuminateKills": {
+            "type": "integer",
+            "description": "The total amount of Illuminate killed since start of the season.",
+            "format": "uint64"
+          },
+          "bulletsFired": {
+            "type": "integer",
+            "description": "The total amount of bullets fired",
+            "format": "uint64"
+          },
+          "bulletsHit": {
+            "type": "integer",
+            "description": "The total amount of bullets hit",
+            "format": "uint64"
+          },
+          "timePlayed": {
+            "type": "integer",
+            "description": "The total amount of time played (including off-planet) in seconds.",
+            "format": "uint64"
+          },
+          "deaths": {
+            "type": "integer",
+            "description": "The amount of casualties on the side of humanity.",
+            "format": "uint64"
+          },
+          "revives": {
+            "type": "integer",
+            "description": "The amount of revives(?).",
+            "format": "uint64"
+          },
+          "friendlies": {
+            "type": "integer",
+            "description": "The amount of friendly fire casualties.",
+            "format": "uint64"
+          },
+          "missionSuccessRate": {
+            "type": "integer",
+            "description": "A percentage indicating how many started missions end in success.",
+            "format": "uint64"
+          },
+          "accurracy": {
+            "type": "integer",
+            "description": "A percentage indicating average accuracy of Helldivers.",
+            "format": "uint64"
+          }
+        }
+      },
+      "PlanetStats": {
+        "type": "object",
+        "description": "Similar to GalaxyStats, but scoped to a specific planet.",
+        "additionalProperties": false,
+        "properties": {
+          "planetIndex": {
+            "type": "integer",
+            "description": "The Index for which planet these stats are.",
+            "format": "int32"
+          },
+          "missionsWon": {
+            "type": "integer",
+            "description": "The amount of missions won.",
+            "format": "uint64"
+          },
+          "missionsLost": {
+            "type": "integer",
+            "description": "The amount of missions lost.",
+            "format": "uint64"
+          },
+          "missionTime": {
+            "type": "integer",
+            "description": "The total amount of time spent planetside (in seconds).",
+            "format": "uint64"
+          },
+          "bugKills": {
+            "type": "integer",
+            "description": "The total amount of bugs killed since start of the season.",
+            "format": "uint64"
+          },
+          "automatonKills": {
+            "type": "integer",
+            "description": "The total amount of automatons killed since start of the season.",
+            "format": "uint64"
+          },
+          "illuminateKills": {
+            "type": "integer",
+            "description": "The total amount of Illuminate killed since start of the season.",
+            "format": "uint64"
+          },
+          "bulletsFired": {
+            "type": "integer",
+            "description": "The total amount of bullets fired",
+            "format": "uint64"
+          },
+          "bulletsHit": {
+            "type": "integer",
+            "description": "The total amount of bullets hit",
+            "format": "uint64"
+          },
+          "timePlayed": {
+            "type": "integer",
+            "description": "The total amount of time played (including off-planet) in seconds.",
+            "format": "uint64"
+          },
+          "deaths": {
+            "type": "integer",
+            "description": "The amount of casualties on the side of humanity.",
+            "format": "uint64"
+          },
+          "revives": {
+            "type": "integer",
+            "description": "The amount of revives(?).",
+            "format": "uint64"
+          },
+          "friendlies": {
+            "type": "integer",
+            "description": "The amount of friendly fire casualties.",
+            "format": "uint64"
+          },
+          "missionSuccessRate": {
+            "type": "integer",
+            "description": "A percentage indicating how many started missions end in success.",
+            "format": "uint64"
+          },
+          "accurracy": {
+            "type": "integer",
+            "description": "A percentage indicating average accuracy of Helldivers.",
+            "format": "uint64"
           }
         }
       },

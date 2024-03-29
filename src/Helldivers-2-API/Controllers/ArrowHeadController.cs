@@ -58,7 +58,7 @@ public static class ArrowHeadController
     /// Gets the current war info.
     /// </summary>
     /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
-    [ProducesResponseType<WarInfo>(StatusCodes.Status200OK)]
+    [ProducesResponseType<WarSummary>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
     public static IResult Summary(WarSnapshot snapshot)
     {
