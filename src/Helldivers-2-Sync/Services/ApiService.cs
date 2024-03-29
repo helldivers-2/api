@@ -26,7 +26,7 @@ public sealed class ApiService(
         using var response = await http.SendAsync(request, cancellationToken);
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
         var warId = await JsonSerializer
-                        .DeserializeAsync(stream, HelldiversJsonSerializerContext.Default.WarId, cancellationToken)
+                        .DeserializeAsync(stream, ArrowHeadSerializerContext.Default.WarId, cancellationToken)
                     ?? throw new InvalidOperationException();
 
         return warId.Id.ToString(CultureInfo.InvariantCulture);
@@ -42,7 +42,7 @@ public sealed class ApiService(
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
 
         return await JsonSerializer
-                   .DeserializeAsync(stream, HelldiversJsonSerializerContext.Default.WarInfo, cancellationToken)
+                   .DeserializeAsync(stream, ArrowHeadSerializerContext.Default.WarInfo, cancellationToken)
                ?? throw new InvalidOperationException();
     }
 
@@ -56,7 +56,7 @@ public sealed class ApiService(
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
 
         return await JsonSerializer
-                   .DeserializeAsync(stream, HelldiversJsonSerializerContext.Default.WarStatus, cancellationToken)
+                   .DeserializeAsync(stream, ArrowHeadSerializerContext.Default.WarStatus, cancellationToken)
                ?? throw new InvalidOperationException();
     }
 
@@ -72,7 +72,7 @@ public sealed class ApiService(
 
         var items = JsonSerializer.DeserializeAsyncEnumerable(
             stream,
-            HelldiversJsonSerializerContext.Default.NewsFeedItem,
+            ArrowHeadSerializerContext.Default.NewsFeedItem,
             cancellationToken
         );
 
@@ -93,7 +93,7 @@ public sealed class ApiService(
 
         var assignments = JsonSerializer.DeserializeAsyncEnumerable(
             stream,
-            HelldiversJsonSerializerContext.Default.Assignment,
+            ArrowHeadSerializerContext.Default.Assignment,
             cancellationToken
         );
 
@@ -112,7 +112,7 @@ public sealed class ApiService(
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
 
         return await JsonSerializer
-                   .DeserializeAsync(stream, HelldiversJsonSerializerContext.Default.WarSummary, cancellationToken)
+                   .DeserializeAsync(stream, ArrowHeadSerializerContext.Default.WarSummary, cancellationToken)
                ?? throw new InvalidOperationException();
     }
 

@@ -71,6 +71,7 @@ builder.Services.AddHelldiversSync();
 // Setup source generated JSON type information so the API knows how to serialize models.
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
+    options.SerializerOptions.TypeInfoResolverChain.Add(ArrowHeadSerializerContext.Default);
     options.SerializerOptions.TypeInfoResolverChain.Add(HelldiversJsonSerializerContext.Default);
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
@@ -118,6 +119,9 @@ v1.MapGet("/planets/{index:int}/statistics", PlanetsController.ShowStatistics);
 
 v1.MapGet("/news", NewsFeedController.Index);
 v1.MapGet("/news/{index:int}", NewsFeedController.Show);
+
+v1.MapGet("/assignments", AssignmentsController.Index);
+v1.MapGet("/assignments/{index:long}", AssignmentsController.Show);
 
 #endregion
 

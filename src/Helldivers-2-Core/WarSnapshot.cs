@@ -1,7 +1,8 @@
 ﻿using Helldivers.Core.Mapping;
 using Helldivers.Models.ArrowHead;
 using Helldivers.Models.Domain;
-using System.Diagnostics.CodeAnalysis;
+using ArrowHeadAssignment = Helldivers.Models.ArrowHead.Assignment;
+using Assignment = Helldivers.Models.Domain.Assignment;
 
 namespace Helldivers.Core;
 
@@ -40,7 +41,7 @@ public sealed class WarSnapshot
     /// <summary>
     /// A dictionary of <see cref="Assignment" /> (the value) for languages (the keys) as returned by the ArrowHead API.
     /// </summary>
-    public CultureDictionary<List<Assignment>>? ArrowHeadAssignments { get; set; }
+    public CultureDictionary<List<ArrowHeadAssignment>>? ArrowHeadAssignments { get; set; }
 
     /// <summary>
     /// Current denormalized galactic war information.
@@ -53,6 +54,11 @@ public sealed class WarSnapshot
     public CultureDictionary<List<NewsItem>>? NewsFeed { get; set; }
 
     /// <summary>
+    /// A dictionary of <see cref="Assignment" />s.
+    /// </summary>
+    public CultureDictionary<List<Assignment>>? Assignments { get; set; }
+
+    /// <summary>
     /// Called after a sync to update the currently active snapshot information.
     /// </summary>
     public void UpdateSnapshot(
@@ -61,7 +67,7 @@ public sealed class WarSnapshot
         WarSummary summary,
         Dictionary<string, WarStatus> warStatus,
         Dictionary<string, List<NewsFeedItem>> feed,
-        Dictionary<string, List<Assignment>> assignments
+        Dictionary<string, List<ArrowHeadAssignment>> assignments
     )
     {
         Season = season;
@@ -81,6 +87,16 @@ public sealed class WarSnapshot
                 .ToList();
 
             return new KeyValuePair<string, List<NewsItem>>(pair.Key, values);
+        }));
+        Assignments = new(assignments.Select(pair =>
+        {
+            var values = pair
+                .Value
+                .Select(AssignmentMapper.MapToDomain)
+                .OrderByDescending(item => item.Index)
+                .ToList();
+
+            return new KeyValuePair<string, List<Assignment>>(pair.Key, values);
         }));
     }
 }

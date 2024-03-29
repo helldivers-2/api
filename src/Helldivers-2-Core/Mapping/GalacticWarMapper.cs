@@ -2,6 +2,7 @@
 using Helldivers.Models.ArrowHead;
 using Helldivers.Models.Domain;
 using Helldivers.Models.Domain.War;
+using ArrowHeadAssignment = Helldivers.Models.ArrowHead.Assignment;
 
 namespace Helldivers.Core.Mapping;
 
@@ -19,7 +20,7 @@ public static class GalacticWarMapper
         WarSummary summary,
         Dictionary<string, WarStatus> warStatus,
         Dictionary<string, List<NewsFeedItem>> feed,
-        Dictionary<string, List<Assignment>> assignments
+        Dictionary<string, List<ArrowHeadAssignment>> assignments
     )
     {
         // Choose one WarStatus as 'invariant', aka the instance we grab non-localized data from.

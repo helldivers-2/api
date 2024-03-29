@@ -367,6 +367,69 @@
           }
         }
       }
+    },
+    "/api/v1/assignments": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Gets all assignments.",
+        "operationId": "GetApiV1AssignmentsAll",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Assignment2"
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Thrown when the server hasn't finished it's sync and has no information."
+          }
+        }
+      }
+    },
+    "/api/v1/assignments/{index}": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Gets a specific assignment.",
+        "operationId": "GetApiV1Assignments",
+        "parameters": [
+          {
+            "name": "index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assignment2"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Thrown when the server hasn't finished it's sync and has no information."
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1048,6 +1111,73 @@
             "description": "The message for this news item."
           }
         }
+      },
+      "Assignment2": {
+        "type": "object",
+        "description": "Represents an assignment for the entire community.",
+        "additionalProperties": false,
+        "properties": {
+          "index": {
+            "type": "integer",
+            "description": "The numerical identifier of this assignment.",
+            "format": "int64"
+          },
+          "expiration": {
+            "type": "string",
+            "description": "When this assignment will expire.",
+            "format": "date-time"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title for this assignment."
+          },
+          "description": {
+            "type": "string",
+            "description": "The long-form description of this assignment."
+          },
+          "summary": {
+            "type": "string",
+            "description": "A (very) short summary of the assignment."
+          },
+          "reward": {
+            "description": "The reward when the assignment is completed.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Reward2"
+              }
+            ]
+          }
+        }
+      },
+      "Reward2": {
+        "type": "object",
+        "description": "Represents the reward (and amount) ",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "description": "The type of reward (medals, super credits, ...).",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RewardType"
+              }
+            ]
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The amount of Type that will be rewarded.",
+            "format": "int32"
+          }
+        }
+      },
+      "RewardType": {
+        "type": "integer",
+        "description": "The type of reward of an Assignment.",
+        "x-enumNames": [
+          "Medals"
+        ],
+        "enum": [
+          1
+        ]
       }
     }
   }
