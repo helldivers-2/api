@@ -28,7 +28,7 @@ public sealed partial class ArrowHeadSyncService(
     [LoggerMessage(Level = LogLevel.Error, Message = "An exception was thrown when synchronizing from ArrowHead API")]
     private static partial void LogSyncThrewAnError(ILogger logger, Exception exception);
 
-    [LoggerMessage(LogLevel.Debug, Message = "Finished synchronizing from ArrowHead API in {Duration}")]
+    [LoggerMessage(LogLevel.Information, Message = "Finished synchronizing from ArrowHead API in {Duration}")]
     private static partial void LogFinishedSynchronize(ILogger logger, TimeSpan duration);
 
     [LoggerMessage(LogLevel.Warning, Message = "Failed to download translations for {Language} of {Type}")]

@@ -8,6 +8,7 @@ RUN apk add --upgrade --no-cache \
         clang \
         zlib-dev
 ARG BUILD_CONFIGURATION=Release
+ARG BUILD_RUNTIME=linux-musl-x64
 WORKDIR /src
 
 COPY ["src/Helldivers-2-API/Helldivers-2-API.csproj", "Helldivers-2-API/"]
@@ -17,18 +18,17 @@ COPY ["src/Helldivers-2-Core/Helldivers-2-Core.csproj", "Helldivers-2-Core/"]
 COPY ["src/Helldivers-2-SourceGen/Helldivers-2-SourceGen.csproj", "Helldivers-2-SourceGen/"]
 COPY ["Directory.Build.props", "."]
 
-RUN dotnet restore "Helldivers-2-API/Helldivers-2-API.csproj"
+RUN dotnet restore -r $BUILD_RUNTIME "Helldivers-2-API/Helldivers-2-API.csproj"
 COPY ./src .
 WORKDIR "/src/Helldivers-2-API"
-RUN dotnet build "Helldivers-2-API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "Helldivers-2-API.csproj" --no-restore -r $BUILD_RUNTIME -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "Helldivers-2-API.csproj" --self-contained -c $BUILD_CONFIGURATION -o /app/publish
+RUN dotnet publish "Helldivers-2-API.csproj" --no-restore --self-contained -r $BUILD_RUNTIME -c $BUILD_CONFIGURATION -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 EXPOSE 8080
-ENV ASPNETCORE_HTTP_PORTS=8080
 COPY --from=publish /app/publish .
 ENTRYPOINT ["./Helldivers-2-API"]

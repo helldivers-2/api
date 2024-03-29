@@ -3,21 +3,22 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'helldivers-2'
+app = 'helldivers-2-dotnet'
 primary_region = 'ams'
 kill_signal = 'SIGTERM'
 
 [build]
+  dockerfile = 'src/Helldivers-2-API/Dockerfile'
+  ignorefile = '.dockerignore'
 
 [env]
-  ASPNETCORE_HTTP_PORTS = '8080'
 
 [http_service]
   internal_port = 8080
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
-  min_machines_running = 1
+  min_machines_running = 0
   processes = ['app']
 
   [http_service.concurrency]
@@ -27,7 +28,7 @@ kill_signal = 'SIGTERM'
 
   [[http_service.checks]]
     grace_period = "1s"
-    interval = "10s"
+    interval = "60s"
     method = "GET"
     timeout = "5s"
     path = "/api/WarSeason/current/WarID"
