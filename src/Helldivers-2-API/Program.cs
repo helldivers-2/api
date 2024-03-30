@@ -1,14 +1,18 @@
+using Helldivers.API;
 using Helldivers.API.Controllers;
 using Helldivers.API.Controllers.V1;
+using Helldivers.API.Middlewares;
 using Helldivers.Core.Extensions;
 using Helldivers.Models;
 using Helldivers.Models.Domain.Localization;
 using Helldivers.Sync.Configuration;
 using Helldivers.Sync.Extensions;
+using Microsoft.Extensions.Caching.Memory;
 using NJsonSchema;
 using NJsonSchema.Generation.TypeMappers;
 using System.Globalization;
 using System.Text.Json.Serialization;
+using System.Threading.RateLimiting;
 
 #if DEBUG
 // When generating an OpenAPI document, get-document runs with the "--applicationName" flag.
@@ -22,6 +26,8 @@ var builder = WebApplication.CreateSlimBuilder(args);
 
 builder.Services.AddHelldivers();
 builder.Services.AddProblemDetails();
+builder.Services.AddTransient<RateLimitMiddleware>();
+builder.Services.AddMemoryCache();
 builder.Services.AddRequestLocalization(options =>
 {
     var languages = builder
@@ -97,7 +103,9 @@ app.UseRequestLocalization();
 // Ensure web applications can access the API by setting CORS headers.
 app.UseCors();
 
+
 app.MapGet("/health", HealthController.Show).ExcludeFromDescription();
+app.UseMiddleware<RateLimitMiddleware>();
 
 #region ArrowHead API endpoints ('raw' API)
 
