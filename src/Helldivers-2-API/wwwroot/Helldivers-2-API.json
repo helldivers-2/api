@@ -368,6 +368,33 @@
         }
       }
     },
+    "/api/v1/announcements": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Gets a list of announcements made from ArrowHead to the community.\nThis is mostly patch notes, but not guaranteed to only be patch notes.",
+        "operationId": "GetApiV1Announcements",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SteamNews"
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Thrown when the server hasn't finished it's sync and has no information."
+          }
+        }
+      }
+    },
     "/api/v1/assignments": {
       "get": {
         "tags": [
@@ -427,26 +454,6 @@
           },
           "503": {
             "description": "Thrown when the server hasn't finished it's sync and has no information."
-          }
-        }
-      }
-    },
-    "/api/v1/test": {
-      "get": {
-        "tags": [
-          "v1"
-        ],
-        "operationId": "GetApiV1Test",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
           }
         }
       }
@@ -1386,6 +1393,28 @@
           "message": {
             "type": "string",
             "description": "The message for this news item."
+          }
+        }
+      },
+      "SteamNews": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },

@@ -14,6 +14,6 @@ namespace Helldivers.Models;
 [JsonSerializable(typeof(List<Assignment>))]
 [JsonSerializable(typeof(LocalizedMessage))]
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true, UseStringEnumConverter = true)]
-public sealed partial class HelldiversJsonSerializerContext : JsonSerializerContext
+public sealed partial class HelldiversSerializerContext : JsonSerializerContext
 {
 }

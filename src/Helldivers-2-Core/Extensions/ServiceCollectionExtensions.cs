@@ -14,6 +14,7 @@ public static class ServiceCollectionExtensions
     {
         // Add the singleton snapshot state.
         services.AddSingleton<WarSnapshot>();
+        services.AddSingleton<SteamSnapshot>();
 
         return services;
     }

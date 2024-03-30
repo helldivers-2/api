@@ -11,7 +11,7 @@ using System.Diagnostics;
 namespace Helldivers.Sync.Hosted;
 
 /// <summary>
-/// The background synchronization service that pulls information from ArrowHead's API (through <see cref="ApiService" />)
+/// The background synchronization service that pulls information from ArrowHead's API (through <see cref="ArrowHeadApiService" />)
 /// and updates the <see cref="WarSnapshot" />.
 /// </summary>
 public sealed partial class ArrowHeadSyncService(
@@ -68,7 +68,7 @@ public sealed partial class ArrowHeadSyncService(
     private async Task SynchronizeAsync(IServiceProvider services, CancellationToken cancellationToken)
     {
         var languages = configuration.Value.Languages;
-        var api = services.GetRequiredService<ApiService>();
+        var api = services.GetRequiredService<ArrowHeadApiService>();
         var snapshot = services.GetRequiredService<WarSnapshot>();
 
         var season = await api.GetCurrentSeason(cancellationToken);
@@ -111,12 +111,12 @@ public sealed partial class ArrowHeadSyncService(
     }
 
     /// <summary>Helper function to download the war status or return null if anything fails.</summary>
-    private async ValueTask<KeyValuePair<string, WarStatus?>> AttemptToLoadWarStatus(ApiService api, string season,
+    private async ValueTask<KeyValuePair<string, WarStatus?>> AttemptToLoadWarStatus(ArrowHeadApiService arrowHeadApi, string season,
         string language, CancellationToken cancellationToken)
     {
         try
         {
-            var status = await api.GetWarStatus(season, language, cancellationToken);
+            var status = await arrowHeadApi.GetWarStatus(season, language, cancellationToken);
 
             return new(language, status);
         }

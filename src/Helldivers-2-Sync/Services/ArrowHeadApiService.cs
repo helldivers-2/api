@@ -12,7 +12,7 @@ namespace Helldivers.Sync.Services;
 /// <summary>
 /// Handles communication with the ArrowHead API.
 /// </summary>
-public sealed class ApiService(
+public sealed class ArrowHeadApiService(
     IOptions<HelldiversSyncConfiguration> options,
     HttpClient http
 )

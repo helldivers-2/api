@@ -15,7 +15,9 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddHelldiversSync(this IServiceCollection services)
     {
         services.AddHostedService<ArrowHeadSyncService>();
-        services.AddHttpClient<ApiService>(http =>
+        services.AddHostedService<SteamSyncService>();
+        services.AddHttpClient<SteamApiService>();
+        services.AddHttpClient<ArrowHeadApiService>(http =>
         {
             http.BaseAddress = new Uri("https://api.live.prod.thehelldiversgame.com");
         });
