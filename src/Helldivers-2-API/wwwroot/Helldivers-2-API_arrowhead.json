@@ -205,6 +205,18 @@
             "items": {
               "$ref": "#/components/schemas/Campaign"
             }
+          },
+          "jointOperations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JointOperation"
+            }
+          },
+          "planetEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlanetEvent"
+            }
           }
         }
       },
@@ -274,13 +286,77 @@
           },
           "type": {
             "type": "integer",
-            "description": "A numerical type, purpose unknown.",
+            "description": "A numerical type, indicates the type of campaign (see helldivers-2/json).",
             "format": "int32"
           },
           "count": {
             "type": "integer",
-            "description": "A numerical count, unknown what it counts.",
+            "description": "A numerical count, the amount of campaigns the planet has seen.",
             "format": "int32"
+          }
+        }
+      },
+      "JointOperation": {
+        "type": "object",
+        "description": "Represents a joint operation.",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "planetIndex": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hqNodeIndex": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PlanetEvent": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "index": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "planetIndex": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "eventType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "race": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "health": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "startTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "expireTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "campaignId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "jointOperationIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         }
       },

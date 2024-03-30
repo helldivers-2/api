@@ -19,5 +19,12 @@ public sealed record WarStatus(
     long StoryBeatId32,
     List<PlanetStatus> PlanetStatus,
     List<PlanetAttack> PlanetAttacks,
-    List<Campaign> Campaigns
+    List<Campaign> Campaigns,
+    // TODO CommunityTargets
+    List<JointOperation> JointOperations,
+    List<PlanetEvent> PlanetEvents
+    // TODO PlanetActiveEffects
+    // TODO activeElectionPolicyEffects
+    // TODO globalEvents
+    // TODO superEarthWarResults
 );
