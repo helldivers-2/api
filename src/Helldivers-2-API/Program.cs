@@ -28,6 +28,7 @@ builder.Services.AddHelldivers();
 builder.Services.AddProblemDetails();
 builder.Services.AddTransient<RateLimitMiddleware>();
 builder.Services.AddMemoryCache();
+builder.Services.AddResponseCompression();
 builder.Services.AddRequestLocalization(options =>
 {
     var languages = builder
@@ -93,6 +94,9 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 });
 
 var app = builder.Build();
+
+// Use response compression for smaller payload sizes
+app.UseResponseCompression();
 
 // We host our OpenAPI spec and preview files from wwwroot/
 app.UseStaticFiles();
