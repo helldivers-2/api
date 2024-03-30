@@ -143,12 +143,6 @@ v1.MapGet("/news/{index:int}", NewsFeedController.Show);
 v1.MapGet("/assignments", AssignmentsController.Index);
 v1.MapGet("/assignments/{index:long}", AssignmentsController.Show);
 
-v1.MapGet("/test", () => LocalizedMessage.FromStrings(new Dictionary<string, string>
-{
-    { "en-US", "English" },
-    { "de-DE", "Deutsch" },
-})).Produces<string>();
-
 #endregion
 
 await app.RunAsync();
