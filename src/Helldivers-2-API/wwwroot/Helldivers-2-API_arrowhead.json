@@ -48,9 +48,6 @@
                 }
               }
             }
-          },
-          "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
           }
         }
       }
@@ -72,9 +69,6 @@
                 }
               }
             }
-          },
-          "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
           }
         }
       }
@@ -96,9 +90,6 @@
                 }
               }
             }
-          },
-          "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
           }
         }
       }
@@ -123,9 +114,6 @@
                 }
               }
             }
-          },
-          "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
           }
         }
       }

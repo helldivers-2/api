@@ -14,6 +14,7 @@ public static class SteamNewsMapper
     public static SteamNews MapToDomain(SteamNewsFeedItem item)
     {
         return new SteamNews(
+            Id: item.Gid,
             Title: item.Title,
             Url: item.Url,
             Author: item.Author,

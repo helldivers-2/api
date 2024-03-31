@@ -1,4 +1,5 @@
-﻿using Helldivers.Core.Mapping;
+﻿using Helldivers.Core.Localization;
+using Helldivers.Core.Mapping;
 using Helldivers.Models.ArrowHead;
 using Helldivers.Models.Domain;
 using ArrowHeadAssignment = Helldivers.Models.ArrowHead.Assignment;
@@ -11,37 +12,13 @@ namespace Helldivers.Core;
 /// It provides access to all information synchronized from the ArrowHead API,
 /// but also keeps track of exceptions that might have occured.
 /// </summary>
+[Obsolete("Use IStore<T> and IStore<T, TKey>")]
 public sealed class WarSnapshot
 {
     /// <summary>
     /// The identifier of the season that is currently active.
     /// </summary>
     public string? Season { get; set; }
-
-    /// <summary>
-    /// The raw <see cref="WarInfo" /> as returned by the ArrowHead API.
-    /// </summary>
-    public WarInfo? ArrowHeadWarInfo { get; set; }
-
-    /// <summary>
-    /// A dictionary of <see cref="WarStatus" /> (the value) for languages (the keys) as returned by the ArrowHead API.
-    /// </summary>
-    public CultureDictionary<WarStatus>? ArrowHeadWarStatus { get; set; }
-
-    /// <summary>
-    /// Gets a snapshot of the current <see cref="WarSummary" /> statistics.
-    /// </summary>
-    public WarSummary? ArrowHeadWarSummary { get; set; }
-
-    /// <summary>
-    /// A dictionary of <see cref="NewsFeedItem" /> (the value) for languages (the keys) as returned by the ArrowHead API.
-    /// </summary>
-    public CultureDictionary<List<NewsFeedItem>>? ArrowHeadNewsFeed { get; set; }
-
-    /// <summary>
-    /// A dictionary of <see cref="Assignment" /> (the value) for languages (the keys) as returned by the ArrowHead API.
-    /// </summary>
-    public CultureDictionary<List<ArrowHeadAssignment>>? ArrowHeadAssignments { get; set; }
 
     /// <summary>
     /// Current denormalized galactic war information.
@@ -71,11 +48,6 @@ public sealed class WarSnapshot
     )
     {
         Season = season;
-        ArrowHeadWarInfo = warInfo;
-        ArrowHeadWarStatus = new(warStatus);
-        ArrowHeadWarSummary = summary;
-        ArrowHeadNewsFeed = new(feed);
-        ArrowHeadAssignments = new(assignments);
 
         GalacticWar = GalacticWarMapper.MapToDomain(season, warInfo, summary, warStatus, feed, assignments);
         NewsFeed = new(feed.Select(pair =>

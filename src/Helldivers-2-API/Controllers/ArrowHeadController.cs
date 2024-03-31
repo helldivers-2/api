@@ -1,4 +1,6 @@
 ﻿using Helldivers.Core;
+using Helldivers.Core.Contracts;
+using Helldivers.Core.Contracts.Collections;
 using Helldivers.Models.ArrowHead;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,18 +28,12 @@ public static class ArrowHeadController
     /// <summary>
     /// Get a snapshot of the current war status.
     /// </summary>
-    /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
     [ProducesResponseType<WarStatus>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
-    public static IResult Status(WarSnapshot snapshot)
+    public static async Task<IResult> Status(HttpContext context, IStore<WarStatus> store)
     {
-        if (snapshot.ArrowHeadWarStatus is null)
-            return Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
+        var status = await store.Get(context.RequestAborted);
 
-        if (snapshot.ArrowHeadWarStatus.Get() is { } status)
-            return Results.Ok(status);
-
-        return Results.BadRequest();
+        return Results.Ok(status);
     }
 
     /// <summary>
@@ -45,13 +41,11 @@ public static class ArrowHeadController
     /// </summary>
     /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
     [ProducesResponseType<WarInfo>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
-    public static IResult WarInfo(WarSnapshot snapshot)
+    public static async Task<IResult> WarInfo(HttpContext context, IStore<WarInfo> store)
     {
-        if (snapshot.ArrowHeadWarInfo is null)
-            return Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
+        var info = await store.Get(context.RequestAborted);
 
-        return Results.Ok(snapshot.ArrowHeadWarInfo);
+        return Results.Ok(info);
     }
 
     /// <summary>
@@ -59,13 +53,11 @@ public static class ArrowHeadController
     /// </summary>
     /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
     [ProducesResponseType<WarSummary>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
-    public static IResult Summary(WarSnapshot snapshot)
+    public static async Task<IResult> Summary(HttpContext context, IStore<WarSummary> store)
     {
-        if (snapshot.ArrowHeadWarSummary is null)
-            return Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
+        var summary = await store.Get(context.RequestAborted);
 
-        return Results.Ok(snapshot.ArrowHeadWarSummary);
+        return Results.Ok(summary);
     }
 
     /// <summary>
@@ -73,16 +65,11 @@ public static class ArrowHeadController
     /// </summary>
     /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
     [ProducesResponseType<List<NewsFeedItem>>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
-    public static IResult NewsFeed(WarSnapshot snapshot)
+    public static async Task<IResult> NewsFeed(HttpContext context, IStore<NewsFeedItem, int> store)
     {
-        if (snapshot.ArrowHeadNewsFeed is null)
-            return Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
+        var items = await store.AllAsync(context.RequestAborted);
 
-        if (snapshot.ArrowHeadNewsFeed.Get() is { } feed)
-            return Results.Ok(feed);
-
-        return Results.BadRequest();
+        return Results.Ok(items);
     }
 
     /// <summary>
@@ -91,14 +78,10 @@ public static class ArrowHeadController
     /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
     [ProducesResponseType<List<Assignment>>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
-    public static IResult Assignment(WarSnapshot snapshot)
+    public static async Task<IResult> Assignments(HttpContext context, IStore<Assignment, int> store)
     {
-        if (snapshot.ArrowHeadAssignments is null)
-            return Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
+        var assignments = await store.AllAsync(context.RequestAborted);
 
-        if (snapshot.ArrowHeadAssignments.Get() is { } assignments)
-            return Results.Ok(assignments);
-
-        return Results.BadRequest();
+        return Results.Ok(assignments);
     }
 }

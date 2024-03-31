@@ -6,6 +6,7 @@ using Helldivers.Models;
 using Helldivers.Models.Domain.Localization;
 using Helldivers.Sync.Configuration;
 using Helldivers.Sync.Extensions;
+using Microsoft.AspNetCore.Http.Timeouts;
 using NJsonSchema;
 using NJsonSchema.Generation.TypeMappers;
 using System.Globalization;
@@ -56,6 +57,14 @@ builder.Services.Configure<ForwardedHeadersOptions>(_ => { });
 
 // This configuration is bound here so that source generators kick in.
 builder.Services.Configure<HelldiversSyncConfiguration>(builder.Configuration.GetSection("Helldivers:Synchronization"));
+
+builder.Services.AddRequestTimeouts(options =>
+{
+    options.DefaultPolicy = new RequestTimeoutPolicy
+    {
+        Timeout = TimeSpan.FromSeconds(10), TimeoutStatusCode = StatusCodes.Status408RequestTimeout,
+    };
+});
 
 // Swagger is generated at compile time, so we don't include Swagger dependencies in Release builds.
 #if DEBUG
@@ -115,14 +124,13 @@ app.UseRequestLocalization();
 // Ensure web applications can access the API by setting CORS headers.
 app.UseCors();
 
-// Used internally Fly.io for health checks with load balancing
-app.MapGet("/health", HealthController.Show).ExcludeFromDescription();
-
 // Handles rate limiting so everyone plays nice
 app.UseMiddleware<RateLimitMiddleware>();
 
 // Make sure ASP.NET Core uses the correct addresses internally rather than Fly's proxy
 app.UseForwardedHeaders();
+
+app.UseRequestTimeouts();
 
 #region ArrowHead API endpoints ('raw' API)
 
@@ -136,7 +144,7 @@ raw.MapGet("/api/WarSeason/801/Status", ArrowHeadController.Status);
 raw.MapGet("/api/WarSeason/801/WarInfo", ArrowHeadController.WarInfo);
 raw.MapGet("/api/Stats/war/801/summary", ArrowHeadController.Summary);
 raw.MapGet("/api/NewsFeed/801", ArrowHeadController.NewsFeed);
-raw.MapGet("/api/v2/Assignment/War/801", ArrowHeadController.Assignment);
+raw.MapGet("/api/v2/Assignment/War/801", ArrowHeadController.Assignments);
 
 #endregion
 

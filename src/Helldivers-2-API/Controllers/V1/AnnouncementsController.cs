@@ -1,4 +1,4 @@
-﻿using Helldivers.Core;
+﻿using Helldivers.Core.Contracts.Collections;
 using Helldivers.Models.Domain;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,11 +16,10 @@ public static class AnnouncementsController
     /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
     [ProducesResponseType<List<SteamNews>>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
-    public static IResult Index(SteamSnapshot snapshot)
+    public static async Task<IResult> Index(HttpContext context, IStore<SteamNews, string> store)
     {
-        if (snapshot.Feed is { } feed)
-            return Results.Ok(feed);
+        var feed = await store.AllAsync(context.RequestAborted);
 
-        return Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
+        return Results.Ok(feed);
     }
 }

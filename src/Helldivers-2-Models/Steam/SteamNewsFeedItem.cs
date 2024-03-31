@@ -9,6 +9,7 @@
 /// <param name="Contents">The contents of the news item.</param>
 /// <param name="Date">When the news item was published.</param>
 public sealed record SteamNewsFeedItem(
+    string Gid,
     string Title,
     string Url,
     string Author,

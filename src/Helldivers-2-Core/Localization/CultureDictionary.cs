@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Helldivers.Core;
+namespace Helldivers.Core.Localization;
 
 /// <summary>
 /// Specialized version of <see cref="Dictionary{TKey,TValue}" /> that intelligently maps <see cref="CultureInfo" /> as

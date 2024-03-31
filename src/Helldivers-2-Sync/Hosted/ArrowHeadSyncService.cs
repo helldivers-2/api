@@ -1,4 +1,5 @@
 ﻿using Helldivers.Core;
+using Helldivers.Core.Storage;
 using Helldivers.Models.ArrowHead;
 using Helldivers.Sync.Configuration;
 using Helldivers.Sync.Services;
@@ -17,7 +18,8 @@ namespace Helldivers.Sync.Hosted;
 public sealed partial class ArrowHeadSyncService(
     ILogger<ArrowHeadSyncService> logger,
     IServiceScopeFactory scopeFactory,
-    IOptions<HelldiversSyncConfiguration> configuration
+    IOptions<HelldiversSyncConfiguration> configuration,
+    ArrowHeadStore arrowHeadStore
 ) : BackgroundService
 {
     #region Source generated logging
@@ -69,7 +71,6 @@ public sealed partial class ArrowHeadSyncService(
     {
         var languages = configuration.Value.Languages;
         var api = services.GetRequiredService<ArrowHeadApiService>();
-        var snapshot = services.GetRequiredService<WarSnapshot>();
 
         var season = await api.GetCurrentSeason(cancellationToken);
         var warInfo = await api.GetWarInfo(season, cancellationToken);
@@ -100,14 +101,7 @@ public sealed partial class ArrowHeadSyncService(
             .Where(pair => pair.Value is not null)
             .ToDictionaryAsync(pair => pair.Key, pair => pair.Value!, cancellationToken);
 
-        snapshot.UpdateSnapshot(
-            season,
-            warInfo,
-            warSummary,
-            statuses,
-            feeds,
-            assignments
-        );
+        arrowHeadStore.UpdateSnapshot(warInfo, warSummary, statuses, feeds, assignments);
     }
 
     /// <summary>Helper function to download the war status or return null if anything fails.</summary>
