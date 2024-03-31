@@ -6,9 +6,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <AdditionalFiles Include="json/factions.json" GenerateClass="true" />
-        <AdditionalFiles Include="json/planets.json" GenerateClass="true" />
-        <AdditionalFiles Include="json/sectors.json" GenerateClass="true" />
+        <None Remove="json/*" Visible="false" />
+        <AdditionalFiles Include="json/factions.json" Visible="false" />
+        <AdditionalFiles Include="json/planets.json" Visible="false" />
+        <AdditionalFiles Include="json/sectors.json" Visible="false" />
+
         <ProjectReference Include="..\Helldivers-2-SourceGen\Helldivers-2-SourceGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
     </ItemGroup>
 
