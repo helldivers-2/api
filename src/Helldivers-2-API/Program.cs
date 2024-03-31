@@ -1,4 +1,3 @@
-using Helldivers.API;
 using Helldivers.API.Controllers;
 using Helldivers.API.Controllers.V1;
 using Helldivers.API.Middlewares;
@@ -7,12 +6,10 @@ using Helldivers.Models;
 using Helldivers.Models.Domain.Localization;
 using Helldivers.Sync.Configuration;
 using Helldivers.Sync.Extensions;
-using Microsoft.Extensions.Caching.Memory;
 using NJsonSchema;
 using NJsonSchema.Generation.TypeMappers;
 using System.Globalization;
 using System.Text.Json.Serialization;
-using System.Threading.RateLimiting;
 
 #if DEBUG
 // When generating an OpenAPI document, get-document runs with the "--applicationName" flag.
@@ -24,11 +21,17 @@ var isRunningAsTool = args.FirstOrDefault(arg => arg.StartsWith("--applicationNa
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
+// Registers the core services in the container.
 builder.Services.AddHelldivers();
+// Have ASP.NET Core generate problemdetails for failed requests.
 builder.Services.AddProblemDetails();
+// Register the rate limiting middleware.
 builder.Services.AddTransient<RateLimitMiddleware>();
+// Register the memory cache, used in the rate limiting middleware.
 builder.Services.AddMemoryCache();
+// Add services for response compression.
 builder.Services.AddResponseCompression();
+// Automatically set the CultureInfo based on the incoming request.
 builder.Services.AddRequestLocalization(options =>
 {
     var languages = builder
@@ -39,6 +42,7 @@ builder.Services.AddRequestLocalization(options =>
     options.ApplyCurrentCultureToResponseHeaders = true;
     options.SupportedCultures = languages.Select(iso => new CultureInfo(iso)).ToList();
 });
+// Set CORS headers for websites directly accessing the API.
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy => policy
@@ -46,6 +50,9 @@ builder.Services.AddCors(options =>
         .AllowAnyMethod()
     );
 });
+
+// Add and configure forwarded headers middleware
+builder.Services.Configure<ForwardedHeadersOptions>(_ => { });
 
 // This configuration is bound here so that source generators kick in.
 builder.Services.Configure<HelldiversSyncConfiguration>(builder.Configuration.GetSection("Helldivers:Synchronization"));
@@ -108,9 +115,14 @@ app.UseRequestLocalization();
 // Ensure web applications can access the API by setting CORS headers.
 app.UseCors();
 
-
+// Used internally Fly.io for health checks with load balancing
 app.MapGet("/health", HealthController.Show).ExcludeFromDescription();
+
+// Handles rate limiting so everyone plays nice
 app.UseMiddleware<RateLimitMiddleware>();
+
+// Make sure ASP.NET Core uses the correct addresses internally rather than Fly's proxy
+app.UseForwardedHeaders();
 
 #region ArrowHead API endpoints ('raw' API)
 
