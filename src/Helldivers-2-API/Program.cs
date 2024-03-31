@@ -24,14 +24,19 @@ var builder = WebApplication.CreateSlimBuilder(args);
 
 // Registers the core services in the container.
 builder.Services.AddHelldivers();
+
 // Have ASP.NET Core generate problemdetails for failed requests.
 builder.Services.AddProblemDetails();
+
 // Register the rate limiting middleware.
 builder.Services.AddTransient<RateLimitMiddleware>();
+
 // Register the memory cache, used in the rate limiting middleware.
 builder.Services.AddMemoryCache();
+
 // Add services for response compression.
 builder.Services.AddResponseCompression();
+
 // Automatically set the CultureInfo based on the incoming request.
 builder.Services.AddRequestLocalization(options =>
 {
@@ -58,12 +63,23 @@ builder.Services.Configure<ForwardedHeadersOptions>(_ => { });
 // This configuration is bound here so that source generators kick in.
 builder.Services.Configure<HelldiversSyncConfiguration>(builder.Configuration.GetSection("Helldivers:Synchronization"));
 
+// If a request takes over 10s to complete, abort it.
 builder.Services.AddRequestTimeouts(options =>
 {
     options.DefaultPolicy = new RequestTimeoutPolicy
     {
-        Timeout = TimeSpan.FromSeconds(10), TimeoutStatusCode = StatusCodes.Status408RequestTimeout,
+        Timeout = TimeSpan.FromSeconds(10),
+        TimeoutStatusCode = StatusCodes.Status408RequestTimeout,
     };
+});
+
+// Setup source generated JSON type information so the API knows how to serialize models.
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.TypeInfoResolverChain.Add(ArrowHeadSerializerContext.Default);
+    options.SerializerOptions.TypeInfoResolverChain.Add(HelldiversSerializerContext.Default);
+    options.SerializerOptions.TypeInfoResolverChain.Add(SteamSerializerContext.Default);
+    options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
 // Swagger is generated at compile time, so we don't include Swagger dependencies in Release builds.
@@ -101,15 +117,6 @@ else
 builder.Services.AddHelldiversSync();
 #endif
 
-// Setup source generated JSON type information so the API knows how to serialize models.
-builder.Services.ConfigureHttpJsonOptions(options =>
-{
-    options.SerializerOptions.TypeInfoResolverChain.Add(ArrowHeadSerializerContext.Default);
-    options.SerializerOptions.TypeInfoResolverChain.Add(HelldiversSerializerContext.Default);
-    options.SerializerOptions.TypeInfoResolverChain.Add(SteamSerializerContext.Default);
-    options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-});
-
 var app = builder.Build();
 
 // Use response compression for smaller payload sizes
@@ -130,6 +137,7 @@ app.UseMiddleware<RateLimitMiddleware>();
 // Make sure ASP.NET Core uses the correct addresses internally rather than Fly's proxy
 app.UseForwardedHeaders();
 
+// Add middleware to timeout requests if they take too long.
 app.UseRequestTimeouts();
 
 #region ArrowHead API endpoints ('raw' API)
