@@ -13,5 +13,5 @@ namespace Helldivers.Models;
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
 public sealed partial class ArrowHeadSerializerContext : JsonSerializerContext
 {
-    
+
 }

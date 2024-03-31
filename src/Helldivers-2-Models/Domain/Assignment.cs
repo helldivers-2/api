@@ -18,5 +18,5 @@ public sealed record Assignment(
     string Description,
     string Summary,
     Reward Reward
-    // TODO: map tasks.
+// TODO: map tasks.
 );

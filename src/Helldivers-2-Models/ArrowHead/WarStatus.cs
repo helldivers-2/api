@@ -23,8 +23,8 @@ public sealed record WarStatus(
     // TODO CommunityTargets
     List<JointOperation> JointOperations,
     List<PlanetEvent> PlanetEvents
-    // TODO PlanetActiveEffects
-    // TODO activeElectionPolicyEffects
-    // TODO globalEvents
-    // TODO superEarthWarResults
+// TODO PlanetActiveEffects
+// TODO activeElectionPolicyEffects
+// TODO globalEvents
+// TODO superEarthWarResults
 );

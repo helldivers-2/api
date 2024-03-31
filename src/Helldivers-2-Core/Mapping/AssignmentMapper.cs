@@ -1,6 +1,6 @@
-﻿using ArrowHeadAssignment = Helldivers.Models.ArrowHead.Assignment;
-using Helldivers.Models.Domain;
+﻿using Helldivers.Models.Domain;
 using Helldivers.Models.Domain.Assignments;
+using ArrowHeadAssignment = Helldivers.Models.ArrowHead.Assignment;
 using ArrowHeadReward = Helldivers.Models.ArrowHead.Assignments.Reward;
 
 namespace Helldivers.Core.Mapping;

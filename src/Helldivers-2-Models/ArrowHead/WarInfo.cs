@@ -18,6 +18,6 @@ public sealed record WarInfo(
     string MinimumClientVersion,
     List<PlanetInfo> PlanetInfos,
     List<HomeWorld> HomeWorlds
-    // TODO: capitalInfo's
-    // TODO planetPermanentEffects
+// TODO: capitalInfo's
+// TODO planetPermanentEffects
 );

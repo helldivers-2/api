@@ -66,7 +66,7 @@ if (isRunningAsTool)
     {
         document.Title = "Helldivers 2";
         document.Description = "Helldivers 2 Unofficial API";
-        
+
         document.SchemaSettings.TypeMappers.Add(
             new PrimitiveTypeMapper(
                 typeof(LocalizedMessage),
