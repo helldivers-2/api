@@ -26,6 +26,14 @@ kill_signal = 'SIGTERM'
     hard_limit = 1000
     soft_limit = 1000
 
+  [[http_service.checks]]
+    grace_period = "2s"
+    interval = "120s"
+    method = "GET"
+    timeout = "10s"
+    path = "/raw/api/WarSeason/current/WarID"
+
+
 [[vm]]
   memory = "256mb"
   size = 'shared-cpu-1x'
