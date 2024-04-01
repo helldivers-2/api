@@ -1,15 +1,11 @@
 using Helldivers.API.Controllers;
 using Helldivers.API.Controllers.V1;
 using Helldivers.API.Middlewares;
-using Helldivers.API.OpenApi;
 using Helldivers.Core.Extensions;
 using Helldivers.Models;
-using Helldivers.Models.Domain.Localization;
 using Helldivers.Sync.Configuration;
 using Helldivers.Sync.Extensions;
 using Microsoft.AspNetCore.Http.Timeouts;
-using NJsonSchema;
-using NJsonSchema.Generation.TypeMappers;
 using System.Globalization;
 using System.Text.Json.Serialization;
 
@@ -95,9 +91,9 @@ if (isRunningAsTool)
         document.Description = "Helldivers 2 Unofficial API";
 
         document.SchemaSettings.TypeMappers.Add(
-            new PrimitiveTypeMapper(
-                typeof(LocalizedMessage),
-                schema => schema.Type = JsonObjectType.String
+            new NJsonSchema.Generation.TypeMappers.PrimitiveTypeMapper(
+                typeof(Helldivers.Models.Domain.Localization.LocalizedMessage),
+                schema => schema.Type = NJsonSchema.JsonObjectType.String
             )
         );
     });
@@ -108,7 +104,7 @@ if (isRunningAsTool)
         document.DocumentName = "arrowhead";
         document.ApiGroupNames = ["arrowhead"];
         
-        document.DocumentProcessors.Add(new ArrowHeadDocumentProcessor());
+        document.DocumentProcessors.Add(new Helldivers.API.OpenApi.ArrowHeadDocumentProcessor());
     });
     builder.Services.AddEndpointsApiExplorer();
 }
