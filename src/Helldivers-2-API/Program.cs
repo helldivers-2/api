@@ -181,6 +181,9 @@ v1.MapGet("/dispatches/{index:int}", DispatchController.Show);
 v1.MapGet("/planets", PlanetController.Index);
 v1.MapGet("/planets/{index:int}", PlanetController.Show);
 
+v1.MapGet("/steam", SteamController.Index);
+v1.MapGet("/steam/{gid}", SteamController.Show);
+
 #endregion
 
 await app.RunAsync();

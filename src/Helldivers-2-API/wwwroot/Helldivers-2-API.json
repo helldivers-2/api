@@ -390,6 +390,70 @@
           }
         }
       }
+    },
+    "/api/v1/steam": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Fetches the Steam newsfeed for Helldivers 2.",
+        "description": "You can definitely get this yourself, however it's included for your convenience!",
+        "operationId": "GetApiV1Steam",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SteamNews"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/steam/{gid}": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Fetches a specific newsfeed item from the Helldivers 2 Steam newsfeed.",
+        "description": "You can definitely get this yourself, however it's included for your convenience!",
+        "operationId": "GetApiV1Steam2",
+        "parameters": [
+          {
+            "name": "gid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Returned when the key is not recognized."
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SteamNews"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1403,6 +1467,31 @@
           "message": {
             "type": "string",
             "description": "The message this dispatch represents."
+          }
+        }
+      },
+      "SteamNews": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       }
