@@ -1,0 +1,40 @@
+{
+  "appnews": {
+    "appid": 553850,
+    "newsitems": [
+      {
+        "gid": "5686430301735711456",
+        "title": "PATCH 1.000.104",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/5686430301735711456",
+        "is_external_url": true,
+        "author": "Åtnjutslångsamt",
+        "contents": "Hello all! Small fix coming in today!\n\n[b]Overview[/b]\nWhats been done in this patch.\n[list]\n[*] Fixes to the Arc based weapons\n[/list]\n\n[b]Fixes[/b]\nGame no longer freezes when firing arcs from the following weapons and stratagems\n[list]\n[*] Arc Thrower\n[*] Arc Shotgun\n[*] Tesla Tower\n[/list]\n\n",
+        "feedlabel": "Community Announcements",
+        "date": 1711447354,
+        "feedname": "steam_community_announcements",
+        "feed_type": 1,
+        "appid": 553850,
+        "tags": [
+          "patchnotes"
+        ]
+      },
+      {
+        "gid": "5686430301713851678",
+        "title": "PATCH 1.000.103",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/5686430301713851678",
+        "is_external_url": true,
+        "author": "Åtnjutslångsamt",
+        "contents": "Good day fellow Helldivers! Piping hot patch notes straight from the oven arriving.\n\n[b]Overview[/b]\nFor this patch, we have implemented:\n[list]\n[*] Fixes to the EXO-45 Patriot exosuit, game stats, UI, and general stability.\n[*] Balance improvements for planetary hazards and patrol spawns.\n[/list]\n\n[b]Balancing[/b]\n[list]\n[*] Balanced and adjusted spawn rates for the various planet hazards including tremors, meteor showers, volcanic activity, fire tornados, and ion storms. Hazards should now spawn less frequently during missions.\n[*] Meteor Shower has received the following changes in addition to reduced spawn rate:[/list] \n[list]\n[*] Reduced explosion radius\n[*] Reduced meteor damage slightly\n[*] Reduced meteor velocity slightly\n[*] Meteor color has been changed slightly to try and make it easier to spot.\n[/list]\n\n[list]\n[*] Volcanic Activity has received the following changes in addition to reduced spawn rate:\n[*] Reduced explosion radius\n[*] Reduced rock velocity slightly\n[/list]\n\n[list]\n[*] Lighting on Fenrir III has been adjusted to be a bit less bright to improve visibility during meteor showers\n[/list]\n\n[b]Fixes[/b]\n[list]\n[*] Reduced incidents of patrols spawning on players.\n[*] Exosuit no longer destroys itself when firing a missile while turning .\n[*] Exosuit retains its melee functionality, even when damaged.\n[/list]\nCrash Fixes for the following scenarios\n[list]\n[*] When ALT+Tabbing in fullscreen mode \n[*] After changing voice over language\n[*] PS5 boot issue\n[*] Using a stim inside of an Exosuit while wielding a grenade\n[*] When joining an ongoing mission\n[*] When idling on the title screen\n[/list]\n\n[list]\n[*] Shots from arc-based weapons, such as 'Blitzer' shotgun and 'AC-8 Arc Thrower' stratagem now count towards \"Shots fired\" and \"Shots hit\" stats.\n[*] Fixed network desync issue with downed Automaton dropships.\n[*] Fixed Elgato Stream Deck Foot Pedal support.\n[/list]\n\n[b]Known Issues[/b]\nThese are issues that were either introduced by this patch and are being worked on, or are from a previous version and have not yet been fixed.\n\nVarious issues involving friend invites and cross-play:\n[list]\n[*] Cross-platform friend invites might not show up in the Friend Requests tab.\n[*] Players cannot unfriend other players befriended via friend code.\n[*] Players cannot unblock players that were not in their Friends list beforehand.\n[*] Players cannot befriend players with Steam names shorter than 3 characters.\n[/list]\n\n[list]\n[*] Hellpod steering close to large or important objects is currently not functioning as intended, resulting in steering being disabled in a large area around the object.\n[*] Online features are not functioning when console language is set to Ukrainian.\n[*] Players may be unable to select loadout when joining a multiplayer via an activity card.\n[*] Planet liberation reaches 100% at the end of every Defend mission.\n[*] Drowning in deep water with a Vitality Booster equipped puts Helldiver in a broken state.\n[*] Exosuits will sometimes be delivered in a damaged or broken state.\n[*] Stratagem beam might attach itself to an enemy but it will deploy to its original location.\n[*] Pink artifacts may appear in the sky when setting off large explosions.\n[*] Text chat box display is obstructed by the cinematic letterboxing during extraction.\n[*] Sometimes the player’s loadout customizations will reset after restarting the game.\n[/list]\n\nGod speed soldiers\nRelease Captain Carlberg out\n\n\n\n\n\n\n",
+        "feedlabel": "Community Announcements",
+        "date": 1710929255,
+        "feedname": "steam_community_announcements",
+        "feed_type": 1,
+        "appid": 553850,
+        "tags": [
+          "patchnotes"
+        ]
+      }
+    ],
+    "count": 23
+  }
+}
