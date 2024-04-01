@@ -7,31 +7,13 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/api/WarSeason/current/WarID": {
-      "get": {
-        "tags": [
-          "raw"
-        ],
-        "summary": "Returns the currently active war season ID.",
-        "operationId": "GetApiWarSeasonCurrentWarID",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
-          }
-        }
-      }
-    },
     "/api/WarSeason/801/Status": {
+      "servers": [
+        {
+          "url": "https://api.live.prod.thehelldiversgame.com/",
+          "description": "The official ArrowHead server"
+        }
+      ],
       "get": {
         "tags": [
           "raw"
@@ -53,6 +35,12 @@
       }
     },
     "/api/WarSeason/801/WarInfo": {
+      "servers": [
+        {
+          "url": "https://api.live.prod.thehelldiversgame.com/",
+          "description": "The official ArrowHead server"
+        }
+      ],
       "get": {
         "tags": [
           "raw"
@@ -74,6 +62,12 @@
       }
     },
     "/api/Stats/war/801/summary": {
+      "servers": [
+        {
+          "url": "https://api.live.prod.thehelldiversgame.com/",
+          "description": "The official ArrowHead server"
+        }
+      ],
       "get": {
         "tags": [
           "raw"
@@ -95,6 +89,12 @@
       }
     },
     "/api/NewsFeed/801": {
+      "servers": [
+        {
+          "url": "https://api.live.prod.thehelldiversgame.com/",
+          "description": "The official ArrowHead server"
+        }
+      ],
       "get": {
         "tags": [
           "raw"
@@ -119,6 +119,12 @@
       }
     },
     "/api/v2/Assignment/War/801": {
+      "servers": [
+        {
+          "url": "https://api.live.prod.thehelldiversgame.com/",
+          "description": "The official ArrowHead server"
+        }
+      ],
       "get": {
         "tags": [
           "raw"
@@ -140,7 +146,34 @@
             }
           },
           "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/WarSeason/current/WarID": {
+      "servers": [
+        {
+          "url": "https://api.live.prod.thehelldiversgame.com/",
+          "description": "The official ArrowHead server"
+        }
+      ],
+      "get": {
+        "tags": [
+          "raw"
+        ],
+        "summary": "Returns the currently active war season ID.",
+        "operationId": "GetApiWarSeasonCurrentWarID",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WarId"
+                }
+              }
+            }
           }
         }
       }
@@ -148,6 +181,17 @@
   },
   "components": {
     "schemas": {
+      "WarId": {
+        "type": "object",
+        "description": "Represents the ID returned from the WarID endpoint.",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
       "WarStatus": {
         "type": "object",
         "description": "Represents a snapshot of the current status of the galactic war.",

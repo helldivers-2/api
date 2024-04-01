@@ -27,6 +27,7 @@ public sealed record LocalizedMessage(IReadOnlyDictionary<CultureInfo, string> M
                 new KeyValuePair<CultureInfo, string>(parent, value)
             };
         })
+        .DistinctBy(pair => pair.Key)
         .ToDictionary(pair => pair.Key, pair => pair.Value);
 
         return new LocalizedMessage(messages);

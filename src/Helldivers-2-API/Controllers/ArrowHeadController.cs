@@ -1,5 +1,4 @@
-﻿using Helldivers.Core;
-using Helldivers.Core.Contracts;
+﻿using Helldivers.Core.Contracts;
 using Helldivers.Core.Contracts.Collections;
 using Helldivers.Models.ArrowHead;
 using Microsoft.AspNetCore.Mvc;
@@ -14,15 +13,12 @@ public static class ArrowHeadController
     /// <summary>
     /// Returns the currently active war season ID.
     /// </summary>
-    /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
-    [ProducesResponseType<string>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
-    public static IResult WarId(WarSnapshot snapshot)
+    [ProducesResponseType<WarId>(StatusCodes.Status200OK)]
+    public static async Task<IResult> WarId(HttpContext context, IStore<WarId> store)
     {
-        if (string.IsNullOrWhiteSpace(snapshot.Season))
-            return Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
+        var result = await store.Get(context.RequestAborted);
 
-        return Results.Ok(snapshot.Season);
+        return Results.Ok(result);
     }
 
     /// <summary>
@@ -39,7 +35,6 @@ public static class ArrowHeadController
     /// <summary>
     /// Gets the current war info.
     /// </summary>
-    /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
     [ProducesResponseType<WarInfo>(StatusCodes.Status200OK)]
     public static async Task<IResult> WarInfo(HttpContext context, IStore<WarInfo> store)
     {
@@ -51,7 +46,6 @@ public static class ArrowHeadController
     /// <summary>
     /// Gets the current war info.
     /// </summary>
-    /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
     [ProducesResponseType<WarSummary>(StatusCodes.Status200OK)]
     public static async Task<IResult> Summary(HttpContext context, IStore<WarSummary> store)
     {
@@ -63,7 +57,6 @@ public static class ArrowHeadController
     /// <summary>
     /// Retrieves a list of news messages from Super Earth.
     /// </summary>
-    /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
     [ProducesResponseType<List<NewsFeedItem>>(StatusCodes.Status200OK)]
     public static async Task<IResult> NewsFeed(HttpContext context, IStore<NewsFeedItem, int> store)
     {
@@ -75,7 +68,6 @@ public static class ArrowHeadController
     /// <summary>
     /// Retrieves a list of currently active assignments (like Major Orders).
     /// </summary>
-    /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
     [ProducesResponseType<List<Assignment>>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
     public static async Task<IResult> Assignments(HttpContext context, IStore<Assignment, int> store)

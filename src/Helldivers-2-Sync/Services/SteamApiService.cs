@@ -9,7 +9,7 @@ namespace Helldivers.Sync.Services;
 /// </summary>
 public sealed class SteamApiService(HttpClient http)
 {
-    public async Task<List<SteamNewsFeedItem>> GetLatest(int count = 20)
+    public async Task<SteamNewsFeed> GetLatest(int count = 20)
     {
         var url = $"https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=553850&count={count}&feeds=steam_community_announcements";
         await using var response = await http.GetStreamAsync(url);
@@ -19,9 +19,6 @@ public sealed class SteamApiService(HttpClient http)
             SteamSerializerContext.Default.SteamNewsFeed
         );
 
-        if (feed is { AppNews: { NewsItems: var items } })
-            return items;
-
-        return [];
+        return feed!;
     }
 }

@@ -2,7 +2,6 @@
 using Helldivers.Models.ArrowHead;
 using Helldivers.Sync.Configuration;
 using Microsoft.Extensions.Options;
-using System.Globalization;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
@@ -20,7 +19,7 @@ public sealed class ArrowHeadApiService(
     /// <summary>
     /// Gets the identifier of the current war season from ArrowHead's API.
     /// </summary>
-    public async Task<string> GetCurrentSeason(CancellationToken cancellationToken)
+    public async Task<WarId> GetCurrentSeason(CancellationToken cancellationToken)
     {
         var request = BuildRequest("/api/WarSeason/current/WarID");
         using var response = await http.SendAsync(request, cancellationToken);
@@ -29,7 +28,7 @@ public sealed class ArrowHeadApiService(
                         .DeserializeAsync(stream, ArrowHeadSerializerContext.Default.WarId, cancellationToken)
                     ?? throw new InvalidOperationException();
 
-        return warId.Id.ToString(CultureInfo.InvariantCulture);
+        return warId;
     }
 
     /// <summary>

@@ -1,42 +1,36 @@
-﻿using Helldivers.Core;
-using Helldivers.Models.Domain;
+﻿using Helldivers.Core.Contracts.Collections;
+using Helldivers.Models.V1;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Helldivers.API.Controllers.V1;
 
+/// <summary>
+/// Contains API endpoints for <see cref="Assignment" />.
+/// </summary>
 public static class AssignmentsController
 {
     /// <summary>
-    /// Gets all assignments.
+    /// Fetches a list of all available <see cref="Assignment" /> information available.
     /// </summary>
-    /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
     [ProducesResponseType<List<Assignment>>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
-    public static IResult Index(WarSnapshot snapshot)
+    public static async Task<IResult> Index(HttpContext context, IStore<Assignment, long> store)
     {
-        if (snapshot.Assignments is null)
-            return Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
+        var assignments = await store.AllAsync(context.RequestAborted);
 
-        if (snapshot.Assignments.Get() is { } assignments)
-            return Results.Ok(assignments);
-
-        return Results.NotFound();
+        return Results.Ok(assignments);
     }
 
+
     /// <summary>
-    /// Gets a specific assignment.
+    /// Fetches a specific <see cref="Assignment" /> identified by <paramref name="index" />.
     /// </summary>
-    /// <response code="503">Thrown when the server hasn't finished it's sync and has no information.</response>
     [ProducesResponseType<Assignment>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
-    public static IResult Show(WarSnapshot snapshot, long index)
+    public static async Task<IResult> Show(HttpContext context, IStore<Assignment, long> store, [FromRoute] long index)
     {
-        if (snapshot.Assignments is null)
-            return Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
+        var assignment = await store.GetAsync(index, context.RequestAborted);
+        if (assignment is null)
+            return Results.NotFound();
 
-        if (snapshot.Assignments.Get() is { } assignments && assignments.FirstOrDefault(a => a.Index == index) is { } assignment)
-            return Results.Ok(assignment);
-
-        return Results.NotFound();
+        return Results.Ok(assignment);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Helldivers.Core;
-using Helldivers.Core.Storage;
 using Helldivers.Models.ArrowHead;
 using Helldivers.Sync.Configuration;
 using Helldivers.Sync.Services;
@@ -8,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Helldivers.Sync.Hosted;
 
@@ -19,7 +19,7 @@ public sealed partial class ArrowHeadSyncService(
     ILogger<ArrowHeadSyncService> logger,
     IServiceScopeFactory scopeFactory,
     IOptions<HelldiversSyncConfiguration> configuration,
-    ArrowHeadStore arrowHeadStore
+    StorageFacade storage
 ) : BackgroundService
 {
     #region Source generated logging
@@ -69,39 +69,63 @@ public sealed partial class ArrowHeadSyncService(
 
     private async Task SynchronizeAsync(IServiceProvider services, CancellationToken cancellationToken)
     {
-        var languages = configuration.Value.Languages;
         var api = services.GetRequiredService<ArrowHeadApiService>();
 
-        var season = await api.GetCurrentSeason(cancellationToken);
+        var warId = await api.GetCurrentSeason(cancellationToken);
+        var season = warId.Id.ToString(CultureInfo.InvariantCulture);
         var warInfo = await api.GetWarInfo(season, cancellationToken);
         var warSummary = await api.GetSummary(season, cancellationToken);
 
         // For each language, load war status.
-        // If a language fails it's skipped.
-        var statuses = await languages
-            .ToAsyncEnumerable()
-            .SelectAwait(language => AttemptToLoadWarStatus(api, season, language, cancellationToken))
-            .Where(pair => pair.Value is not null)
-            .ToDictionaryAsync(pair => pair.Key, pair => pair.Value!, cancellationToken);
+        var statuses = await DownloadTranslations(
+            language => api.GetWarStatus(season, language, cancellationToken),
+            cancellationToken
+        );
 
         // For each language, load news feed.
-        // If a language fails it's skipped.
-        var feeds = await languages
-            .ToAsyncEnumerable()
-            .SelectAwait(language => AttemptToLoadTranslations(api.LoadFeed, season, language, cancellationToken))
-            .Where(pair => pair.Value is not null)
-            .ToDictionaryAsync(pair => pair.Key, pair => pair.Value!, cancellationToken);
+        var feeds = await DownloadTranslations(
+            async language => await api.LoadFeed(season, language, cancellationToken).ToListAsync(cancellationToken),
+            cancellationToken
+        );
 
         // For each language, load assignments
-        // If a language fails it's skipped.
-        var assignments = await languages
-            .ToAsyncEnumerable()
-            .SelectAwait(
-                language => AttemptToLoadTranslations(api.LoadAssignments, season, language, cancellationToken))
-            .Where(pair => pair.Value is not null)
-            .ToDictionaryAsync(pair => pair.Key, pair => pair.Value!, cancellationToken);
+        var assignments = await DownloadTranslations(
+            async language => await api.LoadAssignments(season, language, cancellationToken).ToListAsync(cancellationToken),
+            cancellationToken
+        );
 
-        arrowHeadStore.UpdateSnapshot(warInfo, warSummary, statuses, feeds, assignments);
+        await storage.UpdateStores(
+            warId,
+            warInfo,
+            statuses,
+            warSummary,
+            feeds,
+            assignments
+        );
+    }
+
+    private async Task<Dictionary<string, T>> DownloadTranslations<T>(Func<string, Task<T>> func, CancellationToken cancellationToken) where T : class
+    {
+        return await configuration.Value.Languages
+            .ToAsyncEnumerable()
+            .Select(async language =>
+            {
+                try
+                {
+                    var result = await func(language);
+
+                    return new KeyValuePair<string, T?>(language, result);
+                }
+                catch (Exception exception)
+                {
+                    LogFailedToLoadTranslation(logger, exception, language, typeof(T).Name);
+
+                    return new KeyValuePair<string, T?>(language, null);
+                }
+            })
+            .SelectAwait(async task => await task)
+            .Where(pair => pair.Value is not null)
+            .ToDictionaryAsync(pair => pair.Key, pair => pair.Value!, cancellationToken: cancellationToken);
     }
 
     /// <summary>Helper function to download the war status or return null if anything fails.</summary>

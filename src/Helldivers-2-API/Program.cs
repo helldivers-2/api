@@ -1,6 +1,7 @@
 using Helldivers.API.Controllers;
 using Helldivers.API.Controllers.V1;
 using Helldivers.API.Middlewares;
+using Helldivers.API.OpenApi;
 using Helldivers.Core.Extensions;
 using Helldivers.Models;
 using Helldivers.Models.Domain.Localization;
@@ -77,8 +78,9 @@ builder.Services.AddRequestTimeouts(options =>
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.TypeInfoResolverChain.Add(ArrowHeadSerializerContext.Default);
-    options.SerializerOptions.TypeInfoResolverChain.Add(HelldiversSerializerContext.Default);
     options.SerializerOptions.TypeInfoResolverChain.Add(SteamSerializerContext.Default);
+    options.SerializerOptions.TypeInfoResolverChain.Add(V1SerializerContext.Default);
+
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
@@ -105,6 +107,8 @@ if (isRunningAsTool)
         document.Description = "An OpenAPI mapping of the official Helldivers API";
         document.DocumentName = "arrowhead";
         document.ApiGroupNames = ["arrowhead"];
+        
+        document.DocumentProcessors.Add(new ArrowHeadDocumentProcessor());
     });
     builder.Services.AddEndpointsApiExplorer();
 }
@@ -143,7 +147,7 @@ app.UseRequestTimeouts();
 #region ArrowHead API endpoints ('raw' API)
 
 var raw = app
-    .MapGroup("/")
+    .MapGroup("/raw")
     .WithGroupName("arrowhead")
     .WithTags("raw");
 
@@ -163,20 +167,19 @@ var v1 = app
     .WithGroupName("community")
     .WithTags("v1");
 
-v1.MapGet("/", GalaxyWarController.Show);
-v1.MapGet("/war-id", GalaxyWarController.ShowWarId);
-
-v1.MapGet("/planets", PlanetsController.Index);
-v1.MapGet("/planets/{index:int}", PlanetsController.Show);
-v1.MapGet("/planets/{index:int}/statistics", PlanetsController.ShowStatistics);
-
-v1.MapGet("/news", NewsFeedController.Index);
-v1.MapGet("/news/{index:int}", NewsFeedController.Show);
-
-v1.MapGet("/announcements", AnnouncementsController.Index);
+v1.MapGet("/war", WarController.Show);
 
 v1.MapGet("/assignments", AssignmentsController.Index);
 v1.MapGet("/assignments/{index:long}", AssignmentsController.Show);
+
+v1.MapGet("/campaigns", CampaignsController.Index);
+v1.MapGet("/campaigns/{index:int}", CampaignsController.Show);
+
+v1.MapGet("/dispatches", DispatchController.Index);
+v1.MapGet("/dispatches/{index:int}", DispatchController.Show);
+
+v1.MapGet("/planets", PlanetController.Index);
+v1.MapGet("/planets/{index:int}", PlanetController.Show);
 
 #endregion
 

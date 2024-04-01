@@ -1,5 +1,5 @@
-﻿using Helldivers.Models.Domain;
-using Helldivers.Models.Steam;
+﻿using Helldivers.Models.Steam;
+using Helldivers.Models.V1;
 using System.Text.Json.Serialization;
 
 namespace Helldivers.Models;

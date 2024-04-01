@@ -1,5 +1,4 @@
 ﻿using Helldivers.Core;
-using Helldivers.Core.Storage;
 using Helldivers.Sync.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,7 +9,7 @@ namespace Helldivers.Sync.Hosted;
 
 public sealed partial class SteamSyncService(
     ILogger<SteamSyncService> logger,
-    SteamStore store,
+    StorageFacade storage,
     IServiceScopeFactory scopeFactory
 ) : BackgroundService
 {
@@ -38,12 +37,12 @@ public sealed partial class SteamSyncService(
 
                 stopwatch.Start();
 
-                var items = await scope
+                var feed = await scope
                     .ServiceProvider
                     .GetRequiredService<SteamApiService>()
                     .GetLatest();
 
-                store.UpdateStore(items);
+                await storage.UpdateStores(feed);
 
                 stopwatch.Stop();
                 LogFinishedSynchronize(logger, stopwatch.Elapsed);

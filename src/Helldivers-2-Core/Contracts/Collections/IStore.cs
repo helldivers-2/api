@@ -13,6 +13,11 @@ namespace Helldivers.Core.Contracts.Collections;
 public interface IStore<T, in TKey> where T : class
 {
     /// <summary>
+    /// Updates the state of the store with the given <paramref name="values" />.
+    /// </summary>
+    ValueTask SetStore(List<T> values);
+
+    /// <summary>
     /// Fetches all <typeparamref name="T" /> instances available.
     /// </summary>
     Task<List<T>> AllAsync(CancellationToken cancellationToken = default);

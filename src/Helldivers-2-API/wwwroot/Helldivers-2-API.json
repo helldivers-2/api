@@ -7,37 +7,34 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/api/WarSeason/current/WarID": {
+    "/raw/api/WarSeason/current/WarID": {
       "get": {
         "tags": [
           "raw"
         ],
         "summary": "Returns the currently active war season ID.",
-        "operationId": "GetApiWarSeasonCurrentWarID",
+        "operationId": "GetRawApiWarSeasonCurrentWarID",
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/WarId"
                 }
               }
             }
-          },
-          "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
           }
         }
       }
     },
-    "/api/WarSeason/801/Status": {
+    "/raw/api/WarSeason/801/Status": {
       "get": {
         "tags": [
           "raw"
         ],
         "summary": "Get a snapshot of the current war status.",
-        "operationId": "GetApiWarSeason801Status",
+        "operationId": "GetRawApiWarSeason801Status",
         "responses": {
           "200": {
             "description": "",
@@ -52,13 +49,13 @@
         }
       }
     },
-    "/api/WarSeason/801/WarInfo": {
+    "/raw/api/WarSeason/801/WarInfo": {
       "get": {
         "tags": [
           "raw"
         ],
         "summary": "Gets the current war info.",
-        "operationId": "GetApiWarSeason801WarInfo",
+        "operationId": "GetRawApiWarSeason801WarInfo",
         "responses": {
           "200": {
             "description": "",
@@ -73,13 +70,13 @@
         }
       }
     },
-    "/api/Stats/war/801/summary": {
+    "/raw/api/Stats/war/801/summary": {
       "get": {
         "tags": [
           "raw"
         ],
         "summary": "Gets the current war info.",
-        "operationId": "GetApiStatsWar801Summary",
+        "operationId": "GetRawApiStatsWar801Summary",
         "responses": {
           "200": {
             "description": "",
@@ -94,13 +91,13 @@
         }
       }
     },
-    "/api/NewsFeed/801": {
+    "/raw/api/NewsFeed/801": {
       "get": {
         "tags": [
           "raw"
         ],
         "summary": "Retrieves a list of news messages from Super Earth.",
-        "operationId": "GetApiNewsFeed801",
+        "operationId": "GetRawApiNewsFeed801",
         "responses": {
           "200": {
             "description": "",
@@ -118,13 +115,13 @@
         }
       }
     },
-    "/api/v2/Assignment/War/801": {
+    "/raw/api/v2/Assignment/War/801": {
       "get": {
         "tags": [
           "raw"
         ],
         "summary": "Retrieves a list of currently active assignments (like Major Orders).",
-        "operationId": "GetApiV2AssignmentWar801",
+        "operationId": "GetRawApiV2AssignmentWar801",
         "responses": {
           "200": {
             "description": "",
@@ -140,245 +137,28 @@
             }
           },
           "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
+            "description": ""
           }
         }
       }
     },
-    "/api/v1": {
+    "/api/v1/war": {
       "get": {
         "tags": [
           "v1"
         ],
-        "summary": "Gets the current galactic war information.",
-        "operationId": "GetApiV1",
+        "summary": "Gets the current War state.",
+        "operationId": "GetApiV1War",
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GalacticWar"
+                  "$ref": "#/components/schemas/War"
                 }
               }
             }
-          },
-          "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
-          }
-        }
-      }
-    },
-    "/api/v1/war-id": {
-      "get": {
-        "tags": [
-          "v1"
-        ],
-        "summary": "Gets the current war season.",
-        "operationId": "GetApiV1WarId",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
-          }
-        }
-      }
-    },
-    "/api/v1/planets": {
-      "get": {
-        "tags": [
-          "v1"
-        ],
-        "summary": "Retrieves a list of all planets currently involved in the galactic war.",
-        "operationId": "GetApiV1PlanetsAll",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Planet"
-                  }
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
-          }
-        }
-      }
-    },
-    "/api/v1/planets/{index}": {
-      "get": {
-        "tags": [
-          "v1"
-        ],
-        "summary": "Retrieves a specific planet by it's planet ID.",
-        "operationId": "GetApiV1Planets",
-        "parameters": [
-          {
-            "name": "index",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Planet"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
-          }
-        }
-      }
-    },
-    "/api/v1/planets/{index}/statistics": {
-      "get": {
-        "tags": [
-          "v1"
-        ],
-        "summary": "Retrieves a specific planet's statistics by it's planet ID.",
-        "operationId": "GetApiV1PlanetsStatistics",
-        "parameters": [
-          {
-            "name": "index",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Statistics"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
-          }
-        }
-      }
-    },
-    "/api/v1/news": {
-      "get": {
-        "tags": [
-          "v1"
-        ],
-        "summary": "Gets all newsfeed items.",
-        "operationId": "GetApiV1NewsAll",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/NewsItem"
-                  }
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
-          }
-        }
-      }
-    },
-    "/api/v1/news/{index}": {
-      "get": {
-        "tags": [
-          "v1"
-        ],
-        "summary": "Returns a specific newsfeed item.",
-        "operationId": "GetApiV1News",
-        "parameters": [
-          {
-            "name": "index",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NewsItem"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
-          }
-        }
-      }
-    },
-    "/api/v1/announcements": {
-      "get": {
-        "tags": [
-          "v1"
-        ],
-        "summary": "Gets a list of announcements made from ArrowHead to the community.\nThis is mostly patch notes, but not guaranteed to only be patch notes.",
-        "operationId": "GetApiV1Announcements",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SteamNews"
-                  }
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
           }
         }
       }
@@ -388,7 +168,7 @@
         "tags": [
           "v1"
         ],
-        "summary": "Gets all assignments.",
+        "summary": "Fetches a list of all available Assignment information available.",
         "operationId": "GetApiV1AssignmentsAll",
         "responses": {
           "200": {
@@ -403,9 +183,6 @@
                 }
               }
             }
-          },
-          "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
           }
         }
       }
@@ -415,7 +192,7 @@
         "tags": [
           "v1"
         ],
-        "summary": "Gets a specific assignment.",
+        "summary": "Fetches a specific Assignment identified by index.",
         "operationId": "GetApiV1Assignments",
         "parameters": [
           {
@@ -439,9 +216,177 @@
                 }
               }
             }
-          },
-          "503": {
-            "description": "Thrown when the server hasn't finished it's sync and has no information."
+          }
+        }
+      }
+    },
+    "/api/v1/campaigns": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Fetches a list of all available Campaign information available.",
+        "operationId": "GetApiV1CampaignsAll",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Campaign2"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/campaigns/{index}": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Fetches a specific Campaign identified by index.",
+        "operationId": "GetApiV1Campaigns",
+        "parameters": [
+          {
+            "name": "index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Campaign2"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/dispatches": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Fetches a list of all available Dispatch information available.",
+        "operationId": "GetApiV1DispatchesAll",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Dispatch"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/dispatches/{index}": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Fetches a specific Dispatch identified by index.",
+        "operationId": "GetApiV1Dispatches",
+        "parameters": [
+          {
+            "name": "index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dispatch"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/planets": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Fetches a list of all available Planet information available.",
+        "operationId": "GetApiV1PlanetsAll",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Planet"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/planets/{index}": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Fetches a specific Planet identified by index.",
+        "operationId": "GetApiV1Planets",
+        "parameters": [
+          {
+            "name": "index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Planet"
+                }
+              }
+            }
           }
         }
       }
@@ -449,6 +394,17 @@
   },
   "components": {
     "schemas": {
+      "WarId": {
+        "type": "object",
+        "description": "Represents the ID returned from the WarID endpoint.",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
       "WarStatus": {
         "type": "object",
         "description": "Represents a snapshot of the current status of the galactic war.",
@@ -1112,149 +1068,49 @@
           }
         }
       },
-      "GalacticWar": {
+      "War": {
         "type": "object",
-        "description": "Represents a snapshot of the current ongoing galactic war.",
+        "description": "Global information of the ongoing war.",
         "additionalProperties": false,
         "properties": {
-          "warId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "startedAt": {
+          "started": {
             "type": "string",
+            "description": "When this war was started.",
             "format": "date-time"
           },
-          "endsAt": {
+          "ended": {
             "type": "string",
+            "description": "When this war will end (or has ended).",
             "format": "date-time"
           },
-          "snapshottedAt": {
+          "now": {
             "type": "string",
+            "description": "The time the snapshot of the war was taken, also doubles as the timestamp of which all other data dates from.",
             "format": "date-time"
           },
-          "impactMultiplier": {
-            "type": "number",
-            "format": "double"
-          },
-          "planets": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Planet"
-            }
+          "clientVersion": {
+            "type": "string",
+            "description": "The minimum game client version required to play in this war."
           },
           "factions": {
             "type": "array",
+            "description": "A list of factions currently involved in the war.",
             "items": {
               "type": "string"
             }
           },
-          "attacks": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Attack"
-            }
-          },
-          "statistics": {
-            "$ref": "#/components/schemas/Statistics"
-          }
-        }
-      },
-      "Planet": {
-        "type": "object",
-        "description": "Represents a planet and it's current information.",
-        "additionalProperties": false,
-        "properties": {
-          "index": {
-            "type": "integer",
-            "description": "The numerical ID of this planet.",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string",
-            "description": "The human readable name of this planet."
-          },
-          "sector": {
-            "type": "string",
-            "description": "The name of the sector this planet resides in."
-          },
-          "hash": {
-            "type": "integer",
-            "description": "A hash of this planet.",
-            "format": "int64"
-          },
-          "position": {
-            "description": "A set of coordinates where this planet is located.",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Position"
-              }
-            ]
-          },
-          "waypoints": {
-            "type": "array",
-            "description": "A list of indices of planets this planet is linked to (we can't link planet objects directly or it would cause circular references).",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          "maxHealth": {
-            "type": "integer",
-            "description": "The maximum health pool this planet can have.",
-            "format": "int64"
-          },
-          "health": {
-            "type": "integer",
-            "description": "The current health this planet has, which indicates the control of the faction in CurrentOwner (so for humans you want it to go up, otherwise go down).",
-            "format": "int64"
-          },
-          "disabled": {
-            "type": "boolean",
-            "description": "Whether or not this planet is considered active in the current war effort."
-          },
-          "initialOwner": {
-            "type": "string",
-            "description": "Which faction owned this planet originally."
-          },
-          "currentOwner": {
-            "type": "string",
-            "description": "The faction that currently owns this planet."
-          },
-          "regenPerSecond": {
+          "impactMultiplier": {
             "type": "number",
-            "description": "If left alone, the planet will regenerate X% per second.",
+            "description": "A fraction used to calculate the impact of a mission on the war effort.",
             "format": "double"
           },
-          "players": {
-            "type": "integer",
-            "description": "The amount of players currently active on this planet.",
-            "format": "int64"
-          },
           "statistics": {
-            "description": "Statistics of this planet (see Statistics for global stats).",
+            "description": "The statistics available for the galaxy wide war effort.",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/Statistics"
               }
             ]
-          }
-        }
-      },
-      "Position": {
-        "type": "object",
-        "description": "Represents a position on the galactic war map.",
-        "additionalProperties": false,
-        "properties": {
-          "x": {
-            "type": "number",
-            "description": "The X coordinate.",
-            "format": "double"
-          },
-          "y": {
-            "type": "number",
-            "description": "The Y coordinate.",
-            "format": "double"
           }
         }
       },
@@ -1335,109 +1191,37 @@
           }
         }
       },
-      "Attack": {
+      "Assignment2": {
         "type": "object",
-        "description": "Attacks are launched from one Planet onto another.",
-        "additionalProperties": false,
-        "properties": {
-          "from": {
-            "description": "The Planet from which the attack originates.",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Planet"
-              }
-            ]
-          },
-          "to": {
-            "description": "The Planet at which the attack is targeted.",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Planet"
-              }
-            ]
-          }
-        }
-      },
-      "NewsItem": {
-        "type": "object",
-        "description": "Represents an item in the news feed (shown as 'dispatch' in the game).",
-        "additionalProperties": false,
-        "properties": {
-          "index": {
-            "type": "integer",
-            "description": "Numerical identifier of this message.",
-            "format": "int32"
-          },
-          "publishedAt": {
-            "type": "string",
-            "description": "When this news item was published.",
-            "format": "date-time"
-          },
-          "type": {
-            "type": "integer",
-            "description": "A numerical type, purpose unknown.",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string",
-            "description": "The message for this news item."
-          }
-        }
-      },
-      "SteamNews": {
-        "type": "object",
+        "description": "Represents an assignment given by Super Earth to the community.\nThis is also known as 'Major Order's in the game.",
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string"
-          },
-          "author": {
-            "type": "string"
-          },
-          "content": {
-            "type": "string"
-          },
-          "publishedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "Assignment2": {
-        "type": "object",
-        "description": "Represents an assignment for the entire community.",
-        "additionalProperties": false,
-        "properties": {
-          "index": {
             "type": "integer",
-            "description": "The numerical identifier of this assignment.",
+            "description": "The unique identifier of this assignment.",
             "format": "int64"
           },
-          "expiration": {
-            "type": "string",
-            "description": "When this assignment will expire.",
-            "format": "date-time"
-          },
           "title": {
             "type": "string",
-            "description": "The title for this assignment."
+            "description": "The title of the assignment."
+          },
+          "briefing": {
+            "type": "string",
+            "description": "A long form description of the assignment, usually contains context."
           },
           "description": {
             "type": "string",
-            "description": "The long-form description of this assignment."
+            "description": "A very short summary of the description."
           },
-          "summary": {
-            "type": "string",
-            "description": "A (very) short summary of the assignment."
+          "tasks": {
+            "type": "array",
+            "description": "A list of tasks that need to be completed for this assignment.",
+            "items": {
+              "$ref": "#/components/schemas/Task2"
+            }
           },
           "reward": {
-            "description": "The reward when the assignment is completed.",
+            "description": "The reward for completing the assignment.",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/Reward2"
@@ -1446,35 +1230,181 @@
           }
         }
       },
-      "Reward2": {
+      "Task2": {
         "type": "object",
-        "description": "Represents the reward (and amount) ",
+        "description": "Represents a task in an Assignment that needs to be completed\nto finish the assignment. ",
         "additionalProperties": false,
         "properties": {
           "type": {
+            "type": "integer",
+            "description": "The type of task this represents.",
+            "format": "int32"
+          },
+          "values": {
+            "type": "array",
+            "description": "A list of numbers, purpose unknown.",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "valueTypes": {
+            "type": "array",
+            "description": "A list of numbers, purpose unknown",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "Reward2": {
+        "type": "object",
+        "description": "The reward for completing an Assignment.",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "integer",
             "description": "The type of reward (medals, super credits, ...).",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/RewardType"
-              }
-            ]
+            "format": "int32"
           },
           "amount": {
             "type": "integer",
-            "description": "The amount of Type that will be rewarded.",
+            "description": "The amount of Type that will be awarded.",
             "format": "int32"
           }
         }
       },
-      "RewardType": {
-        "type": "integer",
-        "description": "The type of reward of an Assignment.",
-        "x-enumNames": [
-          "Medals"
-        ],
-        "enum": [
-          1
-        ]
+      "Campaign2": {
+        "type": "object",
+        "description": "Represents an ongoing campaign on a planet.",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The unique identifier of this Campaign.",
+            "format": "int32"
+          },
+          "planet": {
+            "description": "The planet on which this campaign is being fought.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Planet"
+              }
+            ]
+          },
+          "type": {
+            "type": "integer",
+            "description": "The type of campaign, this should be mapped onto an enum.",
+            "format": "int32"
+          },
+          "count": {
+            "type": "integer",
+            "description": "Indicates how many campaigns have already been fought on this Planet.",
+            "format": "int32"
+          }
+        }
+      },
+      "Planet": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "index": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string"
+          },
+          "hash": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "position": {
+            "$ref": "#/components/schemas/Position"
+          },
+          "waypoints": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "maxHealth": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "health": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "disabled": {
+            "type": "boolean"
+          },
+          "initialOwner": {
+            "type": "string"
+          },
+          "currentOwner": {
+            "type": "string"
+          },
+          "regenPerSecond": {
+            "type": "number",
+            "format": "double"
+          },
+          "players": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "statistics": {
+            "$ref": "#/components/schemas/Statistics"
+          }
+        }
+      },
+      "Position": {
+        "type": "object",
+        "description": "Represents a position on the galactic war map.",
+        "additionalProperties": false,
+        "properties": {
+          "x": {
+            "type": "number",
+            "description": "The X coordinate.",
+            "format": "double"
+          },
+          "y": {
+            "type": "number",
+            "description": "The Y coordinate.",
+            "format": "double"
+          }
+        }
+      },
+      "Dispatch": {
+        "type": "object",
+        "description": "A message from high command to the players, usually updates on the status of the war effort.",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The unique identifier of this dispatch.",
+            "format": "int32"
+          },
+          "published": {
+            "type": "string",
+            "description": "When the dispatch was published.",
+            "format": "date-time"
+          },
+          "type": {
+            "type": "integer",
+            "description": "The type of dispatch, purpose unknown.",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "The message this dispatch represents."
+          }
+        }
       }
     }
   }
