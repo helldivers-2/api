@@ -17,7 +17,7 @@ public abstract class StoreBase<T> : IStore<T> where T : class
     public virtual ValueTask SetStore(T value)
     {
         _state = value;
-        _syncState.SetResult();
+        _syncState.TrySetResult();
 
         return ValueTask.CompletedTask;
     }
@@ -45,7 +45,7 @@ public abstract class StoreBase<T, TKey> : IStore<T, TKey> where T : class
     public virtual ValueTask SetStore(List<T> value)
     {
         _state = value;
-        _syncState.SetResult();
+        _syncState.TrySetResult();
 
         return ValueTask.CompletedTask;
     }
