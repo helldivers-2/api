@@ -8,7 +8,7 @@ public sealed class WarMapper(StatisticsMapper statisticsMapper)
     /// <summary>
     /// Handles mapping <see cref="War" /> to V1.
     /// </summary>
-    public War MapToV1(WarInfo info, WarStatus status, WarSummary summary)
+    public War MapToV1(WarInfo info, WarStatus status, WarSummary summary, List<Planet> planets)
     {
         return new War(
             Started: DateTime.UnixEpoch.AddSeconds(info.StartDate),
@@ -17,7 +17,7 @@ public sealed class WarMapper(StatisticsMapper statisticsMapper)
             ClientVersion: info.MinimumClientVersion,
             Factions: [],
             ImpactMultiplier: status.ImpactMultiplier,
-            Statistics: statisticsMapper.MapToV1(summary.GalaxyStats)
+            Statistics: statisticsMapper.MapToV1(summary.GalaxyStats, planets)
         );
     }
 }

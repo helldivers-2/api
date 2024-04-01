@@ -280,7 +280,7 @@
           "players": {
             "type": "integer",
             "description": "The amount of helldivers currently active on this planet.",
-            "format": "int64"
+            "format": "uint64"
           }
         }
       },

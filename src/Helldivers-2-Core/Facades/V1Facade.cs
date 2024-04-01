@@ -27,20 +27,19 @@ public sealed class V1Facade(
         // Fetch a WarStatus for mapping that don't need localized data.
         var invariantStatus = warStatuses.FirstOrDefault().Value;
 
-        await UpdateWarStore(warInfo, invariantStatus, warSummary);
         await UpdatePlanetStore(warInfo, invariantStatus, warSummary);
-
         // Some mappers need access to the list of planets, so we fetch it from the freshly-mapped store.
         var planets = await planetStore.AllAsync();
 
+        await UpdateWarStore(warInfo, invariantStatus, warSummary, planets);
         await UpdateCampaignStore(invariantStatus, planets);
         await UpdateAssignmentsStore(assignments);
         await UpdateDispatchStore(warInfo, newsFeeds);
     }
 
-    private async ValueTask UpdateWarStore(Models.ArrowHead.WarInfo info, Models.ArrowHead.WarStatus status, Models.ArrowHead.WarSummary summary)
+    private async ValueTask UpdateWarStore(Models.ArrowHead.WarInfo info, Models.ArrowHead.WarStatus status, Models.ArrowHead.WarSummary summary, List<Planet> planets)
     {
-        var war = warMapper.MapToV1(info, status, summary);
+        var war = warMapper.MapToV1(info, status, summary, planets);
 
         await warStore.SetStore(war);
     }

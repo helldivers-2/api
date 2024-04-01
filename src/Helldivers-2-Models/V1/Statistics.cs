@@ -17,6 +17,7 @@
 /// <param name="Friendlies">The amount of friendly fire casualties.</param>
 /// <param name="MissionSuccessRate">A percentage indicating how many started missions end in success.</param>
 /// <param name="Accuracy">A percentage indicating average accuracy of Helldivers.</param>
+/// <param name="PlayerCount">The total amount of players present (at the time of the snapshot).</param>
 public sealed record Statistics(
     ulong MissionsWon,
     ulong MissionsLost,
@@ -31,5 +32,6 @@ public sealed record Statistics(
     ulong Revives,
     ulong Friendlies,
     ulong MissionSuccessRate,
-    ulong Accuracy
+    ulong Accuracy,
+    ulong PlayerCount
 );

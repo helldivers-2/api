@@ -15,5 +15,5 @@ public sealed record PlanetStatus(
     int Owner,
     long Health,
     double RegenPerSecond,
-    long Players
+    ulong Players
 );

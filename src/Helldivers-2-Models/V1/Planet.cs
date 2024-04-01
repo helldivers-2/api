@@ -13,6 +13,5 @@ public record Planet(
     string InitialOwner,
     string CurrentOwner,
     double RegenPerSecond,
-    long Players,
     Statistics Statistics
 );

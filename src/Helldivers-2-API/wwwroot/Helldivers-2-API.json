@@ -557,7 +557,7 @@
           "players": {
             "type": "integer",
             "description": "The amount of helldivers currently active on this planet.",
-            "format": "int64"
+            "format": "uint64"
           }
         }
       },
@@ -1252,6 +1252,11 @@
             "type": "integer",
             "description": "A percentage indicating average accuracy of Helldivers.",
             "format": "uint64"
+          },
+          "playerCount": {
+            "type": "integer",
+            "description": "The total amount of players present (at the time of the snapshot).",
+            "format": "uint64"
           }
         }
       },
@@ -1417,10 +1422,6 @@
           "regenPerSecond": {
             "type": "number",
             "format": "double"
-          },
-          "players": {
-            "type": "integer",
-            "format": "int64"
           },
           "statistics": {
             "$ref": "#/components/schemas/Statistics"
