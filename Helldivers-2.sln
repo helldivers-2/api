@@ -40,12 +40,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{617AE193-97B6-4939-A9C0-F9AC060D9D3B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helldivers-2-Core-Test", "tests\Helldivers-2-Core-Test\Helldivers-2-Core-Test.csproj", "{066044FE-BC36-4789-9241-185B1F90972A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helldivers-2-Api-Test", "tests\Helldivers-2-Api-Test\Helldivers-2-Api-Test.csproj", "{D8B95226-ECF7-4D88-97B9-6672DF7D8645}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,14 +66,6 @@ Global
 		{32AE19FB-7D9E-4AC7-A0A5-80DED3680369}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32AE19FB-7D9E-4AC7-A0A5-80DED3680369}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32AE19FB-7D9E-4AC7-A0A5-80DED3680369}.Release|Any CPU.Build.0 = Release|Any CPU
-		{066044FE-BC36-4789-9241-185B1F90972A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{066044FE-BC36-4789-9241-185B1F90972A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{066044FE-BC36-4789-9241-185B1F90972A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{066044FE-BC36-4789-9241-185B1F90972A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D8B95226-ECF7-4D88-97B9-6672DF7D8645}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D8B95226-ECF7-4D88-97B9-6672DF7D8645}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D8B95226-ECF7-4D88-97B9-6672DF7D8645}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D8B95226-ECF7-4D88-97B9-6672DF7D8645}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,7 +80,5 @@ Global
 		{32AE19FB-7D9E-4AC7-A0A5-80DED3680369} = {154421CC-393F-4BDC-8D6D-7EECB28FD874}
 		{18D4A0EA-02CE-4FEA-A641-848A13603040} = {C0ECDBEB-FC7B-4F3C-AF8F-D0961BD22F61}
 		{9D663AC9-2CD8-4114-A802-D12284662FF0} = {18D4A0EA-02CE-4FEA-A641-848A13603040}
-		{066044FE-BC36-4789-9241-185B1F90972A} = {617AE193-97B6-4939-A9C0-F9AC060D9D3B}
-		{D8B95226-ECF7-4D88-97B9-6672DF7D8645} = {617AE193-97B6-4939-A9C0-F9AC060D9D3B}
 	EndGlobalSection
 EndGlobal
