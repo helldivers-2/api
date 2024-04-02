@@ -103,7 +103,7 @@ if (isRunningAsTool)
         document.Description = "An OpenAPI mapping of the official Helldivers API";
         document.DocumentName = "arrowhead";
         document.ApiGroupNames = ["arrowhead"];
-        
+
         document.DocumentProcessors.Add(new Helldivers.API.OpenApi.ArrowHeadDocumentProcessor());
     });
     builder.Services.AddEndpointsApiExplorer();

@@ -21,5 +21,5 @@ namespace Helldivers.Models;
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true, UseStringEnumConverter = true)]
 public sealed partial class V1SerializerContext : JsonSerializerContext
 {
-    
+
 }
