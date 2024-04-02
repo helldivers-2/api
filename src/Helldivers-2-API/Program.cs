@@ -3,9 +3,11 @@ using Helldivers.API.Controllers.V1;
 using Helldivers.API.Middlewares;
 using Helldivers.Core.Extensions;
 using Helldivers.Models;
+using Helldivers.Models.Domain.Localization;
 using Helldivers.Sync.Configuration;
 using Helldivers.Sync.Extensions;
 using Microsoft.AspNetCore.Http.Timeouts;
+using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using System.Text.Json.Serialization;
 
@@ -37,12 +39,21 @@ builder.Services.AddResponseCompression();
 // Automatically set the CultureInfo based on the incoming request.
 builder.Services.AddRequestLocalization(options =>
 {
+    var defaultLanguage = builder
+        .Configuration
+        .GetSection("Helldivers:Synchronization:DefaultLanguage")
+        .Get<string>();
+
     var languages = builder
         .Configuration
         .GetSection("Helldivers:Synchronization:Languages")
         .Get<List<string>>()!;
 
+    // Set the configured default language to be used by the LocalizedMessage class.
+    LocalizedMessage.FallbackCulture = new CultureInfo(defaultLanguage ?? "en-US");
+
     options.ApplyCurrentCultureToResponseHeaders = true;
+    options.DefaultRequestCulture = new RequestCulture(LocalizedMessage.FallbackCulture);
     options.SupportedCultures = languages.Select(iso => new CultureInfo(iso)).ToList();
 });
 // Set CORS headers for websites directly accessing the API.

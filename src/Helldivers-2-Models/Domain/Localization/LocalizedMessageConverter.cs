@@ -16,10 +16,17 @@ internal sealed class LocalizedMessageConverter : JsonConverter<LocalizedMessage
     public override void Write(Utf8JsonWriter writer, LocalizedMessage value, JsonSerializerOptions options)
     {
         if (value.Messages.TryGetValue(CultureInfo.CurrentCulture, out var result) is false)
-            value.Messages.TryGetValue(CultureInfo.CurrentCulture.Parent, out result);
+        {
+            if (value.Messages.TryGetValue(CultureInfo.CurrentCulture.Parent, out result) is false)
+            {
+                // Fall back to the configured default culture if one is available
+                value.Messages.TryGetValue(LocalizedMessage.FallbackCulture, out result);
+            }
+        }
 
         if (string.IsNullOrWhiteSpace(result) is false)
             writer.WriteStringValue(result);
+
         else writer.WriteNullValue();
     }
 }

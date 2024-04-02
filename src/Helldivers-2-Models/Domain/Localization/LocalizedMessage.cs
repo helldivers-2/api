@@ -11,6 +11,11 @@ namespace Helldivers.Models.Domain.Localization;
 public sealed record LocalizedMessage(IReadOnlyDictionary<CultureInfo, string> Messages)
 {
     /// <summary>
+    /// The culture to retrieve when the <see cref="CultureInfo.CurrentCulture" /> is not available.
+    /// </summary>
+    public static CultureInfo FallbackCulture { get; set; } = null!;
+
+    /// <summary>
     /// Factory method for creating a <see cref="LocalizedMessage" /> from a list of {language, value} pairs.
     /// </summary>
     public static LocalizedMessage FromStrings(IEnumerable<KeyValuePair<string, string>> values)
