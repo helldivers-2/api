@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace Helldivers.Models;
 
+/// <summary>
+/// Source generated <see cref="JsonSerializerContext" /> for ArrowHead models.
+/// </summary>
 [JsonSerializable(typeof(WarId))]
 [JsonSerializable(typeof(WarInfo))]
 [JsonSerializable(typeof(WarStatus))]

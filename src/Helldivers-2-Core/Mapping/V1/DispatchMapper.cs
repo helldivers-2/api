@@ -4,8 +4,14 @@ using Helldivers.Models.V1;
 
 namespace Helldivers.Core.Mapping.V1;
 
+/// <summary>
+/// Handles mapping for <see cref="Dispatch" />.
+/// </summary>
 public sealed class DispatchMapper
 {
+    /// <summary>
+    /// Maps ArrowHead's <see cref="WarInfo" /> onto V1's <see cref="Dispatch" />es.
+    /// </summary>
     public IEnumerable<Dispatch> MapToV1(WarInfo info, Dictionary<string, List<NewsFeedItem>> items)
     {
         // Get a list of all items across all translations.
@@ -28,7 +34,7 @@ public sealed class DispatchMapper
         }
     }
 
-    public Dispatch MapToV1(WarInfo info, Dictionary<string, NewsFeedItem> translations)
+    private Dispatch MapToV1(WarInfo info, Dictionary<string, NewsFeedItem> translations)
     {
         var invariant = translations.Values.First();
         var messages = translations.Select(pair => new KeyValuePair<string, string>(pair.Key, pair.Value.Message));

@@ -9,6 +9,9 @@ namespace Helldivers.Sync.Services;
 /// </summary>
 public sealed class SteamApiService(HttpClient http)
 {
+    /// <summary>
+    /// Fetches the latest <paramref name="count" /> from Steam's news feed for Helldivers 2.
+    /// </summary>
     public async Task<SteamNewsFeed> GetLatest(int count = 20)
     {
         var url = $"https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=553850&count={count}&feeds=steam_community_announcements";

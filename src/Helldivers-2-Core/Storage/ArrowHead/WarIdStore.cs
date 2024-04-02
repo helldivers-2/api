@@ -1,4 +1,5 @@
-﻿using Helldivers.Models.ArrowHead;
+﻿using Helldivers.Core.Contracts;
+using Helldivers.Models.ArrowHead;
 
 namespace Helldivers.Core.Storage.ArrowHead;
 

@@ -517,12 +517,14 @@
           },
           "jointOperations": {
             "type": "array",
+            "description": "A list of JointOperations.",
             "items": {
               "$ref": "#/components/schemas/JointOperation"
             }
           },
           "planetEvents": {
             "type": "array",
+            "description": "A list of ongoing PlanetEvents.",
             "items": {
               "$ref": "#/components/schemas/PlanetEvent"
             }
@@ -626,42 +628,52 @@
       },
       "PlanetEvent": {
         "type": "object",
+        "description": "An ongoing event on a planet.",
         "additionalProperties": false,
         "properties": {
-          "index": {
+          "id": {
             "type": "integer",
+            "description": "The unique identifier of this event.",
             "format": "int32"
           },
           "planetIndex": {
             "type": "integer",
+            "description": "The index of the planet.",
             "format": "int32"
           },
           "eventType": {
             "type": "integer",
+            "description": "A numerical identifier that indicates what type of event this is.",
             "format": "int32"
           },
           "race": {
             "type": "integer",
+            "description": "The identifier of the faction that owns the planet currently.",
             "format": "int32"
           },
           "health": {
             "type": "integer",
+            "description": "The current health of the planet.",
             "format": "int64"
           },
           "startTime": {
             "type": "integer",
+            "description": "When this event started.",
             "format": "int64"
           },
           "expireTime": {
             "type": "integer",
+            "description": "When the event will end.",
             "format": "int64"
           },
           "campaignId": {
             "type": "integer",
+            "description": "The unique identifier of a related campaign.",
             "format": "int64"
           },
           "jointOperationIds": {
             "type": "array",
+            "description": "A list of identifiers of related joint operations.",
             "items": {
               "type": "integer",
               "format": "int32"
@@ -1376,27 +1388,38 @@
       },
       "Planet": {
         "type": "object",
+        "description": "Contains all aggregated information AH has about a planet.",
         "additionalProperties": false,
         "properties": {
           "index": {
             "type": "integer",
+            "description": "The unique identifier ArrowHead assigned to this planet.",
             "format": "int32"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the planet, as shown in game."
           },
           "sector": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the sector the planet is in, as shown in game."
           },
           "hash": {
             "type": "integer",
+            "description": "A hash assigned to the planet by ArrowHead, purpose unknown.",
             "format": "int64"
           },
           "position": {
-            "$ref": "#/components/schemas/Position"
+            "description": "The coordinates of this planet on the galactic war map.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Position"
+              }
+            ]
           },
           "waypoints": {
             "type": "array",
+            "description": "A list of Index of all the planets to which this planet is connected.",
             "items": {
               "type": "integer",
               "format": "int32"
@@ -1404,27 +1427,38 @@
           },
           "maxHealth": {
             "type": "integer",
+            "description": "The maximum health pool of this planet.",
             "format": "int64"
           },
           "health": {
             "type": "integer",
+            "description": "The current planet this planet has.",
             "format": "int64"
           },
           "disabled": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether or not this planet is disabled, as assigned by ArrowHead."
           },
           "initialOwner": {
-            "type": "string"
+            "type": "string",
+            "description": "The faction that originally owned the planet."
           },
           "currentOwner": {
-            "type": "string"
+            "type": "string",
+            "description": "The faction that currently controls the planet."
           },
           "regenPerSecond": {
             "type": "number",
+            "description": "How much the planet regenerates per second if left alone.",
             "format": "double"
           },
           "statistics": {
-            "$ref": "#/components/schemas/Statistics"
+            "description": "A set of statistics scoped to this planet.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Statistics"
+              }
+            ]
           }
         }
       },
@@ -1473,25 +1507,32 @@
       },
       "SteamNews": {
         "type": "object",
+        "description": "Represents a new article from Steam's news feed.",
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "The identifier assigned by Steam to this news item."
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "The title of the Steam news item."
           },
           "url": {
-            "type": "string"
+            "type": "string",
+            "description": "The URL to Steam where this news item was posted."
           },
           "author": {
-            "type": "string"
+            "type": "string",
+            "description": "The author who posted this message on Steam."
           },
           "content": {
-            "type": "string"
+            "type": "string",
+            "description": "The message posted by Steam, currently in Steam's weird markdown format."
           },
           "publishedAt": {
             "type": "string",
+            "description": "When this message was posted.",
             "format": "date-time"
           }
         }

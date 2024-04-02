@@ -240,12 +240,14 @@
           },
           "jointOperations": {
             "type": "array",
+            "description": "A list of JointOperations.",
             "items": {
               "$ref": "#/components/schemas/JointOperation"
             }
           },
           "planetEvents": {
             "type": "array",
+            "description": "A list of ongoing PlanetEvents.",
             "items": {
               "$ref": "#/components/schemas/PlanetEvent"
             }
@@ -349,42 +351,52 @@
       },
       "PlanetEvent": {
         "type": "object",
+        "description": "An ongoing event on a planet.",
         "additionalProperties": false,
         "properties": {
-          "index": {
+          "id": {
             "type": "integer",
+            "description": "The unique identifier of this event.",
             "format": "int32"
           },
           "planetIndex": {
             "type": "integer",
+            "description": "The index of the planet.",
             "format": "int32"
           },
           "eventType": {
             "type": "integer",
+            "description": "A numerical identifier that indicates what type of event this is.",
             "format": "int32"
           },
           "race": {
             "type": "integer",
+            "description": "The identifier of the faction that owns the planet currently.",
             "format": "int32"
           },
           "health": {
             "type": "integer",
+            "description": "The current health of the planet.",
             "format": "int64"
           },
           "startTime": {
             "type": "integer",
+            "description": "When this event started.",
             "format": "int64"
           },
           "expireTime": {
             "type": "integer",
+            "description": "When the event will end.",
             "format": "int64"
           },
           "campaignId": {
             "type": "integer",
+            "description": "The unique identifier of a related campaign.",
             "format": "int64"
           },
           "jointOperationIds": {
             "type": "array",
+            "description": "A list of identifiers of related joint operations.",
             "items": {
               "type": "integer",
               "format": "int32"

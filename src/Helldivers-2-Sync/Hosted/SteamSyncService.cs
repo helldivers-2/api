@@ -7,6 +7,9 @@ using System.Diagnostics;
 
 namespace Helldivers.Sync.Hosted;
 
+/// <summary>
+/// Handles synchronization of Steam API information.
+/// </summary>
 public sealed partial class SteamSyncService(
     ILogger<SteamSyncService> logger,
     StorageFacade storage,

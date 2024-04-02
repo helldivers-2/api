@@ -8,8 +8,8 @@ namespace Helldivers.Core.Storage;
 /// </summary>
 public abstract class StoreBase<T> : IStore<T> where T : class
 {
-    protected T _state = null!;
-    protected readonly TaskCompletionSource _syncState = new();
+    private T _state = null!;
+    private readonly TaskCompletionSource _syncState = new();
 
     /// <summary>
     /// Updates the state of the store with the new value.
@@ -36,8 +36,8 @@ public abstract class StoreBase<T> : IStore<T> where T : class
 /// </summary>
 public abstract class StoreBase<T, TKey> : IStore<T, TKey> where T : class
 {
-    protected List<T> _state = null!;
-    protected readonly TaskCompletionSource _syncState = new();
+    private List<T> _state = null!;
+    private readonly TaskCompletionSource _syncState = new();
 
     /// <summary>
     /// Updates the state of the store with the new value.

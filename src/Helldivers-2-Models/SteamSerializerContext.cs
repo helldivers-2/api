@@ -4,6 +4,9 @@ using System.Text.Json.Serialization;
 
 namespace Helldivers.Models;
 
+/// <summary>
+/// Source generated <see cref="JsonSerializerContext" /> for Steam models.
+/// </summary>
 [JsonSerializable(typeof(SteamNewsFeed))]
 [JsonSerializable(typeof(List<SteamNews>))]
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]

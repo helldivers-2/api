@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace Helldivers.Models;
 
+/// <summary>
+/// Source generated <see cref="JsonSerializerContext" /> for V1's models.
+/// </summary>
 [JsonSerializable(typeof(Assignment))]
 [JsonSerializable(typeof(List<Assignment>))]
 [JsonSerializable(typeof(Campaign))]

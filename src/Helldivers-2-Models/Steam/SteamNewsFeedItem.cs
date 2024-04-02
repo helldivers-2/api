@@ -3,7 +3,8 @@
 /// <summary>
 /// Represents a single item in the Steam news feed response.
 /// </summary>
-/// <param name="Title">The title </param>
+/// <param name="Gid">A unique identifier assigned by Steam.</param>
+/// <param name="Title">The title of the news article.</param>
 /// <param name="Url">The URL to the full article on Steam</param>
 /// <param name="Author">The name of the author that released the news item.</param>
 /// <param name="Contents">The contents of the news item.</param>

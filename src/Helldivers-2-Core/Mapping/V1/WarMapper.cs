@@ -3,6 +3,9 @@ using Helldivers.Models.V1;
 
 namespace Helldivers.Core.Mapping.V1;
 
+/// <summary>
+/// Handles mapping for <see cref="War" />.
+/// </summary>
 public sealed class WarMapper(StatisticsMapper statisticsMapper)
 {
     /// <summary>

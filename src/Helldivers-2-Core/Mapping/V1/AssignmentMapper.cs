@@ -5,8 +5,14 @@ using Task = Helldivers.Models.V1.Assignments.Task;
 
 namespace Helldivers.Core.Mapping.V1;
 
+/// <summary>
+/// Handles mapping for <see cref="Assignment" />.
+/// </summary>
 public sealed class AssignmentMapper
 {
+    /// <summary>
+    /// Maps a set of multi-language <see cref="Assignment" />s into a list of <see cref="Assignment" />.
+    /// </summary>
     public IEnumerable<Assignment> MapToV1(Dictionary<string, List<Models.ArrowHead.Assignment>> assignments)
     {
         // Get a list of all assignments across all translations.
@@ -29,6 +35,9 @@ public sealed class AssignmentMapper
         }
     }
 
+    /// <summary>
+    /// Maps all translations of an <see cref="Assignment" /> into one assignment.
+    /// </summary>
     private Assignment MapToV1(Dictionary<string, Models.ArrowHead.Assignment> translations)
     {
         var invariant = translations.First().Value;

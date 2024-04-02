@@ -10,9 +10,15 @@ namespace Helldivers.Core;
 /// </summary>
 public sealed class StorageFacade(ArrowHeadFacade arrowHead, SteamFacade steam, V1Facade v1)
 {
+    /// <summary>
+    /// Updates all stores that rely on <see cref="SteamNewsFeed" />.
+    /// </summary>
     public ValueTask UpdateStores(SteamNewsFeed feed)
         => steam.UpdateStores(feed);
 
+    /// <summary>
+    /// Updates all stores that rely on ArrowHead's models.
+    /// </summary>
     public async ValueTask UpdateStores(WarId warId, WarInfo warInfo, Dictionary<string, WarStatus> warStatuses, WarSummary warSummary, Dictionary<string, List<NewsFeedItem>> newsFeeds, Dictionary<string, List<Assignment>> assignments)
     {
         await arrowHead.UpdateStores(warId, warInfo, warStatuses, warSummary, newsFeeds, assignments);

@@ -13,7 +13,7 @@ namespace Helldivers.Sync.Hosted;
 
 /// <summary>
 /// The background synchronization service that pulls information from ArrowHead's API (through <see cref="ArrowHeadApiService" />)
-/// and updates the <see cref="WarSnapshot" />.
+/// and updates the <see cref="StorageFacade" />.
 /// </summary>
 public sealed partial class ArrowHeadSyncService(
     ILogger<ArrowHeadSyncService> logger,

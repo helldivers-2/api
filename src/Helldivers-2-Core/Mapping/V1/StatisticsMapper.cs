@@ -2,8 +2,14 @@
 
 namespace Helldivers.Core.Mapping.V1;
 
+/// <summary>
+/// Handles mapping for <see cref="Statistics" />.
+/// </summary>
 public sealed class StatisticsMapper
 {
+    /// <summary>
+    /// Maps galaxy wide statistics onto V1's statistics.
+    /// </summary>
     public Statistics MapToV1(Models.ArrowHead.Summary.GalaxyStats statistics, List<Planet> planets)
     {
         var playerCount = planets.Aggregate(0ul, (total, planet) => total + planet.Statistics.PlayerCount);
@@ -27,6 +33,9 @@ public sealed class StatisticsMapper
         );
     }
 
+    /// <summary>
+    /// Maps statistics of a specific planet onto V1's statistics.
+    /// </summary>
     public Statistics MapToV1(Models.ArrowHead.Summary.PlanetStats? statistics, Models.ArrowHead.Status.PlanetStatus status)
     {
         return new Statistics(

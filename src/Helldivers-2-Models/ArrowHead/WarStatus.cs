@@ -12,6 +12,8 @@ namespace Helldivers.Models.ArrowHead;
 /// <param name="PlanetStatus">A list of statuses for planets.</param>
 /// <param name="PlanetAttacks">A list of attacks currently ongoing.</param>
 /// <param name="Campaigns">A list of ongoing campaigns in the galactic war.</param>
+/// <param name="JointOperations">A list of <see cref="JointOperation" />s.</param>
+/// <param name="PlanetEvents">A list of ongoing <see cref="PlanetEvent" />s.</param>
 public sealed record WarStatus(
     int WarId,
     long Time,
