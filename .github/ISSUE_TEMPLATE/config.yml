@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discord Chat
+    url: https://discord.gg/E8UUfWYmf9
+    about: Ask questions and discuss with other developers in real time.
+  - name: Questions & Discussions
+    url: https://github.com/helldivers-2/api/discussions
+    about: Use GitHub discussions for message-board style questions and discussions.
+  - name: Buy me a coffee
+    url: https://www.buymeacoffee.com/dealloc
+    about: If you want to support the development, check out buymeacoffee

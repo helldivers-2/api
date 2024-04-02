@@ -31,6 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Github", "Github", "{18D4A0
 		README.md = README.md
 		SECURITY.md = SECURITY.md
 		LICENSE = LICENSE
+		CONTRIBUTING.md = CONTRIBUTING.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{9D663AC9-2CD8-4114-A802-D12284662FF0}"
@@ -38,6 +39,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{
 		.github\workflows\fly.yml = .github\workflows\fly.yml
 		.github\workflows\pages.yml = .github\workflows\pages.yml
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{FD5B9284-4689-48BE-B520-633C7269F97C}"
+	ProjectSection(SolutionItems) = preProject
+		.github\ISSUE_TEMPLATE\bug_report.yml = .github\ISSUE_TEMPLATE\bug_report.yml
+		.github\ISSUE_TEMPLATE\config.yml = .github\ISSUE_TEMPLATE\config.yml
+		.github\ISSUE_TEMPLATE\feature_request.md = .github\ISSUE_TEMPLATE\feature_request.md
 	EndProjectSection
 EndProject
 Global
@@ -80,5 +88,6 @@ Global
 		{32AE19FB-7D9E-4AC7-A0A5-80DED3680369} = {154421CC-393F-4BDC-8D6D-7EECB28FD874}
 		{18D4A0EA-02CE-4FEA-A641-848A13603040} = {C0ECDBEB-FC7B-4F3C-AF8F-D0961BD22F61}
 		{9D663AC9-2CD8-4114-A802-D12284662FF0} = {18D4A0EA-02CE-4FEA-A641-848A13603040}
+		{FD5B9284-4689-48BE-B520-633C7269F97C} = {18D4A0EA-02CE-4FEA-A641-848A13603040}
 	EndGlobalSection
 EndGlobal
