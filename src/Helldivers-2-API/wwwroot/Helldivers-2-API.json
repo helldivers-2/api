@@ -510,7 +510,7 @@
           },
           "impactMultiplier": {
             "type": "number",
-            "description": "This is the factor by which XP at the end of a mission is multiplied to calculate the impact on liberation",
+            "description": "This is the factor by which influence at the end of a mission is multiplied to calculate the impact on liberation",
             "format": "double"
           },
           "storyBeatId32": {
