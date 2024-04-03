@@ -24,6 +24,8 @@ public sealed class V1Facade(
     /// <see cref="IStore{T,TKey}.SetStore" />
     public async ValueTask UpdateStores(Models.ArrowHead.WarId warId, Models.ArrowHead.WarInfo warInfo, Dictionary<string, Models.ArrowHead.WarStatus> warStatuses, Models.ArrowHead.WarSummary warSummary, Dictionary<string, List<Models.ArrowHead.NewsFeedItem>> newsFeeds, Dictionary<string, List<Models.ArrowHead.Assignment>> assignments)
     {
+        // TODO: map warId
+
         // Fetch a WarStatus for mapping that don't need localized data.
         var invariantStatus = warStatuses.FirstOrDefault().Value;
 

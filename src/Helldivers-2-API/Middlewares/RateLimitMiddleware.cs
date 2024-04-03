@@ -9,6 +9,7 @@ namespace Helldivers.API.Middlewares;
 /// </summary>
 public sealed partial class RateLimitMiddleware(ILogger<RateLimitMiddleware> logger, IMemoryCache cache) : IMiddleware
 {
+    // TODO: move to configurable policies.
     private const int DefaultRequestLimit = 5;
     private const int DefaultRequestWindow = 10;
 
