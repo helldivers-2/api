@@ -33,7 +33,7 @@ Open the `Helldivers-2.sln` file in the root of the repository and you're good t
 ### Formatting, line endings and syntax
 There's three pilars when it comes to coding conventions, formatting etc:
 - [.editorconfig](https://editorconfig.org/) is set up in the repository, if your IDE supports it you should install
-    the required plugin to ensure your code is correctly formatted according to it.
+    the required plugin to ensure your code is correctly formatted according to the configuration.
 - [Microsoft C# coding conventions](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
     write idiomatic C# and try to follow conventions from either Microsoft or the project if it deviates from a specific
     rule.
@@ -43,7 +43,7 @@ There's three pilars when it comes to coding conventions, formatting etc:
 ### Be respectful
 Disagreements happen, discussions are perfectly fine (we encourage a healthy discussion even!), however you (and we) are
 to remain respectful at **all times**. While we try to listen to the community whenever possible, please keep in mind
-that 1. we do this in our free time (and for free nonetheless), and 2. we have the *final* say when it comes to decisions
+that 1. we do this in our spare time (for free, to boot!), and 2. we have the *final* say when it comes to decisions
 regarding the code that we maintain. See [Code of conduct](https://github.com/helldivers-2/api?tab=coc-ov-file) for more
 information on our expectations on the behaviour of our maintainers and community.
 
@@ -64,7 +64,7 @@ There are three primary reasons we might choose not to accept your pull request 
 2. **We don't accept pull requests with features we don't want/feel comfortable maintaining**
     If you create an awesome feature that is rather complex, we might choose not to accept the feature.
     This is probably not related to the quality of your code (that's what PR's are for in the first place), but rather
-    with the fact that after you've left the maintainers still need to make sure it keeps working for as long as we
+    with the fact that after you've left, the maintainers still need to make sure it keeps working for as long as we
     don't sunset the feature. If your feature/PR would add too much of a burden on the maintenance we might choose not
     to accept it, regardless of how cool or convenient it is (sorry!).
 3. **It falls outside the scope of this project**

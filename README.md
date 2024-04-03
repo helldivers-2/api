@@ -20,7 +20,7 @@ the ArrowHead API directly, as it puts additional load on their servers (besides
 
 The root URL of the API is available here: https://helldivers-2-dotnet.fly.dev/
 > [!WARNING]
-> note that it might change as we are transitioning from the Elixir version to a new version!
+> Note that it might change as we are transitioning from the Elixir version to a new version!
 
 We also ask that you send us a `User-Agent` header when making requests (if accessing directly from the browser,
 the headers sent by those should suffice and you don't need to add anything special).
