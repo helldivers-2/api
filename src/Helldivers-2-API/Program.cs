@@ -107,6 +107,8 @@ if (isRunningAsTool)
                 schema => schema.Type = NJsonSchema.JsonObjectType.String
             )
         );
+
+        document.DocumentProcessors.Add(new Helldivers.API.OpenApi.HelldiversDocumentProcessor());
     });
     builder.Services.AddOpenApiDocument(document =>
     {
