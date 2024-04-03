@@ -1514,37 +1514,46 @@
       },
       "Event": {
         "type": "object",
+        "description": "An ongoing event on a Planet.",
         "additionalProperties": false,
         "properties": {
           "id": {
             "type": "integer",
+            "description": "The unique identifier of this event.",
             "format": "int32"
           },
           "eventType": {
             "type": "integer",
+            "description": "The type of event.",
             "format": "int32"
           },
           "faction": {
-            "type": "string"
+            "type": "string",
+            "description": "The faction that initiated the event."
           },
           "health": {
             "type": "integer",
+            "description": "The health of the Planet at the time of snapshot.",
             "format": "int64"
           },
           "startTime": {
             "type": "string",
+            "description": "When the event started.",
             "format": "date-time"
           },
           "endTime": {
             "type": "string",
+            "description": "When the event will end.",
             "format": "date-time"
           },
           "campaignId": {
             "type": "integer",
+            "description": "The identifier of the Campaign linked to this event.",
             "format": "int64"
           },
           "jointOperationIds": {
             "type": "array",
+            "description": "A list of joint operation identifier linked to this event.",
             "items": {
               "type": "integer",
               "format": "int32"

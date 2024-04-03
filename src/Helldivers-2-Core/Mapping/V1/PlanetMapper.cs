@@ -4,6 +4,7 @@ using Helldivers.Models.ArrowHead.Info;
 using Helldivers.Models.ArrowHead.Status;
 using Helldivers.Models.ArrowHead.Summary;
 using Helldivers.Models.V1;
+using Helldivers.Models.V1.Planets;
 
 namespace Helldivers.Core.Mapping.V1;
 

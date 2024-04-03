@@ -1,4 +1,6 @@
-﻿namespace Helldivers.Models.V1;
+﻿using Helldivers.Models.V1.Planets;
+
+namespace Helldivers.Models.V1;
 
 /// <summary>
 /// Contains all aggregated information AH has about a planet.
