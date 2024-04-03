@@ -510,7 +510,7 @@
           },
           "impactMultiplier": {
             "type": "number",
-            "description": "This is the factor by which XP at the end of a mission is multiplied to calculate the impact on liberation",
+            "description": "This is the factor by which influence at the end of a mission is multiplied to calculate the impact on liberation",
             "format": "double"
           },
           "storyBeatId32": {
@@ -1120,7 +1120,7 @@
       },
       "Task": {
         "type": "object",
-        "description": "Represents a task in an Assignment.\nIt's exact values are not known, therefor little of it's purpose is clear.",
+        "description": "Represents a task in an Assignment.\nIt's exact values are not known, therefore little of it's purpose is clear.",
         "additionalProperties": false,
         "properties": {
           "type": {
