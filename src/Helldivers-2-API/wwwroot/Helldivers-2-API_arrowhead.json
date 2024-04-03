@@ -819,7 +819,7 @@
       },
       "Task": {
         "type": "object",
-        "description": "Represents a task in an Assignment.\nIt's exact values are not known, therefor little of it's purpose is clear.",
+        "description": "Represents a task in an Assignment.\nIt's exact values are not known, therefore little of it's purpose is clear.",
         "additionalProperties": false,
         "properties": {
           "type": {
