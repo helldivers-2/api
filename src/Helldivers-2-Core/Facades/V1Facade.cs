@@ -76,6 +76,7 @@ public sealed class V1Facade(
     {
         var dispatches = dispatchMapper
             .MapToV1(info, translations)
+            .OrderByDescending(dispatch => dispatch.Id)
             .ToList();
 
         await dispatchStore.SetStore(dispatches);
