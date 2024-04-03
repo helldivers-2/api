@@ -1,0 +1,102 @@
+name: "\U0001F41E Bug report"
+description: Report something that isn't working as it should or is outright broken
+title: "[BUG]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Before You Start...**
+
+        This form is only for submitting bug reports. If you have a usage question
+        or are unsure if this is really a bug, make sure to:
+
+        - Read the [docs](https://helldivers-2.fly.dev/swagger-ui.html)
+        - Ask on [Discord Chat](https://discord.gg/E8UUfWYmf9)
+        - Ask on [GitHub Discussions](https://github.com/helldivers-2/api/discussions)
+
+        Also try to search for your issue - it may have already been answered or even fixed in the development branch.
+        However, if you find that an old, closed issue still persists in the latest version,
+        you should open a new issue using the form below instead of commenting on the old issue.
+  - type: input
+    id: reproduction-link
+    attributes:
+      label: Link to faulty endpoint
+      description: |
+        Provide a link to the endpoint that is malfunctioning.
+
+        Please do not just fill in a random link. The issue will be closed if no valid reproduction is provided.
+      placeholder: Reproduction Link
+    validations:
+      required: true
+  - type: input
+    id: client-name
+    attributes:
+      label: The name of your client/application
+      description: |
+        This helps us identifying the errors in our logs that are related to the problem you are reporting.
+        For websites that access the API directly you should put the domain of your website here, if you are writing
+        a server side application (aka an API, Discord bot or if your website only accesses the API server side) put
+        the name of the application here that it reports in the `User-Agent` header.
+      placeholder: Client name
+    validations:
+      required: true
+  - type: textarea
+    id: request-data
+    attributes:
+      label: Request information
+      description: |
+        Provide as much information about your request as you can.
+        If you are accessing the API from the browser you can right click the request in the network tab of your devtools
+        see [this link](https://everything.curl.dev/cmdline/copyas.html) for more information on how to do this in your
+        browser.
+  
+        If you are writing a server side application include all headers and the URL you are sending, in case of doubt
+        feel free to put the code you use to call the API here.
+      placeholder: Request information
+    validations:
+      required: true
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: |
+        What exactly is your application doing that causes the API to malfunction?
+        If we have to investigate the issue, what would we have to do to reproduce the issue?
+      placeholder: Steps to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What is expected?
+      description: |
+        This can range from a textual explanation of what you were expecting to see/happen to providing JSON snippets
+        that illustrate what should be outputted.
+    validations:
+      required: true
+  - type: textarea
+    id: actually-happening
+    attributes:
+      label: What is actually happening?
+      description: |
+        Explain what is happening that deviates from the expected output.
+        You can use screenshots (in the comments), but please make sure to provide the JSON output that the API returned
+        and if possible the JSON output of the official ArrowHead API (can be fetched through the `/raw` endpoints).
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: system-info
+    attributes:
+      label: System Info
+      description: |
+        Provide as much information about the environment you are using, this can range from the browser you are accessing
+        the API with to the programming language of your app/website, your editor/IDE, ...
+      render: shell
+      placeholder: System, browser, programming language, editor, ...
+  - type: textarea
+    id: additional-comments
+    attributes:
+      label: Any additional comments?
+      description: e.g. some background/context of how you ran into this bug.
