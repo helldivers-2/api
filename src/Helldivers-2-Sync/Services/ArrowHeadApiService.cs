@@ -65,7 +65,7 @@ public sealed class ArrowHeadApiService(
     public async IAsyncEnumerable<NewsFeedItem> LoadFeed(string season, string language,
         [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        var request = BuildRequest($"/api/NewsFeed/{season}", language);
+        var request = BuildRequest($"/api/NewsFeed/{season}?maxEntries=1024", language);
         using var response = await http.SendAsync(request, cancellationToken);
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
 
