@@ -33,4 +33,18 @@ public static class PlanetController
 
         return Results.Ok(planet);
     }
+
+    /// <summary>
+    /// Fetches all planets with an active <see cref="Planet.Event" />.
+    /// </summary>
+    [ProducesResponseType<List<Planet>>(StatusCodes.Status200OK)]
+    public static async Task<IResult> WithEvents(HttpContext context, IStore<Planet, int> store)
+    {
+        var planets = await store.AllAsync(context.RequestAborted);
+        var withEvents = planets
+            .Where(planet => planet.Event is not null)
+            .ToList();
+
+        return Results.Ok(withEvents);
+    }
 }

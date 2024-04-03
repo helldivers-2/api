@@ -391,6 +391,30 @@
         }
       }
     },
+    "/api/v1/planet-events": {
+      "get": {
+        "tags": [
+          "v1"
+        ],
+        "summary": "Fetches all planets with an active Event.",
+        "operationId": "GetApiV1PlanetEvents",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Planet"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/steam": {
       "get": {
         "tags": [
@@ -1452,6 +1476,15 @@
             "description": "How much the planet regenerates per second if left alone.",
             "format": "double"
           },
+          "event": {
+            "description": "Information on the active event ongoing on this planet, if one is active.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Event"
+              }
+            ]
+          },
           "statistics": {
             "description": "A set of statistics scoped to this planet.",
             "oneOf": [
@@ -1476,6 +1509,46 @@
             "type": "number",
             "description": "The Y coordinate.",
             "format": "double"
+          }
+        }
+      },
+      "Event": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "eventType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "faction": {
+            "type": "string"
+          },
+          "health": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "campaignId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "jointOperationIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         }
       },

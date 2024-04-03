@@ -22,15 +22,16 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
         {
             var status = warStatus.PlanetStatus.First(status => status.Index == info.Index);
             var stats = summary.PlanetsStats.FirstOrDefault(stats => stats.PlanetIndex == info.Index);
+            var @event = warStatus.PlanetEvents.FirstOrDefault(@event => @event.PlanetIndex == info.Index);
 
-            yield return MapToV1(info, status, stats);
+            yield return MapToV1(info, status, @event, stats);
         }
     }
 
     /// <summary>
     /// Merges all ArrowHead data points on planets into a single <see cref="Planet" /> object.
     /// </summary>
-    public Planet MapToV1(PlanetInfo info, PlanetStatus status, PlanetStats? stats)
+    public Planet MapToV1(PlanetInfo info, PlanetStatus status, PlanetEvent? @event, PlanetStats? stats)
     {
         Static.Planets.TryGetValue(info.Index, out var name);
         Static.Factions.TryGetValue(info.InitialOwner, out var initialOwner);
@@ -49,7 +50,27 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
             InitialOwner: initialOwner ?? string.Empty,
             CurrentOwner: currentOwner ?? string.Empty,
             RegenPerSecond: status.RegenPerSecond,
+            Event: MapToV1(@event),
             Statistics: statisticsMapper.MapToV1(stats, status)
+        );
+    }
+
+    private Event? MapToV1(PlanetEvent? @event)
+    {
+        if (@event is null)
+            return null;
+
+        Static.Factions.TryGetValue(@event.Race, out var faction);
+
+        return new Event(
+            Id: @event.Id,
+            EventType: @event.EventType,
+            Faction: faction ?? string.Empty,
+            Health: @event.Health,
+            StartTime: DateTime.UnixEpoch.AddSeconds(@event.StartTime),
+            EndTime: DateTime.UnixEpoch.AddSeconds(@event.ExpireTime),
+            CampaignId: @event.CampaignId,
+            JointOperationIds: @event.JointOperationIds
         );
     }
 }

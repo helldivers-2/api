@@ -15,6 +15,7 @@
 /// <param name="InitialOwner">The faction that originally owned the planet.</param>
 /// <param name="CurrentOwner">The faction that currently controls the planet.</param>
 /// <param name="RegenPerSecond">How much the planet regenerates per second if left alone.</param>
+/// <param name="Event">Information on the active event ongoing on this planet, if one is active.</param>
 /// <param name="Statistics">A set of statistics scoped to this planet.</param>
 public record Planet(
     int Index,
@@ -29,5 +30,6 @@ public record Planet(
     string InitialOwner,
     string CurrentOwner,
     double RegenPerSecond,
+    Event? Event,
     Statistics Statistics
 );
