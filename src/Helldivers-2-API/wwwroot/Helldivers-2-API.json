@@ -8,6 +8,16 @@
   },
   "paths": {
     "/raw/api/WarSeason/current/WarID": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "raw"
@@ -29,6 +39,16 @@
       }
     },
     "/raw/api/WarSeason/801/Status": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "raw"
@@ -50,6 +70,16 @@
       }
     },
     "/raw/api/WarSeason/801/WarInfo": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "raw"
@@ -71,6 +101,16 @@
       }
     },
     "/raw/api/Stats/war/801/summary": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "raw"
@@ -92,6 +132,16 @@
       }
     },
     "/raw/api/NewsFeed/801": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "raw"
@@ -116,6 +166,16 @@
       }
     },
     "/raw/api/v2/Assignment/War/801": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "raw"
@@ -143,6 +203,16 @@
       }
     },
     "/api/v1/war": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "v1"
@@ -164,6 +234,16 @@
       }
     },
     "/api/v1/assignments": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "v1"
@@ -188,6 +268,16 @@
       }
     },
     "/api/v1/assignments/{index}": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "v1"
@@ -221,6 +311,16 @@
       }
     },
     "/api/v1/campaigns": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "v1"
@@ -245,6 +345,16 @@
       }
     },
     "/api/v1/campaigns/{index}": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "v1"
@@ -278,6 +388,16 @@
       }
     },
     "/api/v1/dispatches": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "v1"
@@ -302,6 +422,16 @@
       }
     },
     "/api/v1/dispatches/{index}": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "v1"
@@ -335,6 +465,16 @@
       }
     },
     "/api/v1/planets": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "v1"
@@ -359,6 +499,16 @@
       }
     },
     "/api/v1/planets/{index}": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "v1"
@@ -392,6 +542,16 @@
       }
     },
     "/api/v1/planet-events": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "v1"
@@ -416,6 +576,16 @@
       }
     },
     "/api/v1/steam": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "v1"
@@ -441,6 +611,16 @@
       }
     },
     "/api/v1/steam/{gid}": {
+      "servers": [
+        {
+          "url": "https://helldivers-2-dotnet.fly.dev/",
+          "description": "The dotnet helldivers server"
+        },
+        {
+          "url": "/",
+          "description": "The dotnet helldivers server"
+        }
+      ],
       "get": {
         "tags": [
           "v1"
