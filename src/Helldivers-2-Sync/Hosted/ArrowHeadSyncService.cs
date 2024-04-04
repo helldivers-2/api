@@ -71,31 +71,31 @@ public sealed partial class ArrowHeadSyncService(
     {
         var api = services.GetRequiredService<ArrowHeadApiService>();
 
-        var warId = await api.GetCurrentSeason(cancellationToken);
+        var (rawWarId, warId) = await api.GetCurrentSeason(cancellationToken);
         var season = warId.Id.ToString(CultureInfo.InvariantCulture);
         var warInfo = await api.GetWarInfo(season, cancellationToken);
         var warSummary = await api.GetSummary(season, cancellationToken);
 
         // For each language, load war status.
-        var statuses = await DownloadTranslations(
+        var statuses = await DownloadTranslations<WarStatus>(
             language => api.GetWarStatus(season, language, cancellationToken),
             cancellationToken
         );
 
         // For each language, load news feed.
-        var feeds = await DownloadTranslations(
-            async language => await api.LoadFeed(season, language, cancellationToken).ToListAsync(cancellationToken),
+        var feeds = await DownloadTranslations<NewsFeedItem>(
+            async language => await api.LoadFeed(season, language, cancellationToken),
             cancellationToken
         );
 
         // For each language, load assignments
-        var assignments = await DownloadTranslations(
-            async language => await api.LoadAssignments(season, language, cancellationToken).ToListAsync(cancellationToken),
+        var assignments = await DownloadTranslations<Assignment>(
+            async language => await api.LoadAssignments(season, language, cancellationToken),
             cancellationToken
         );
 
         await storage.UpdateStores(
-            warId,
+            rawWarId,
             warInfo,
             statuses,
             warSummary,
@@ -104,7 +104,7 @@ public sealed partial class ArrowHeadSyncService(
         );
     }
 
-    private async Task<Dictionary<string, T>> DownloadTranslations<T>(Func<string, Task<T>> func, CancellationToken cancellationToken) where T : class
+    private async Task<Dictionary<string, Memory<byte>>> DownloadTranslations<T>(Func<string, Task<Memory<byte>>> func, CancellationToken cancellationToken)
     {
         return await configuration.Value.Languages
             .ToAsyncEnumerable()
@@ -114,54 +114,17 @@ public sealed partial class ArrowHeadSyncService(
                 {
                     var result = await func(language);
 
-                    return new KeyValuePair<string, T?>(language, result);
+                    return new KeyValuePair<string, Memory<byte>?>(language, result);
                 }
                 catch (Exception exception)
                 {
                     LogFailedToLoadTranslation(logger, exception, language, typeof(T).Name);
 
-                    return new KeyValuePair<string, T?>(language, null);
+                    return new KeyValuePair<string, Memory<byte>?>(language, null);
                 }
             })
             .SelectAwait(async task => await task)
             .Where(pair => pair.Value is not null)
-            .ToDictionaryAsync(pair => pair.Key, pair => pair.Value!, cancellationToken: cancellationToken);
-    }
-
-    /// <summary>Helper function to download the war status or return null if anything fails.</summary>
-    private async ValueTask<KeyValuePair<string, WarStatus?>> AttemptToLoadWarStatus(ArrowHeadApiService arrowHeadApi, string season,
-        string language, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var status = await arrowHeadApi.GetWarStatus(season, language, cancellationToken);
-
-            return new(language, status);
-        }
-        catch (Exception exception)
-        {
-            LogFailedToLoadTranslation(logger, exception, language, nameof(WarStatus));
-
-            return new(language, null);
-        }
-    }
-
-    /// <summary>Helper function to download a list of <typeparamref name="T" /> or return null if anything fails.</summary>
-    private async ValueTask<KeyValuePair<string, List<T>?>> AttemptToLoadTranslations<T>(
-        Func<string, string, CancellationToken, IAsyncEnumerable<T>> api, string season, string language,
-        CancellationToken cancellationToken)
-    {
-        try
-        {
-            var items = await api(season, language, cancellationToken).ToListAsync(cancellationToken);
-
-            return new(language, items);
-        }
-        catch (Exception exception)
-        {
-            LogFailedToLoadTranslation(logger, exception, language, typeof(T).Name);
-
-            return new(language, null);
-        }
+            .ToDictionaryAsync(pair => pair.Key, pair => pair.Value.GetValueOrDefault(), cancellationToken: cancellationToken);
     }
 }

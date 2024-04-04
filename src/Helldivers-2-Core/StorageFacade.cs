@@ -1,6 +1,9 @@
 ﻿using Helldivers.Core.Facades;
-using Helldivers.Models.ArrowHead;
+using Helldivers.Core.Storage.ArrowHead;
+using Helldivers.Models;
 using Helldivers.Models.Steam;
+using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 
 namespace Helldivers.Core;
 
@@ -8,7 +11,7 @@ namespace Helldivers.Core;
 /// Rather than having the sync service be aware of all mappings and storage versions,
 /// this facade class handles dispatching incoming data to the correct underlying stores.
 /// </summary>
-public sealed class StorageFacade(ArrowHeadFacade arrowHead, SteamFacade steam, V1Facade v1)
+public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V1Facade v1)
 {
     /// <summary>
     /// Updates all stores that rely on <see cref="SteamNewsFeed" />.
@@ -19,9 +22,45 @@ public sealed class StorageFacade(ArrowHeadFacade arrowHead, SteamFacade steam, 
     /// <summary>
     /// Updates all stores that rely on ArrowHead's models.
     /// </summary>
-    public async ValueTask UpdateStores(WarId warId, WarInfo warInfo, Dictionary<string, WarStatus> warStatuses, WarSummary warSummary, Dictionary<string, List<NewsFeedItem>> newsFeeds, Dictionary<string, List<Assignment>> assignments)
+    public async ValueTask UpdateStores(Memory<byte> rawWarId, Memory<byte> rawWarInfo,
+        Dictionary<string, Memory<byte>> rawWarStatuses, Memory<byte> rawWarSummary,
+        Dictionary<string, Memory<byte>> rawNewsFeeds, Dictionary<string, Memory<byte>> rawAssignments)
     {
-        await arrowHead.UpdateStores(warId, warInfo, warStatuses, warSummary, newsFeeds, assignments);
-        await v1.UpdateStores(warId, warInfo, warStatuses, warSummary, newsFeeds, assignments);
+        arrowHead.UpdateRawStore(
+            rawWarId,
+            rawWarInfo,
+            rawWarSummary,
+            rawWarStatuses,
+            rawNewsFeeds,
+            rawAssignments
+        );
+
+        var warId = DeserializeOrThrow(rawWarId, ArrowHeadSerializerContext.Default.WarId);
+        var warInfo = DeserializeOrThrow(rawWarInfo, ArrowHeadSerializerContext.Default.WarInfo);
+        var warStatuses = rawWarStatuses.ToDictionary(
+            pair => pair.Key,
+            pair => DeserializeOrThrow(pair.Value, ArrowHeadSerializerContext.Default.WarStatus)
+        );
+        var warSummary = DeserializeOrThrow(rawWarSummary, ArrowHeadSerializerContext.Default.WarSummary);
+        var newsFeeds = rawNewsFeeds.ToDictionary(
+            pair => pair.Key,
+            pair => DeserializeOrThrow(pair.Value, ArrowHeadSerializerContext.Default.ListNewsFeedItem)
+        );
+        var assignments = rawAssignments.ToDictionary(
+            pair => pair.Key,
+            pair => DeserializeOrThrow(pair.Value, ArrowHeadSerializerContext.Default.ListAssignment)
+        );
+
+        await v1.UpdateStores(
+            warId,
+            warInfo,
+            warStatuses,
+            warSummary,
+            newsFeeds,
+            assignments
+        );
     }
+
+    private T DeserializeOrThrow<T>(Memory<byte> memory, JsonTypeInfo<T> typeInfo)
+        => JsonSerializer.Deserialize(memory.Span, typeInfo) ?? throw new InvalidOperationException();
 }

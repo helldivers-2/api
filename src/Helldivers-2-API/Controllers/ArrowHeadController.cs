@@ -1,5 +1,4 @@
-﻿using Helldivers.Core.Contracts;
-using Helldivers.Core.Contracts.Collections;
+﻿using Helldivers.Core.Storage.ArrowHead;
 using Helldivers.Models.ArrowHead;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,55 +13,55 @@ public static class ArrowHeadController
     /// Returns the currently active war season ID.
     /// </summary>
     [ProducesResponseType<WarId>(StatusCodes.Status200OK)]
-    public static async Task<IResult> WarId(HttpContext context, IStore<WarId> store)
+    public static async Task<IResult> WarId(HttpContext context, ArrowHeadStore store)
     {
-        var result = await store.Get(context.RequestAborted);
+        var warId = await store.GetWarId(context.RequestAborted);
 
-        return Results.Ok(result);
+        return Results.Bytes(warId, contentType: "application/json");
     }
 
     /// <summary>
     /// Get a snapshot of the current war status.
     /// </summary>
     [ProducesResponseType<WarStatus>(StatusCodes.Status200OK)]
-    public static async Task<IResult> Status(HttpContext context, IStore<WarStatus> store)
+    public static async Task<IResult> Status(HttpContext context, ArrowHeadStore store)
     {
-        var status = await store.Get(context.RequestAborted);
+        var status = await store.GetWarStatus(context.RequestAborted);
 
-        return Results.Ok(status);
+        return Results.Bytes(status, contentType: "application/json");
     }
 
     /// <summary>
     /// Gets the current war info.
     /// </summary>
     [ProducesResponseType<WarInfo>(StatusCodes.Status200OK)]
-    public static async Task<IResult> WarInfo(HttpContext context, IStore<WarInfo> store)
+    public static async Task<IResult> WarInfo(HttpContext context, ArrowHeadStore store)
     {
-        var info = await store.Get(context.RequestAborted);
+        var info = await store.GetWarInfo(context.RequestAborted);
 
-        return Results.Ok(info);
+        return Results.Bytes(info, contentType: "application/json");
     }
 
     /// <summary>
     /// Gets the current war info.
     /// </summary>
     [ProducesResponseType<WarSummary>(StatusCodes.Status200OK)]
-    public static async Task<IResult> Summary(HttpContext context, IStore<WarSummary> store)
+    public static async Task<IResult> Summary(HttpContext context, ArrowHeadStore store)
     {
-        var summary = await store.Get(context.RequestAborted);
+        var summary = await store.GetWarSummary(context.RequestAborted);
 
-        return Results.Ok(summary);
+        return Results.Bytes(summary, contentType: "application/json");
     }
 
     /// <summary>
     /// Retrieves a list of news messages from Super Earth.
     /// </summary>
     [ProducesResponseType<List<NewsFeedItem>>(StatusCodes.Status200OK)]
-    public static async Task<IResult> NewsFeed(HttpContext context, IStore<NewsFeedItem, int> store)
+    public static async Task<IResult> NewsFeed(HttpContext context, ArrowHeadStore store)
     {
-        var items = await store.AllAsync(context.RequestAborted);
+        var items = await store.GetNewsFeeds(context.RequestAborted);
 
-        return Results.Ok(items);
+        return Results.Bytes(items, contentType: "application/json");
     }
 
     /// <summary>
@@ -70,10 +69,10 @@ public static class ArrowHeadController
     /// </summary>
     [ProducesResponseType<List<Assignment>>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
-    public static async Task<IResult> Assignments(HttpContext context, IStore<Assignment, int> store)
+    public static async Task<IResult> Assignments(HttpContext context, ArrowHeadStore store)
     {
-        var assignments = await store.AllAsync(context.RequestAborted);
+        var assignments = await store.GetAssignments(context.RequestAborted);
 
-        return Results.Ok(assignments);
+        return Results.Bytes(assignments, contentType: "application/json");
     }
 }

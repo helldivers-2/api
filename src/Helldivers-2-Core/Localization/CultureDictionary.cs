@@ -6,7 +6,7 @@ namespace Helldivers.Core.Localization;
 /// Specialized version of <see cref="Dictionary{TKey,TValue}" /> that intelligently maps <see cref="CultureInfo" /> as
 /// keys (eg, if "en-UK" does not exist but "en-US" it'll match).
 /// </summary>
-public class CultureDictionary<T> where T : class
+public class CultureDictionary<T>
 {
     private readonly Dictionary<CultureInfo, T> _items;
 

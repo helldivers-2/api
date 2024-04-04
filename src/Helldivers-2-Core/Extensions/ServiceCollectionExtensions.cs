@@ -6,7 +6,6 @@ using Helldivers.Core.Mapping.V1;
 using Helldivers.Core.Storage.ArrowHead;
 using Helldivers.Core.Storage.Steam;
 using Helldivers.Core.Storage.V1;
-using Helldivers.Models.ArrowHead;
 using Helldivers.Models.V1;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -35,20 +34,8 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddArrowHeadStores(this IServiceCollection services)
     {
-        // Register facade for all stores below
-        services.AddSingleton<ArrowHeadFacade>();
-
         // Register all stores
-        services.AddSingleton<IStore<WarInfo>, WarInfoStore>();
-        services.AddSingleton<WarStatusStore>();
-        services.AddSingleton<IStore<WarStatus>>(provider => provider.GetRequiredService<WarStatusStore>());
-        services.AddSingleton<IStore<WarSummary>, WarSummaryStore>();
-        services.AddSingleton<Storage.ArrowHead.AssignmentStore>();
-        services.AddSingleton<IStore<Models.ArrowHead.Assignment, int>>(provider =>
-            provider.GetRequiredService<Storage.ArrowHead.AssignmentStore>());
-        services.AddSingleton<NewsFeedStore>();
-        services.AddSingleton<IStore<NewsFeedItem, int>>(provider => provider.GetRequiredService<NewsFeedStore>());
-        services.AddSingleton<IStore<WarId>, WarIdStore>();
+        services.AddSingleton<ArrowHeadStore>();
 
         return services;
     }
