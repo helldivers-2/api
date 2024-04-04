@@ -9,7 +9,8 @@ namespace Helldivers.Models.ArrowHead.Status;
 /// <param name="PlanetIndex">The index of the planet.</param>
 /// <param name="EventType">A numerical identifier that indicates what type of event this is.</param>
 /// <param name="Race">The identifier of the faction that owns the planet currently.</param>
-/// <param name="Health">The current health of the planet.</param>
+/// <param name="Health">The current health of the event.</param>
+/// <param name="MaxHealth">The current maximum health of the event.</param>
 /// <param name="StartTime">When this event started.</param>
 /// <param name="ExpireTime">When the event will end.</param>
 /// <param name="CampaignId">The unique identifier of a related campaign.</param>
@@ -20,6 +21,7 @@ public sealed record PlanetEvent(
     int EventType,
     int Race,
     long Health,
+    long MaxHealth,
     long StartTime,
     long ExpireTime,
     long CampaignId,

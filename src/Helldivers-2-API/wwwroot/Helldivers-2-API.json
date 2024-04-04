@@ -860,6 +860,11 @@
             "description": "The current health of the planet.",
             "format": "int64"
           },
+          "maxHealth": {
+            "type": "integer",
+            "description": "The current maximum health of the planet event.",
+            "format": "int64"
+          },
           "startTime": {
             "type": "integer",
             "description": "When this event started.",
@@ -1713,7 +1718,12 @@
           },
           "health": {
             "type": "integer",
-            "description": "The health of the Planet at the time of snapshot.",
+            "description": "The health of the Event at the time of snapshot.",
+            "format": "int64"
+          },
+          "maxHealth": {
+            "type": "integer",
+            "description": "The maximum health of the Event at the time of snapshot.",
             "format": "int64"
           },
           "startTime": {

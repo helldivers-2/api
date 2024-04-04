@@ -68,6 +68,7 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
             EventType: @event.EventType,
             Faction: faction ?? string.Empty,
             Health: @event.Health,
+            MaxHealth: @event.MaxHealth,
             StartTime: DateTime.UnixEpoch.AddSeconds(@event.StartTime),
             EndTime: DateTime.UnixEpoch.AddSeconds(@event.ExpireTime),
             CampaignId: @event.CampaignId,
