@@ -11,9 +11,9 @@ public sealed class ArrowHeadStore
     private Memory<byte> _warId;
     private Memory<byte> _warInfo;
     private Memory<byte> _warSummary;
-    private CultureDictionary<Memory<byte>> _statuses;
-    private CultureDictionary<Memory<byte>> _feeds;
-    private CultureDictionary<Memory<byte>> _assignments;
+    private CultureDictionary<Memory<byte>> _statuses = null!;
+    private CultureDictionary<Memory<byte>> _feeds = null!;
+    private CultureDictionary<Memory<byte>> _assignments = null!;
     private readonly TaskCompletionSource _syncState = new();
 
     /// <summary>
