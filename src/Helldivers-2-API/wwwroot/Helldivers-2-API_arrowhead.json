@@ -376,12 +376,12 @@
           },
           "health": {
             "type": "integer",
-            "description": "The current health of the planet.",
+            "description": "The current health of the event.",
             "format": "int64"
           },
           "maxHealth": {
             "type": "integer",
-            "description": "The current maximum health of the planet event.",
+            "description": "The current maximum health of the event.",
             "format": "int64"
           },
           "startTime": {

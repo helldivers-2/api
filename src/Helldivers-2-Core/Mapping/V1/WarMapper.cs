@@ -1,4 +1,5 @@
-﻿using Helldivers.Models.ArrowHead;
+﻿using Helldivers.Models;
+using Helldivers.Models.ArrowHead;
 using Helldivers.Models.V1;
 
 namespace Helldivers.Core.Mapping.V1;
@@ -18,7 +19,7 @@ public sealed class WarMapper(StatisticsMapper statisticsMapper)
             Ended: DateTime.UnixEpoch.AddSeconds(info.EndDate),
             Now: DateTime.UnixEpoch.AddSeconds(status.Time),
             ClientVersion: info.MinimumClientVersion,
-            Factions: [],
+            Factions: Static.Factions.Values.ToList(),
             ImpactMultiplier: status.ImpactMultiplier,
             Statistics: statisticsMapper.MapToV1(summary.GalaxyStats, planets)
         );
