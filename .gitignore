@@ -364,3 +364,10 @@ FodyWeavers.xsd
 
 # Jetbrains generated folders
 .idea/
+
+# DocFX generates files
+_site/
+api/
+
+# Ignore OpenAPI documents
+docs/openapi/*.json
