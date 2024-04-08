@@ -52,3 +52,5 @@ Check out some awesome projects made by our community!
   Dashboard and graphs made by git scraping the community made API 
 - [stonemercy/galactic-wide-web](https://github.com/Stonemercy/Galactic-Wide-Web)
   The Galactic Wide Web - a discord bot
+- [helldivers-2/api-wrapper](https://github.com/helldivers-2/api-wrapper)
+  Typescript client code generated from OpenAPI
