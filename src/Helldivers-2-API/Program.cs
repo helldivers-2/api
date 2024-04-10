@@ -7,9 +7,12 @@ using Helldivers.Models.Domain.Localization;
 using Helldivers.Sync.Configuration;
 using Helldivers.Sync.Extensions;
 using Microsoft.AspNetCore.Http.Timeouts;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using System.Net;
 using System.Text.Json.Serialization;
+using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
 
 #if DEBUG
 // When generating an OpenAPI document, get-document runs with the "--applicationName" flag.
@@ -66,7 +69,14 @@ builder.Services.AddCors(options =>
 });
 
 // Add and configure forwarded headers middleware
-builder.Services.Configure<ForwardedHeadersOptions>(_ => { });
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardLimit = 999;
+    options.OriginalForHeaderName = "Fly-Client-IP";
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor;
+    options.KnownNetworks.Add(new IPNetwork(IPAddress.Any, 0));
+    options.KnownNetworks.Add(new IPNetwork(IPAddress.IPv6Any, 0));
+});
 
 // This configuration is bound here so that source generators kick in.
 builder.Services.Configure<HelldiversSyncConfiguration>(builder.Configuration.GetSection("Helldivers:Synchronization"));
@@ -144,11 +154,11 @@ app.UseRequestLocalization();
 // Ensure web applications can access the API by setting CORS headers.
 app.UseCors();
 
-// Handles rate limiting so everyone plays nice
-app.UseMiddleware<RateLimitMiddleware>();
-
 // Make sure ASP.NET Core uses the correct addresses internally rather than Fly's proxy
 app.UseForwardedHeaders();
+
+// Handles rate limiting so everyone plays nice
+app.UseMiddleware<RateLimitMiddleware>();
 
 // Add middleware to timeout requests if they take too long.
 app.UseRequestTimeouts();

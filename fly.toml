@@ -19,6 +19,7 @@ kill_signal = 'SIGTERM'
   auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 0
+  max_machines_running = 1
   processes = ['app']
 
   [http_service.concurrency]
@@ -27,8 +28,8 @@ kill_signal = 'SIGTERM'
     soft_limit = 1000
 
   [[http_service.checks]]
-    grace_period = "2s"
-    interval = "120s"
+    grace_period = "10s"
+    interval = "60s"
     method = "GET"
     timeout = "10s"
     path = "/raw/api/WarSeason/current/WarID"
