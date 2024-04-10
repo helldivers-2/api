@@ -154,11 +154,11 @@ app.UseRequestLocalization();
 // Ensure web applications can access the API by setting CORS headers.
 app.UseCors();
 
-// Handles rate limiting so everyone plays nice
-app.UseMiddleware<RateLimitMiddleware>();
-
 // Make sure ASP.NET Core uses the correct addresses internally rather than Fly's proxy
 app.UseForwardedHeaders();
+
+// Handles rate limiting so everyone plays nice
+app.UseMiddleware<RateLimitMiddleware>();
 
 // Add middleware to timeout requests if they take too long.
 app.UseRequestTimeouts();
