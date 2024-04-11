@@ -118,7 +118,7 @@ if (isRunningAsTool)
             )
         );
 
-        document.DocumentProcessors.Add(new Helldivers.API.OpenApi.HelldiversDocumentProcessor());
+        document.DocumentProcessors.Add(new Helldivers.API.OpenApi.DocumentProcessors.HelldiversDocumentProcessor());
     });
     builder.Services.AddOpenApiDocument(document =>
     {
@@ -127,7 +127,7 @@ if (isRunningAsTool)
         document.DocumentName = "arrowhead";
         document.ApiGroupNames = ["arrowhead"];
 
-        document.DocumentProcessors.Add(new Helldivers.API.OpenApi.ArrowHeadDocumentProcessor());
+        document.DocumentProcessors.Add(new Helldivers.API.OpenApi.DocumentProcessors.ArrowHeadDocumentProcessor());
     });
     builder.Services.AddEndpointsApiExplorer();
 }
