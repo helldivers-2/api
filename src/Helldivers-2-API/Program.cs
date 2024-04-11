@@ -111,11 +111,15 @@ if (isRunningAsTool)
         document.Title = "Helldivers 2";
         document.Description = "Helldivers 2 Unofficial API";
 
+        var languages = builder
+            .Configuration
+            .GetSection("Helldivers:Synchronization:Languages")
+            .Get<List<string>>()!;
         document.SchemaSettings.TypeMappers.Add(
-            new NJsonSchema.Generation.TypeMappers.PrimitiveTypeMapper(
+            new Helldivers.API.OpenApi.TypeMappers.LocalizedMessageTypeMapper(
                 typeof(Helldivers.Models.Domain.Localization.LocalizedMessage),
-                schema => schema.Type = NJsonSchema.JsonObjectType.String
-            )
+                languages
+                )
         );
 
         document.DocumentProcessors.Add(new Helldivers.API.OpenApi.DocumentProcessors.HelldiversDocumentProcessor());
