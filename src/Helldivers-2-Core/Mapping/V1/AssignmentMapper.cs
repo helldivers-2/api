@@ -47,6 +47,7 @@ public sealed class AssignmentMapper
 
         return new Assignment(
             Id: invariant.Id32,
+            Progress: invariant.Progress,
             Title: LocalizedMessage.FromStrings(titles),
             Briefing: LocalizedMessage.FromStrings(briefings),
             Description: LocalizedMessage.FromStrings(descriptions),
