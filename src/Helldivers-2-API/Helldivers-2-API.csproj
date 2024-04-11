@@ -10,7 +10,7 @@
 
     <!-- Only generate OpenAPI docs for DEBUG builds -->
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-        <OpenApiDocumentsDirectory>$(MSBuildProjectDirectory)/wwwroot</OpenApiDocumentsDirectory>
+        <OpenApiDocumentsDirectory>$(SolutionDir)/docs/openapi</OpenApiDocumentsDirectory>
         <OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
         <OpenApiGenerateDocumentsOnBuild>true</OpenApiGenerateDocumentsOnBuild>
     </PropertyGroup>

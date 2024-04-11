@@ -30,17 +30,21 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+      - name: Install DocFX
+        run: dotnet tool install -g docfx
       - name: Initial static JSON schema submodule
         run: git submodule update --init ./src/Helldivers-2-Models/json
       - name: Generate OpenAPI JSON files
         run: dotnet build -c Debug
-      - name: Rename Swagger HTML file to index
-        run: mv src/Helldivers-2-API/wwwroot/swagger-ui.html src/Helldivers-2-API/wwwroot/index.html
-      - name: Upload OpenAPI artifact
+      - name: Generate DocFX metadata
+        run: docfx metadata
+      - name: Generate DocFX site
+        run: docfx build docfx.json
+      - name: Upload DocFX website
         uses: actions/upload-artifact@master
         with:
-          name: 'OpenAPI-artifact'
-          path: './src/Helldivers-2-API/wwwroot'
+          name: 'docfx'
+          path: './_site/'
   deploy:
     needs: build
     environment:
@@ -48,10 +52,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Download generated OpenAPI files
+      - name: Download DocFX website
         uses: actions/download-artifact@master
         with:
-          name: 'OpenAPI-artifact'
+          name: 'docfx'
           path: '.'
       - name: Setup Pages
         uses: actions/configure-pages@v4

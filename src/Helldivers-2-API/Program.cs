@@ -145,9 +145,6 @@ var app = builder.Build();
 // Use response compression for smaller payload sizes
 app.UseResponseCompression();
 
-// We host our OpenAPI spec and preview files from wwwroot/
-app.UseStaticFiles();
-
 // select the correct culture for incoming requests
 app.UseRequestLocalization();
 
