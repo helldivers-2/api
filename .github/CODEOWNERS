@@ -1,0 +1,7 @@
+# Defines owners of specific parts of the codebase.
+
+# Global owner of all code
+*   @dealloc
+
+# All documentation should be approved by following owners
+*.md    @chatterchats
