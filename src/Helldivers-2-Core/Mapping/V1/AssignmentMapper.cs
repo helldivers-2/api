@@ -44,7 +44,7 @@ public sealed class AssignmentMapper
         var titles = translations.Select(assignment => new KeyValuePair<string, string>(assignment.Key, assignment.Value.Setting.OverrideTitle));
         var briefings = translations.Select(assignment => new KeyValuePair<string, string>(assignment.Key, assignment.Value.Setting.OverrideBrief));
         var descriptions = translations.Select(assignment => new KeyValuePair<string, string>(assignment.Key, assignment.Value.Setting.TaskDescription));
-        var expiration = translations.Select(assignment => DateTime.UtcNow.AddSeconds(assignment.Value.ExpiresIn)).FirstOrDefault();
+        var expiration = DateTime.UtcNow.AddSeconds(invariant.ExpiresIn);
 
         return new Assignment(
             Id: invariant.Id32,
