@@ -44,6 +44,7 @@ public sealed class AssignmentMapper
         var titles = translations.Select(assignment => new KeyValuePair<string, string>(assignment.Key, assignment.Value.Setting.OverrideTitle));
         var briefings = translations.Select(assignment => new KeyValuePair<string, string>(assignment.Key, assignment.Value.Setting.OverrideBrief));
         var descriptions = translations.Select(assignment => new KeyValuePair<string, string>(assignment.Key, assignment.Value.Setting.TaskDescription));
+        var expiration = translations.Select(assignment => DateTime.UtcNow.AddSeconds(assignment.Value.ExpiresIn)).FirstOrDefault();
 
         return new Assignment(
             Id: invariant.Id32,
@@ -52,7 +53,8 @@ public sealed class AssignmentMapper
             Briefing: LocalizedMessage.FromStrings(briefings),
             Description: LocalizedMessage.FromStrings(descriptions),
             Tasks: invariant.Setting.Tasks.Select(MapToV1).ToList(),
-            Reward: MapToV1(invariant.Setting.Reward)
+            Reward: MapToV1(invariant.Setting.Reward),
+            Expiration: expiration
         );
     }
 
