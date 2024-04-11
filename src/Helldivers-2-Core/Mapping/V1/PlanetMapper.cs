@@ -24,15 +24,19 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
             var status = warStatus.PlanetStatus.First(status => status.Index == info.Index);
             var stats = summary.PlanetsStats.FirstOrDefault(stats => stats.PlanetIndex == info.Index);
             var @event = warStatus.PlanetEvents.FirstOrDefault(@event => @event.PlanetIndex == info.Index);
+            var attacking = warStatus.PlanetAttacks
+                .Where(attack => attack.Source == info.Index)
+                .Select(attack => attack.Target)
+                .ToList();
 
-            yield return MapToV1(info, status, @event, stats);
+            yield return MapToV1(info, status, @event, stats, attacking);
         }
     }
 
     /// <summary>
     /// Merges all ArrowHead data points on planets into a single <see cref="Planet" /> object.
     /// </summary>
-    public Planet MapToV1(PlanetInfo info, PlanetStatus status, PlanetEvent? @event, PlanetStats? stats)
+    public Planet MapToV1(PlanetInfo info, PlanetStatus status, PlanetEvent? @event, PlanetStats? stats, List<int> attacking)
     {
         Static.Planets.TryGetValue(info.Index, out var name);
         Static.Factions.TryGetValue(info.InitialOwner, out var initialOwner);
@@ -52,7 +56,8 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
             CurrentOwner: currentOwner ?? string.Empty,
             RegenPerSecond: status.RegenPerSecond,
             Event: MapToV1(@event),
-            Statistics: statisticsMapper.MapToV1(stats, status)
+            Statistics: statisticsMapper.MapToV1(stats, status),
+            Attacking: attacking
         );
     }
 
