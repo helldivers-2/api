@@ -19,6 +19,7 @@ namespace Helldivers.Models.V1;
 /// <param name="RegenPerSecond">How much the planet regenerates per second if left alone.</param>
 /// <param name="Event">Information on the active event ongoing on this planet, if one is active.</param>
 /// <param name="Statistics">A set of statistics scoped to this planet.</param>
+/// <param name="Attacking">A list of <see cref="Index" /> integers that this planet is currently attacking.</param>
 public record Planet(
     int Index,
     string Name,
@@ -33,5 +34,6 @@ public record Planet(
     string CurrentOwner,
     double RegenPerSecond,
     Event? Event,
-    Statistics Statistics
+    Statistics Statistics,
+    List<int> Attacking
 );
