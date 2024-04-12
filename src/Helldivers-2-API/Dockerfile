@@ -3,12 +3,14 @@ USER $APP_UID
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
-RUN apk add --upgrade --no-cache \
-        build-base \
-        clang \
-        zlib-dev
+RUN apk add --upgrade --no-cache build-base clang zlib-dev
 ARG BUILD_CONFIGURATION=Release
 ARG BUILD_RUNTIME=linux-musl-x64
+ARG OPENAPI=false
+
+WORKDIR /
+COPY ./docs/openapi /docs/openapi
+
 WORKDIR /src
 
 COPY ["src/Helldivers-2-API/Helldivers-2-API.csproj", "Helldivers-2-API/"]
@@ -21,6 +23,13 @@ COPY ["Directory.Build.props", "."]
 RUN dotnet restore -r $BUILD_RUNTIME "Helldivers-2-API/Helldivers-2-API.csproj"
 COPY ./src .
 WORKDIR "/src/Helldivers-2-API"
+RUN if [[ "${OPENAPI}" = 'true' ]]; \
+  then \
+    echo "OPENAPI is set to ${OPENAPI}, running OpenAPI generators" \
+    && dotnet build "Helldivers-2-API.csproj" --no-restore -c Debug \
+    && mkdir -p wwwroot \
+    && cp /docs/openapi/* wwwroot/ \
+  ; fi
 RUN dotnet build "Helldivers-2-API.csproj" --no-restore -r $BUILD_RUNTIME -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

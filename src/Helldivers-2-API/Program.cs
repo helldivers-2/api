@@ -145,6 +145,10 @@ var app = builder.Build();
 // Use response compression for smaller payload sizes
 app.UseResponseCompression();
 
+// Enable static file host in case the application was built with OpenAPI specifications publicly available (Docker)
+if (Directory.Exists(app.Environment.WebRootPath))
+    app.UseStaticFiles();
+
 // select the correct culture for incoming requests
 app.UseRequestLocalization();
 
