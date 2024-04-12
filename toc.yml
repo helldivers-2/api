@@ -1,4 +1,6 @@
 - name: Docs
   href: docs/
+- name: OpenAPI
+  href: /docs/openapi/swagger-ui.html
 - name: API
   href: api/

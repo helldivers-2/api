@@ -2,8 +2,8 @@
   href: introduction.md
 - name: Getting Started
   href: getting-started.md
-- name: SwaggerUI
-  href: ./openapi/swagger-ui.html
+- name: Containers
+  href: containers.md
 - name: Contributing
   href: ../contributing.md
 - name: Code of conduct
