@@ -7,6 +7,10 @@ RUN apk add --upgrade --no-cache build-base clang zlib-dev
 ARG BUILD_CONFIGURATION=Release
 ARG BUILD_RUNTIME=linux-musl-x64
 ARG OPENAPI=false
+
+WORKDIR /
+COPY ./docs/openapi /docs/openapi
+
 WORKDIR /src
 
 COPY ["src/Helldivers-2-API/Helldivers-2-API.csproj", "Helldivers-2-API/"]
