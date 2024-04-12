@@ -1,4 +1,5 @@
-﻿using Helldivers.Models.V1.Planets;
+﻿using Helldivers.Models.Domain.Localization;
+using Helldivers.Models.V1.Planets;
 
 namespace Helldivers.Models.V1;
 
@@ -8,6 +9,8 @@ namespace Helldivers.Models.V1;
 /// <param name="Index">The unique identifier ArrowHead assigned to this planet.</param>
 /// <param name="Name">The name of the planet, as shown in game.</param>
 /// <param name="Sector">The name of the sector the planet is in, as shown in game.</param>
+/// <param name="Biome">The biome this planet has.</param>
+/// <param name="Hazards">All <see cref="Hazard" />s that are applicable to this planet.</param>
 /// <param name="Hash">A hash assigned to the planet by ArrowHead, purpose unknown.</param>
 /// <param name="Position">The coordinates of this planet on the galactic war map.</param>
 /// <param name="Waypoints">A list of <see cref="Index" /> of all the planets to which this planet is connected.</param>
@@ -22,8 +25,10 @@ namespace Helldivers.Models.V1;
 /// <param name="Attacking">A list of <see cref="Index" /> integers that this planet is currently attacking.</param>
 public record Planet(
     int Index,
-    string Name,
+    LocalizedMessage Name,
     string Sector,
+    Biome Biome,
+    List<Hazard> Hazards,
     long Hash,
     Position Position,
     List<int> Waypoints,
