@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-<!--        <None Remove="json/**/*" Visible="false" />-->
+        <None Remove="json/**/*" Visible="false" />
         <AdditionalFiles Include="json/factions.json" Visible="false" />
         <AdditionalFiles Include="json/planets/planets.json" Visible="false" />
         <AdditionalFiles Include="json/planets/biomes.json" Visible="false" />
