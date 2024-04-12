@@ -24,7 +24,7 @@ RUN if [[ "${OPENAPI}" = 'true' ]]; \
     echo "OPENAPI is set to ${OPENAPI}, running OpenAPI generators" \
     && dotnet build "Helldivers-2-API.csproj" --no-restore -c Debug \
     && mkdir -p wwwroot \
-    && cp /docs/openapi/*.json wwwroot/ \
+    && cp /docs/openapi/* wwwroot/ \
   ; fi
 RUN dotnet build "Helldivers-2-API.csproj" --no-restore -r $BUILD_RUNTIME -c $BUILD_CONFIGURATION -o /app/build
 
