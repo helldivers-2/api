@@ -38,14 +38,18 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
     /// </summary>
     public Planet MapToV1(PlanetInfo info, PlanetStatus status, PlanetEvent? @event, PlanetStats? stats, List<int> attacking)
     {
-        Static.Planets.TryGetValue(info.Index, out var name);
+        Static.Planets.TryGetValue(info.Index, out var planet);
         Static.Factions.TryGetValue(info.InitialOwner, out var initialOwner);
         Static.Factions.TryGetValue(status.Owner, out var currentOwner);
 
+        var (name, sector, biomeKey, environmentals) = planet;
+
         return new Planet(
             Index: info.Index,
-            Name: name ?? string.Empty,
-            Sector: Static.Sectors.First(sector => sector.Value.Contains(info.Index)).Key,
+            Name: name,
+            Sector: sector,
+            Biome: Static.Biomes[biomeKey],
+            Hazards: environmentals.Select(environmental => Static.Environmentals[environmental]).ToList(),
             Hash: info.SettingsHash,
             Position: new Position(info.Position.X, info.Position.Y),
             Waypoints: info.Waypoints.ToList(),
