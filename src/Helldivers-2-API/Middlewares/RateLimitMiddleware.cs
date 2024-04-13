@@ -10,8 +10,8 @@ namespace Helldivers.API.Middlewares;
 public sealed partial class RateLimitMiddleware(ILogger<RateLimitMiddleware> logger, IMemoryCache cache) : IMiddleware
 {
     // TODO: move to configurable policies.
-    private const int DefaultRequestLimit = 5;
-    private const int DefaultRequestWindow = 10;
+    private const int DefaultRequestLimit = 50;
+    private const int DefaultRequestWindow = 5;
 
     [LoggerMessage(Level = LogLevel.Information, Message = "Retrieving rate limiter for {Key}")]
     private static partial void LogRateLimitKey(ILogger logger, IPAddress key);

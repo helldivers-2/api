@@ -3,7 +3,7 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'helldivers-2-dotnet'
+app = 'helldivers2-prod1'
 primary_region = 'ams'
 kill_signal = 'SIGTERM'
 
