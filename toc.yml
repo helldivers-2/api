@@ -1,6 +1,6 @@
 - name: Docs
   href: docs/
 - name: OpenAPI
-  href: api/docs/openapi/swagger-ui.html
+  href: docs/openapi/swagger-ui.html
 - name: API
   href: api/
