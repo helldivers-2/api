@@ -1,6 +1,7 @@
 ﻿using Helldivers.Core;
 using Helldivers.Models.ArrowHead;
 using Helldivers.Sync.Configuration;
+using Helldivers.Sync.Exceptions;
 using Helldivers.Sync.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,8 +28,8 @@ public sealed partial class ArrowHeadSyncService(
     [LoggerMessage(Level = LogLevel.Information, Message = "sync will run every {Interval}")]
     private static partial void LogRunAtInterval(ILogger logger, TimeSpan interval);
 
-    [LoggerMessage(Level = LogLevel.Error, Message = "An exception was thrown when synchronizing from ArrowHead API")]
-    private static partial void LogSyncThrewAnError(ILogger logger, Exception exception);
+    [LoggerMessage(Level = LogLevel.Error, Message = "An exception was thrown when synchronizing from ArrowHead API, it threw {ErrorCount} times since last sync")]
+    private static partial void LogSyncThrewAnError(ILogger logger, Exception exception, int errorCount);
 
     [LoggerMessage(LogLevel.Information, Message = "Finished synchronizing from ArrowHead API in {Duration}")]
     private static partial void LogFinishedSynchronize(ILogger logger, TimeSpan duration);
@@ -42,6 +43,7 @@ public sealed partial class ArrowHeadSyncService(
     /// <inheritdoc cref="BackgroundService.ExecuteAsync(CancellationToken)" />
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
+        int errorCount = 0;
         var delay = TimeSpan.FromSeconds(configuration.Value.IntervalSeconds);
 
         LogRunAtInterval(logger, delay);
@@ -57,10 +59,17 @@ public sealed partial class ArrowHeadSyncService(
                 stopwatch.Stop();
 
                 LogFinishedSynchronize(logger, stopwatch.Elapsed);
+                errorCount = 0;
+                delay = TimeSpan.FromSeconds(configuration.Value.IntervalSeconds);
             }
             catch (Exception exception)
             {
-                LogSyncThrewAnError(logger, exception);
+                LogSyncThrewAnError(logger, exception, ++errorCount);
+
+                // Retry the sync, however if it *keeps* failing we wait longer and longer (but never longer than the normal sync time).
+                var retryIn = TimeSpan.FromSeconds(1 * errorCount);
+                if (retryIn < delay)
+                    delay = retryIn;
             }
 
             await Task.Delay(delay, cancellationToken);
