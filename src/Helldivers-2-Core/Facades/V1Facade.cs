@@ -1,5 +1,6 @@
 ﻿using Helldivers.Core.Contracts;
 using Helldivers.Core.Contracts.Collections;
+using Helldivers.Core.Mapping;
 using Helldivers.Core.Mapping.V1;
 using Helldivers.Models.V1;
 
@@ -22,60 +23,54 @@ public sealed class V1Facade(
 )
 {
     /// <see cref="IStore{T,TKey}.SetStore" />
-    public async ValueTask UpdateStores(Models.ArrowHead.WarId warId, Models.ArrowHead.WarInfo warInfo, Dictionary<string, Models.ArrowHead.WarStatus> warStatuses, Models.ArrowHead.WarSummary warSummary, Dictionary<string, List<Models.ArrowHead.NewsFeedItem>> newsFeeds, Dictionary<string, List<Models.ArrowHead.Assignment>> assignments)
+    public async ValueTask UpdateStores(MappingContext context)
     {
         // TODO: map warId
 
-        // Fetch a WarStatus for mapping that don't need localized data.
-        var invariantStatus = warStatuses.FirstOrDefault().Value;
-
-        await UpdatePlanetStore(warInfo, invariantStatus, warSummary);
+        await UpdatePlanetStore(context);
         // Some mappers need access to the list of planets, so we fetch it from the freshly-mapped store.
         var planets = await planetStore.AllAsync();
 
-        await UpdateWarStore(warInfo, invariantStatus, warSummary, planets);
-        await UpdateCampaignStore(invariantStatus, planets);
-        await UpdateAssignmentsStore(assignments);
-        await UpdateDispatchStore(warInfo, newsFeeds);
+        await UpdateWarStore(context, planets);
+        await UpdateCampaignStore(context, planets);
+        await UpdateAssignmentsStore(context);
+        await UpdateDispatchStore(context);
     }
 
-    private async ValueTask UpdateWarStore(Models.ArrowHead.WarInfo info, Models.ArrowHead.WarStatus status, Models.ArrowHead.WarSummary summary, List<Planet> planets)
+    private async ValueTask UpdateWarStore(MappingContext context, List<Planet> planets)
     {
-        var war = warMapper.MapToV1(info, status, summary, planets);
+        var war = warMapper.MapToV1(context, planets);
 
         await warStore.SetStore(war);
     }
 
-    private async ValueTask UpdatePlanetStore(Models.ArrowHead.WarInfo warInfo, Models.ArrowHead.WarStatus warStatus, Models.ArrowHead.WarSummary summary)
+    private async ValueTask UpdatePlanetStore(MappingContext context)
     {
-        var planets = planetMapper.MapToV1(warInfo, warStatus, summary).ToList();
+        var planets = planetMapper.MapToV1(context).ToList();
 
         await planetStore.SetStore(planets);
     }
 
-    private async ValueTask UpdateCampaignStore(Models.ArrowHead.WarStatus status, List<Planet> planets)
+    private async ValueTask UpdateCampaignStore(MappingContext context, List<Planet> planets)
     {
-        var campaigns = status
-            .Campaigns
-            .Select(campaign => campaignMapper.MapToV1(campaign, planets))
-            .ToList();
+        var campaigns = campaignMapper.MapToV1(context, planets).ToList();
 
         await campaignStore.SetStore(campaigns);
     }
 
-    private async ValueTask UpdateAssignmentsStore(Dictionary<string, List<Models.ArrowHead.Assignment>> translations)
+    private async ValueTask UpdateAssignmentsStore(MappingContext context)
     {
         var assignments = assignmentMapper
-            .MapToV1(translations)
+            .MapToV1(context)
             .ToList();
 
         await assignmentStore.SetStore(assignments);
     }
 
-    private async ValueTask UpdateDispatchStore(Models.ArrowHead.WarInfo info, Dictionary<string, List<Models.ArrowHead.NewsFeedItem>> translations)
+    private async ValueTask UpdateDispatchStore(MappingContext context)
     {
         var dispatches = dispatchMapper
-            .MapToV1(info, translations)
+            .MapToV1(context)
             .OrderByDescending(dispatch => dispatch.Id)
             .ToList();
 

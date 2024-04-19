@@ -1,5 +1,4 @@
 ﻿using Helldivers.Models;
-using Helldivers.Models.ArrowHead;
 using Helldivers.Models.ArrowHead.Info;
 using Helldivers.Models.ArrowHead.Status;
 using Helldivers.Models.ArrowHead.Summary;
@@ -15,28 +14,28 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
 {
     /// <summary>
     /// Maps all planet information into a list of <see cref="Planet" /> objects.
-    /// see <see cref="MapToV1(Helldivers.Models.ArrowHead.WarInfo,Helldivers.Models.ArrowHead.WarStatus,Helldivers.Models.ArrowHead.WarSummary)" />
+    /// see <see cref="MapToV1(PlanetInfo, PlanetStatus, PlanetEvent, PlanetStats, List{int})" />
     /// </summary>
-    public IEnumerable<Planet> MapToV1(WarInfo warInfo, WarStatus warStatus, WarSummary summary)
+    public IEnumerable<Planet> MapToV1(MappingContext context)
     {
-        foreach (var info in warInfo.PlanetInfos)
+        foreach (var info in context.WarInfo.PlanetInfos)
         {
-            var status = warStatus.PlanetStatus.First(status => status.Index == info.Index);
-            var stats = summary.PlanetsStats.FirstOrDefault(stats => stats.PlanetIndex == info.Index);
-            var @event = warStatus.PlanetEvents.FirstOrDefault(@event => @event.PlanetIndex == info.Index);
-            var attacking = warStatus.PlanetAttacks
+            var status = context.InvariantWarStatus.PlanetStatus.First(status => status.Index == info.Index);
+            var stats = context.WarSummary.PlanetsStats.FirstOrDefault(stats => stats.PlanetIndex == info.Index);
+            var @event = context.InvariantWarStatus.PlanetEvents.FirstOrDefault(@event => @event.PlanetIndex == info.Index);
+            var attacking = context.InvariantWarStatus.PlanetAttacks
                 .Where(attack => attack.Source == info.Index)
                 .Select(attack => attack.Target)
                 .ToList();
 
-            yield return MapToV1(info, status, @event, stats, attacking);
+            yield return MapToV1(context, info, status, @event, stats, attacking);
         }
     }
 
     /// <summary>
     /// Merges all ArrowHead data points on planets into a single <see cref="Planet" /> object.
     /// </summary>
-    public Planet MapToV1(PlanetInfo info, PlanetStatus status, PlanetEvent? @event, PlanetStats? stats, List<int> attacking)
+    private Planet MapToV1(MappingContext context, PlanetInfo info, PlanetStatus status, PlanetEvent? @event, PlanetStats? stats, List<int> attacking)
     {
         Static.Planets.TryGetValue(info.Index, out var planet);
         Static.Factions.TryGetValue(info.InitialOwner, out var initialOwner);
@@ -59,13 +58,13 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
             InitialOwner: initialOwner ?? string.Empty,
             CurrentOwner: currentOwner ?? string.Empty,
             RegenPerSecond: status.RegenPerSecond,
-            Event: MapToV1(@event),
+            Event: MapToV1(@event, context),
             Statistics: statisticsMapper.MapToV1(stats, status),
             Attacking: attacking
         );
     }
 
-    private Event? MapToV1(PlanetEvent? @event)
+    private Event? MapToV1(PlanetEvent? @event, MappingContext context)
     {
         if (@event is null)
             return null;
@@ -78,8 +77,8 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
             Faction: faction ?? string.Empty,
             Health: @event.Health,
             MaxHealth: @event.MaxHealth,
-            StartTime: DateTime.UnixEpoch.AddSeconds(@event.StartTime),
-            EndTime: DateTime.UnixEpoch.AddSeconds(@event.ExpireTime),
+            StartTime: context.RelativeGameStart.AddSeconds(@event.StartTime),
+            EndTime: context.RelativeGameStart.AddSeconds(@event.ExpireTime),
             CampaignId: @event.CampaignId,
             JointOperationIds: @event.JointOperationIds
         );
