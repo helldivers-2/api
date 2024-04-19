@@ -14,7 +14,7 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
 {
     /// <summary>
     /// Maps all planet information into a list of <see cref="Planet" /> objects.
-    /// see <see cref="MapToV1(PlanetInfo, PlanetStatus, PlanetEvent, PlanetStats, List{int})" />
+    /// see <see cref="MapToV1(MappingContext, PlanetInfo, PlanetStatus, PlanetEvent, PlanetStats, List{int})" />
     /// </summary>
     public IEnumerable<Planet> MapToV1(MappingContext context)
     {
