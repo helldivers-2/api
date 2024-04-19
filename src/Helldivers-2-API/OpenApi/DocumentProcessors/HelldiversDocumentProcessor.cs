@@ -10,7 +10,7 @@ namespace Helldivers.API.OpenApi.DocumentProcessors;
 /// </summary>
 public class HelldiversDocumentProcessor : IDocumentProcessor
 {
-    private const string HelldiversFlyServer = "https://helldivers-2-dotnet.fly.dev/";
+    private const string HelldiversFlyServer = "https://helldivers-2.elixus.be/";
     private const string LocalServer = "/";
 
     /// <inheritdoc />
