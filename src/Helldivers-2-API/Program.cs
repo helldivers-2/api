@@ -1,3 +1,4 @@
+using Helldivers.API.Configuration;
 using Helldivers.API.Controllers;
 using Helldivers.API.Controllers.V1;
 using Helldivers.API.Middlewares;
@@ -6,9 +7,12 @@ using Helldivers.Models;
 using Helldivers.Models.Domain.Localization;
 using Helldivers.Sync.Configuration;
 using Helldivers.Sync.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
 using System.Net;
 using System.Text.Json.Serialization;
@@ -81,6 +85,7 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 });
 
 // This configuration is bound here so that source generators kick in.
+builder.Services.Configure<ApiConfiguration>(builder.Configuration.GetSection("Helldivers:API"));
 builder.Services.Configure<HelldiversSyncConfiguration>(builder.Configuration.GetSection("Helldivers:Synchronization"));
 
 // If a request takes over 10s to complete, abort it.
@@ -102,6 +107,27 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
+
+#if DEBUG
+IdentityModelEventSource.ShowPII = true;
+#endif
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    var config = new AuthenticationConfiguration();
+    builder.Configuration.GetSection("Helldivers:API:Authentication").Bind(config);
+
+    options.TokenValidationParameters = new()
+    {
+        ValidIssuers = config.ValidIssuers,
+        ValidAudiences = config.ValidAudiences,
+        IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(config.SigningKey)),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true
+    };
+});
+builder.Services.AddAuthorization();
 
 // Swagger is generated at compile time, so we don't include Swagger dependencies in Release builds.
 #if DEBUG
@@ -166,6 +192,20 @@ app.UseMiddleware<RateLimitMiddleware>();
 
 // Add middleware to timeout requests if they take too long.
 app.UseRequestTimeouts();
+
+#region API dev
+#if DEBUG
+
+var dev = app
+    .MapGroup("/dev")
+    .WithGroupName("development")
+    .WithTags("dev")
+    .ExcludeFromDescription();
+
+dev.MapGet("/token", DevelopmentController.CreateToken);
+
+#endif
+#endregion
 
 #region ArrowHead API endpoints ('raw' API)
 
