@@ -1,5 +1,7 @@
-﻿using Helldivers.API.Extensions;
+﻿using Helldivers.API.Configuration;
+using Helldivers.API.Extensions;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.RateLimiting;
@@ -9,12 +11,12 @@ namespace Helldivers.API.Middlewares;
 /// <summary>
 /// Handles applying rate limit logic to the API's requests.
 /// </summary>
-public sealed partial class RateLimitMiddleware(ILogger<RateLimitMiddleware> logger, IMemoryCache cache) : IMiddleware
+public sealed partial class RateLimitMiddleware(
+    ILogger<RateLimitMiddleware> logger,
+    IOptions<ApiConfiguration> options,
+    IMemoryCache cache
+) : IMiddleware
 {
-    // TODO: move to configurable policies.
-    private const int DefaultRequestLimit = 5;
-    private const int DefaultRequestWindow = 10;
-
     [LoggerMessage(Level = LogLevel.Debug, Message = "Retrieving rate limiter for {Key}")]
     private static partial void LogRateLimitKey(ILogger logger, IPAddress key);
 
@@ -28,7 +30,7 @@ public sealed partial class RateLimitMiddleware(ILogger<RateLimitMiddleware> log
         using var lease = await limiter.AcquireAsync(permitCount: 1, context.RequestAborted);
         if (limiter.GetStatistics() is { } statistics)
         {
-            context.Response.Headers["X-RateLimit-Limit"] = $"{DefaultRequestLimit}";
+            context.Response.Headers["X-RateLimit-Limit"] = $"{options.Value.RateLimit}";
             context.Response.Headers["X-RateLimit-Remaining"] = $"{statistics.CurrentAvailablePermits}";
             if (lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
                 context.Response.Headers["Retry-After"] = $"{retryAfter.Seconds}";
@@ -53,14 +55,14 @@ public sealed partial class RateLimitMiddleware(ILogger<RateLimitMiddleware> log
 
         return cache.GetOrCreate(key, entry =>
         {
-            entry.SlidingExpiration = TimeSpan.FromSeconds(DefaultRequestWindow);
+            entry.SlidingExpiration = TimeSpan.FromSeconds(options.Value.RateLimitWindow);
             return new TokenBucketRateLimiter(new()
             {
                 AutoReplenishment = true,
-                TokenLimit = DefaultRequestLimit,
-                TokensPerPeriod = DefaultRequestLimit,
+                TokenLimit = options.Value.RateLimit,
+                TokensPerPeriod = options.Value.RateLimit,
                 QueueLimit = 0,
-                ReplenishmentPeriod = TimeSpan.FromSeconds(DefaultRequestWindow)
+                ReplenishmentPeriod = TimeSpan.FromSeconds(options.Value.RateLimitWindow)
             });
         }) ?? throw new InvalidOperationException($"Creating rate limiter failed for {key}");
     }
@@ -73,14 +75,14 @@ public sealed partial class RateLimitMiddleware(ILogger<RateLimitMiddleware> log
         LogRateLimitForUser(logger, name, limit);
         return cache.GetOrCreate(name, entry =>
         {
-            entry.SlidingExpiration = TimeSpan.FromSeconds(DefaultRequestWindow);
+            entry.SlidingExpiration = TimeSpan.FromSeconds(options.Value.RateLimitWindow);
             return new TokenBucketRateLimiter(new()
             {
                 AutoReplenishment = true,
                 TokenLimit = limit,
-                TokensPerPeriod = DefaultRequestLimit,
+                TokensPerPeriod = limit,
                 QueueLimit = 0,
-                ReplenishmentPeriod = TimeSpan.FromSeconds(DefaultRequestWindow)
+                ReplenishmentPeriod = TimeSpan.FromSeconds(options.Value.RateLimitWindow)
             });
         }) ?? throw new InvalidOperationException($"Creating rate limiter failed for {name}");
     }
