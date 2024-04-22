@@ -8,9 +8,18 @@ namespace Helldivers.Core.Mapping.V1;
 public class CampaignMapper
 {
     /// <summary>
+    /// Maps all <see cref="Campaign" /> in the current context. 
+    /// </summary>
+    public IEnumerable<Campaign> MapToV1(MappingContext context, List<Planet> planets)
+    {
+        foreach (var campaign in context.InvariantWarStatus.Campaigns)
+            yield return MapToV1(campaign, planets);
+    }
+
+    /// <summary>
     /// Maps ArrowHead's <see cref="Models.ArrowHead.Status.Campaign" /> onto V1's.
     /// </summary>
-    public Campaign MapToV1(Models.ArrowHead.Status.Campaign campaign, List<Planet> planets)
+    private Campaign MapToV1(Models.ArrowHead.Status.Campaign campaign, List<Planet> planets)
     {
         var planet = planets.First(p => p.Index == campaign.PlanetIndex);
 
