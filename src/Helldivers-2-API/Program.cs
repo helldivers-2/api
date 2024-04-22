@@ -22,7 +22,6 @@ using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
 var isRunningAsTool = args.FirstOrDefault(arg => arg.StartsWith("--applicationName")) is not null;
 #endif
 
-// Before we configure the runtime, create a custom CultureInfo that can represent 'all' cultures at once.
 var builder = WebApplication.CreateSlimBuilder(args);
 
 // Registers the core services in the container.
