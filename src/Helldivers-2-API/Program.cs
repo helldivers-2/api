@@ -119,10 +119,7 @@ if (isRunningAsTool)
             .GetSection("Helldivers:Synchronization:Languages")
             .Get<List<string>>()!;
         document.SchemaSettings.TypeMappers.Add(
-            new Helldivers.API.OpenApi.TypeMappers.LocalizedMessageTypeMapper(
-                typeof(Helldivers.Models.Domain.Localization.LocalizedMessage),
-                languages
-                )
+            new Helldivers.API.OpenApi.TypeMappers.LocalizedMessageTypeMapper(languages)
         );
 
         document.DocumentProcessors.Add(new Helldivers.API.OpenApi.DocumentProcessors.HelldiversDocumentProcessor());

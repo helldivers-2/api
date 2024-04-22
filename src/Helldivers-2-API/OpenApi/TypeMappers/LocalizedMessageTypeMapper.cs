@@ -1,4 +1,6 @@
-﻿using NJsonSchema;
+﻿#if DEBUG
+using Helldivers.Models.Domain.Localization;
+using NJsonSchema;
 using NJsonSchema.Generation.TypeMappers;
 
 namespace Helldivers.API.OpenApi.TypeMappers;
@@ -6,54 +8,39 @@ namespace Helldivers.API.OpenApi.TypeMappers;
 /// <summary>
 /// Maps the LocalizedMessage type to a JSON schema describing what values it serializes to.
 /// </summary>
-public sealed class LocalizedMessageTypeMapper : ITypeMapper
+/// <param name="languages">Contains all languages that are supported (and thus should be OpenAPI documented).</param>
+public sealed class LocalizedMessageTypeMapper(IReadOnlyList<string> languages) : ITypeMapper
 {
-    /// <summary>
-    /// Initialises a new instance of the <see cref="LocalizedMessageTypeMapper"/> class. 
-    /// </summary>
-    /// <param name="mappedType"></param>
-    /// <param name="languages"></param>
-    public LocalizedMessageTypeMapper(Type mappedType, List<string> languages)
-    {
-        MappedType = mappedType;
-        Languages = languages;
-        UseReference = false;
-    }
+    /// <inheritdoc />
+    public Type MappedType => typeof(LocalizedMessage);
 
-    private List<string> Languages { get; set; }
-
-    /// <summary>Gets the mapped type.</summary>
-    public Type MappedType { get; }
-
-    /// <summary>Gets a value indicating whether to use a JSON Schema reference for the type.</summary>
-    public bool UseReference { get; }
+    /// <inheritdoc />
+    public bool UseReference => false;
 
     /// <summary>
     /// Gets the generated schema for the LocalizedMessage type.
     /// </summary>
-    /// <param name="schema"></param>
-    /// <param name="context"></param>
-    /// <exception cref="NotImplementedException"></exception>
     public void GenerateSchema(JsonSchema schema, TypeMapperContext context)
     {
-        schema.OneOf.Add(JsonSchema.FromType(typeof(string)));
-
-        var stringType = new JsonSchemaProperty { Type = JsonObjectType.String };
-        
         var dictionarySchema = new JsonSchema
         {
-            Type = JsonObjectType.Object
+            Title = nameof(LocalizedMessage),
+            Type = JsonObjectType.Object,
+            Description = "When passing in ivl-IV as Accept-Language, all available languages are returned"
         };
-        
-        // Do it in NJsonSchema's *dirty* way because we can't set it in the constructor
-        foreach (string language in Languages)
+
+        // NJsonSchema's Properties is read-only, so we can't use the object assignment syntax.
+        foreach (string language in languages)
         {
-            dictionarySchema.Properties.Add(language, stringType);
+            dictionarySchema.Properties.Add(language, new JsonSchemaProperty
+            {
+                Type = JsonObjectType.String,
+                Description = $"The message in {language}"
+            });
         }
-        
-        dictionarySchema.Description =
-            "When the correct header is passed we return a dictionary of all the available languages";
-        
+
+        schema.OneOf.Add(JsonSchema.FromType(typeof(string)));
         schema.OneOf.Add(dictionarySchema);
     }
 }
+#endif
