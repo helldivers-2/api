@@ -15,6 +15,21 @@ internal sealed class LocalizedMessageConverter : JsonConverter<LocalizedMessage
     /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, LocalizedMessage value, JsonSerializerOptions options)
     {
+        // If the invariant culture is selected, serialize a dictionary with all languages.
+        if (Equals(CultureInfo.CurrentCulture, LocalizedMessage.InvariantCulture))
+        {
+            writer.WriteStartObject();
+
+            // We keep both country language and global language (eg. 'en-US' and 'en'), so we filter out the globals.
+            foreach (var (language, message) in value.Messages.Where(culture => culture.Key.Name.Contains('-')))
+                writer.WriteString(language.Name, message);
+
+            writer.WriteEndObject();
+
+            // Don't write out the translated string
+            return;
+        }
+
         if (value.Messages.TryGetValue(CultureInfo.CurrentCulture, out var result) is false)
         {
             if (value.Messages.TryGetValue(CultureInfo.CurrentCulture.Parent, out result) is false)
@@ -26,7 +41,7 @@ internal sealed class LocalizedMessageConverter : JsonConverter<LocalizedMessage
 
         if (string.IsNullOrWhiteSpace(result) is false)
             writer.WriteStringValue(result);
-
-        else writer.WriteNullValue();
+        else
+            writer.WriteNullValue();
     }
 }

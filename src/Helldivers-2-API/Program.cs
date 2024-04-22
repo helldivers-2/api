@@ -22,6 +22,7 @@ using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
 var isRunningAsTool = args.FirstOrDefault(arg => arg.StartsWith("--applicationName")) is not null;
 #endif
 
+// Before we configure the runtime, create a custom CultureInfo that can represent 'all' cultures at once.
 var builder = WebApplication.CreateSlimBuilder(args);
 
 // Registers the core services in the container.
@@ -58,6 +59,8 @@ builder.Services.AddRequestLocalization(options =>
     options.ApplyCurrentCultureToResponseHeaders = true;
     options.DefaultRequestCulture = new RequestCulture(LocalizedMessage.FallbackCulture);
     options.SupportedCultures = languages.Select(iso => new CultureInfo(iso)).ToList();
+    options.SupportedCultures.Add(LocalizedMessage.InvariantCulture);
+    options.SupportedUICultures = options.SupportedCultures;
 });
 // Set CORS headers for websites directly accessing the API.
 builder.Services.AddCors(options =>
