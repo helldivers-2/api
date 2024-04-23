@@ -58,6 +58,8 @@ builder.Services.AddRequestLocalization(options =>
     options.ApplyCurrentCultureToResponseHeaders = true;
     options.DefaultRequestCulture = new RequestCulture(LocalizedMessage.FallbackCulture);
     options.SupportedCultures = languages.Select(iso => new CultureInfo(iso)).ToList();
+    options.SupportedCultures.Add(LocalizedMessage.InvariantCulture);
+    options.SupportedUICultures = options.SupportedCultures;
 });
 // Set CORS headers for websites directly accessing the API.
 builder.Services.AddCors(options =>
@@ -111,14 +113,15 @@ if (isRunningAsTool)
         document.Title = "Helldivers 2";
         document.Description = "Helldivers 2 Unofficial API";
 
+        var languages = builder
+            .Configuration
+            .GetSection("Helldivers:Synchronization:Languages")
+            .Get<List<string>>()!;
         document.SchemaSettings.TypeMappers.Add(
-            new NJsonSchema.Generation.TypeMappers.PrimitiveTypeMapper(
-                typeof(Helldivers.Models.Domain.Localization.LocalizedMessage),
-                schema => schema.Type = NJsonSchema.JsonObjectType.String
-            )
+            new Helldivers.API.OpenApi.TypeMappers.LocalizedMessageTypeMapper(languages)
         );
 
-        document.DocumentProcessors.Add(new Helldivers.API.OpenApi.HelldiversDocumentProcessor());
+        document.DocumentProcessors.Add(new Helldivers.API.OpenApi.DocumentProcessors.HelldiversDocumentProcessor());
     });
     builder.Services.AddOpenApiDocument(document =>
     {
@@ -127,7 +130,7 @@ if (isRunningAsTool)
         document.DocumentName = "arrowhead";
         document.ApiGroupNames = ["arrowhead"];
 
-        document.DocumentProcessors.Add(new Helldivers.API.OpenApi.ArrowHeadDocumentProcessor());
+        document.DocumentProcessors.Add(new Helldivers.API.OpenApi.DocumentProcessors.ArrowHeadDocumentProcessor());
     });
     builder.Services.AddEndpointsApiExplorer();
 }

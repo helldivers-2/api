@@ -3,7 +3,7 @@ using NSwag;
 using NSwag.Generation.Processors;
 using NSwag.Generation.Processors.Contexts;
 
-namespace Helldivers.API.OpenApi;
+namespace Helldivers.API.OpenApi.DocumentProcessors;
 
 /// <summary>
 /// Handles processing of the OpenAPI specification of the Production Helldivers API.
