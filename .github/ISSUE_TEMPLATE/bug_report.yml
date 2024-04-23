@@ -11,7 +11,7 @@ body:
         This form is only for submitting bug reports. If you have a usage question
         or are unsure if this is really a bug, make sure to:
 
-        - Read the [docs](https://helldivers-2.fly.dev/swagger-ui.html)
+        - Read the [docs](https://helldivers-2.github.io/api/)
         - Ask on [Discord Chat](https://discord.gg/E8UUfWYmf9)
         - Ask on [GitHub Discussions](https://github.com/helldivers-2/api/discussions)
 

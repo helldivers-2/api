@@ -62,3 +62,26 @@ docker run -p 8080:8080 -e "Helldivers__Synchronization__IntervalSeconds=10" hel
 ```
 
 You can read more about using environment variables to override configuration [here](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-8.0#naming-of-environment-variables)
+
+### Overriding rate limits
+You can override the rate limits by overriding the following configuration:
+```json
+{
+  "Helldivers": {
+    "API": {
+      "RateLimit": 5,
+      "RateLimitWindow": 10
+    }
+  }
+}
+```
+
+The `RateLimit` (overridable with `-e Helldivers__API__RateLimit`) is how many requests can be made in the timeframe,
+the `RateLimitWindow` (overridable with `-e Helldivers__API__RateLimitWindow`) is how many seconds before the `RateLimit`
+resets again.
+
+Increasing the `RateLimit`, decreasing the `RateLimitWindow` or both will effectively increase how many requests you can
+make to the application.
+
+Alternatively, if you use the hosted versions you can request an API key that allows for higher rate limits
+by sponsoring this project! (if you self host you can generate your own keys too!).

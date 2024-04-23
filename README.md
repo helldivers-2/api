@@ -18,9 +18,9 @@ a [SwaggerUI](https://helldivers-2.github.io/api/docs/openapi/swagger-ui.html) (
 internally, however we strongly encourage you to use the `/raw` endpoints of the community wrapper instead of accessing
 the ArrowHead API directly, as it puts additional load on their servers (besides, we have shinier endpoints, I swear!).
 
-The root URL of the API is available here: https://helldivers-2-dotnet.fly.dev/
+The root URL of the API is available here: https://api.helldivers2.dev
 > [!WARNING]
-> Note that it might change as we are transitioning from the Elixir version to a new version!
+> The root domain of the API recently changed, it's recommended you use the domain above to avoid problems in the future
 
 We also ask that you send us a `User-Agent` header when making requests (if accessing directly from the browser,
 the headers sent by those should suffice and you don't need to add anything special).
