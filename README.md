@@ -18,7 +18,7 @@ a [SwaggerUI](https://helldivers-2.github.io/api/docs/openapi/swagger-ui.html) (
 internally, however we strongly encourage you to use the `/raw` endpoints of the community wrapper instead of accessing
 the ArrowHead API directly, as it puts additional load on their servers (besides, we have shinier endpoints, I swear!).
 
-The root URL of the API is available here: https://helldivers-2.elixus.be
+The root URL of the API is available here: https://api.helldivers2.dev
 > [!WARNING]
 > The root domain of the API recently changed, it's recommended you use the domain above to avoid problems in the future
 
