@@ -24,6 +24,6 @@ public sealed record PlanetEvent(
     long MaxHealth,
     long StartTime,
     long ExpireTime,
-    long CampaignId,
+    int CampaignId,
     List<int> JointOperationIds
 );
