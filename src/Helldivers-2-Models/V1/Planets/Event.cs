@@ -20,6 +20,6 @@ public sealed record Event(
     long MaxHealth,
     DateTime StartTime,
     DateTime EndTime,
-    long CampaignId,
+    int CampaignId,
     List<int> JointOperationIds
 );
