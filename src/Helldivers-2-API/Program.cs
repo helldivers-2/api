@@ -185,7 +185,14 @@ app.UseHttpMetrics(options =>
         if (context.User.Identity is { Name: { } name })
             return name;
 
-        return string.Empty;
+        // TODO: document custom header that clients can send to identify themselves.
+
+        if (string.IsNullOrWhiteSpace(context.Request.Headers.Referer) is false)
+            return context.Request.Headers.Referer!;
+        if (string.IsNullOrWhiteSpace(context.Request.Headers.Origin) is false)
+            return context.Request.Headers.Origin!;
+
+        return "Unknown";
     });
 });
 
