@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Prometheus;
 using System.Globalization;
 using System.Net;
 using System.Text.Json.Serialization;
@@ -27,6 +28,11 @@ var isRunningAsTool = args.FirstOrDefault(arg => arg.StartsWith("--applicationNa
 #endif
 
 var builder = WebApplication.CreateSlimBuilder(args);
+
+#if RELEASE
+// When running in release mode write JSON logfiles
+builder.Logging.AddJsonConsole();
+#endif
 
 // Registers the core services in the container.
 builder.Services.AddHelldivers();
@@ -171,6 +177,18 @@ builder.Services.AddHelldiversSync();
 
 var app = builder.Build();
 
+// Track telemetry for Prometheus (Fly.io metrics)
+app.UseHttpMetrics(options =>
+{
+    options.AddCustomLabel("Client", context =>
+    {
+        if (context.User.Identity is { Name: { } name })
+            return name;
+
+        return string.Empty;
+    });
+});
+
 // Use response compression for smaller payload sizes
 app.UseResponseCompression();
 
@@ -249,5 +267,8 @@ v1.MapGet("/steam", SteamController.Index);
 v1.MapGet("/steam/{gid}", SteamController.Show);
 
 #endregion
+
+// Maps Prometheus to /metrics
+app.MapMetrics();
 
 await app.RunAsync();
