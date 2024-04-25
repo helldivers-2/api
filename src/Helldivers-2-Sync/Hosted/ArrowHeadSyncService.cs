@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Diagnostics;
+using Prometheus;
 using System.Globalization;
 
 namespace Helldivers.Sync.Hosted;
@@ -22,6 +22,9 @@ public sealed partial class ArrowHeadSyncService(
     StorageFacade storage
 ) : BackgroundService
 {
+    private static readonly Histogram SteamSyncMetric =
+        Metrics.CreateHistogram("helldivers_sync_steam", "All Steam synchronizations");
+
     #region Source generated logging
 
     [LoggerMessage(Level = LogLevel.Information, Message = "sync will run every {Interval}")]
@@ -29,9 +32,6 @@ public sealed partial class ArrowHeadSyncService(
 
     [LoggerMessage(Level = LogLevel.Error, Message = "An exception was thrown when synchronizing from ArrowHead API")]
     private static partial void LogSyncThrewAnError(ILogger logger, Exception exception);
-
-    [LoggerMessage(LogLevel.Information, Message = "Finished synchronizing from ArrowHead API in {Duration}")]
-    private static partial void LogFinishedSynchronize(ILogger logger, TimeSpan duration);
 
     [LoggerMessage(LogLevel.Warning, Message = "Failed to download translations for {Language} of {Type}")]
     private static partial void LogFailedToLoadTranslation(ILogger logger, Exception exception, string language,
@@ -49,14 +49,10 @@ public sealed partial class ArrowHeadSyncService(
         {
             try
             {
-                var stopwatch = new Stopwatch();
+                using var _ = SteamSyncMetric.NewTimer();
                 await using var scope = scopeFactory.CreateAsyncScope();
 
-                stopwatch.Start();
                 await SynchronizeAsync(scope.ServiceProvider, cancellationToken);
-                stopwatch.Stop();
-
-                LogFinishedSynchronize(logger, stopwatch.Elapsed);
             }
             catch (Exception exception)
             {

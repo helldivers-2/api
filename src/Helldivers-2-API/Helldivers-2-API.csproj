@@ -25,6 +25,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
+        <PackageReference Include="prometheus-net.AspNetCore" Version="8.2.1" />
         <ProjectReference Include="..\Helldivers-2-Models\Helldivers-2-Models.csproj" />
         <ProjectReference Include="..\Helldivers-2-Core\Helldivers-2-Core.csproj" />
         <ProjectReference Include="..\Helldivers-2-Sync\Helldivers-2-Sync.csproj" />

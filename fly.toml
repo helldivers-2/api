@@ -13,6 +13,10 @@ kill_signal = 'SIGTERM'
 
 [env]
 
+[metrics]
+port = 8080
+parth = "/metrics"
+
 [http_service]
   internal_port = 8080
   force_https = true
