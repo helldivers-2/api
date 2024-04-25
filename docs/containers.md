@@ -72,7 +72,7 @@ You can read more about using environment variables to override configuration [h
 The API ships with an API key mechanism that allows you to generate API keys that can override the specified rate limits.
 This feature is enabled by default, but requires a valid signing key to generate and validate API keys.
 
-For security reasons we don't ship default API keys by default (as that would open anyone who forgets to change them to DDOS attacks).
+For security reasons we don't ship default API keys (as that would open anyone who forgets to change them to DDOS attacks).
 If you don't want to bother with API keys (for example because you configured your own rate limits as shown [below](#overriding-rate-limits))
 you can disable them by passing the following parameter to your Docker run command:
 ```shell
