@@ -6,6 +6,11 @@
 public sealed class AuthenticationConfiguration
 {
     /// <summary>
+    /// Whether the API authentication is enabled or disabled.
+    /// </summary>
+    public bool Enabled { get; set; } = true;
+
+    /// <summary>
     /// A list of valid issuers of authentication tokens.
     /// </summary>
     public List<string> ValidIssuers { get; set; } = [];

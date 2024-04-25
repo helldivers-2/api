@@ -117,23 +117,27 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 #if DEBUG
 IdentityModelEventSource.ShowPII = true;
 #endif
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-{
-    var config = new AuthenticationConfiguration();
-    builder.Configuration.GetSection("Helldivers:API:Authentication").Bind(config);
 
-    options.TokenValidationParameters = new()
+var authConfig = new AuthenticationConfiguration();
+builder.Configuration.GetSection("Helldivers:API:Authentication").Bind(authConfig);
+if (authConfig.Enabled)
+{
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
     {
-        ValidIssuers = config.ValidIssuers,
-        ValidAudiences = config.ValidAudiences,
-        IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(config.SigningKey)),
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true
-    };
-});
-builder.Services.AddAuthorization();
+
+        options.TokenValidationParameters = new()
+        {
+            ValidIssuers = authConfig.ValidIssuers,
+            ValidAudiences = authConfig.ValidAudiences,
+            IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(authConfig.SigningKey)),
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true
+        };
+    });
+    builder.Services.AddAuthorization();
+}
 
 // Swagger is generated at compile time, so we don't include Swagger dependencies in Release builds.
 #if DEBUG
