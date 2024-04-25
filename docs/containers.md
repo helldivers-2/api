@@ -21,9 +21,14 @@ and finally run the image:
 docker run -p 8080:8080 helldivers2-api
 ```
 
+> [!WARNING]
+> If you get an error message when starting the container similar `System.ArgumentNullException: Value cannot be null. (Parameter 's')`
+> read the section below about [Configuring API keys for the self-hosted version](#configuring-api-keys-for-the-self-hosted-version).
+> You can read more details on this [here](https://github.com/helldivers-2/api/issues/90)
+
 ### Building the container with OpenAPI
-By default the OpenAPI specifications aren't bundled in the container image,
-you can enable OpenAPI support by building the container with these flags:
+By default, the OpenAPI specifications aren't bundled in the container image.
+You can enable OpenAPI support by building the container with these flags:
 ```shell
 docker build --build-arg="OPENAPI=true" -f ./src/Helldivers-2-API/Dockerfile -t helldivers2-api .
 ```
@@ -63,6 +68,32 @@ docker run -p 8080:8080 -e "Helldivers__Synchronization__IntervalSeconds=10" hel
 
 You can read more about using environment variables to override configuration [here](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-8.0#naming-of-environment-variables)
 
+### Configuring API keys for the self-hosted version
+The API ships with an API key mechanism that allows you to generate API keys that can override the specified rate limits.
+This feature is enabled by default, but requires a valid signing key to generate and validate API keys.
+
+For security reasons we don't ship default API keys by default (as that would open anyone who forgets to change them to DDOS attacks).
+If you don't want to bother with API keys (for example because you configured your own rate limits as shown [below](#overriding-rate-limits))
+you can disable them by passing the following parameter to your Docker run command:
+```shell
+docker run -p 8080:8080 -e "Helldivers__API__Authentication__Enabled=false" helldivers2-api
+```
+If you'd like to enable API keys, you'll have to set a signing key. It's *required* this key is 32 bits and formatted as
+base 64 (for examples in a couple languages see [Generating an API signing key](#generating-an-api-signing-key)).
+
+Once you have your signing key, pass it to the container using the `Helldivers__API__Authentication__SigningKey` variable:
+```shell
+docker run -p 8080:8080 -e "Helldivers__API__Authentication__SigningKey=YourSigningKey" helldivers2-api
+```
+
+### Generating an API signing key
+Elixir
+```elixir
+32
+|> :crypto.strong_rand_bytes()
+|> Base.encode64()
+```
+
 ### Overriding rate limits
 You can override the rate limits by overriding the following configuration:
 ```json
@@ -84,4 +115,4 @@ Increasing the `RateLimit`, decreasing the `RateLimitWindow` or both will effect
 make to the application.
 
 Alternatively, if you use the hosted versions you can request an API key that allows for higher rate limits
-by sponsoring this project! (if you self host you can generate your own keys too!).
+by sponsoring this project! (if you self-host you can generate your own keys too!).
