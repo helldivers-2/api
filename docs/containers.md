@@ -94,6 +94,19 @@ Elixir
 |> Base.encode64()
 ```
 
+### Generating an API key
+When you run the API locally (*not in a container*) you have access to an extra endpoint: `/dev/token`.
+This endpoint generates an API key that you can use to make requests to any API instance that has the same signing key.
+
+It takes 2 parameters:
+- `name` which is the name of the client for which you are generating a token (it's used for metrics and logging).
+- `limit` this is the new rate limit that will be set when the API key is used
+
+for example: `/dev/token?name=dealloc&limit=999` will generate an API token for a client called `dealloc` that can make `999` requests per time window.
+
+> [!WARNING]
+> This endpoint **requires** a valid signing key to be configured, if you don't have one see [Configuring API keys for the self-hosted version](#configuring-api-keys-for-the-self-hosted-version)
+
 ### Overriding rate limits
 You can override the rate limits by overriding the following configuration:
 ```json
