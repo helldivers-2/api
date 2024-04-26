@@ -11,7 +11,6 @@ namespace Helldivers.API.OpenApi.DocumentProcessors;
 public class HelldiversDocumentProcessor : IDocumentProcessor
 {
     private const string HelldiversFlyServer = "https://api.helldivers2.dev/";
-    private const string LocalServer = "/";
 
     /// <inheritdoc />
     public void Process(DocumentProcessorContext context)
@@ -23,17 +22,11 @@ public class HelldiversDocumentProcessor : IDocumentProcessor
             Description = "The dotnet helldivers server",
             Url = HelldiversFlyServer
         };
-        var local = new OpenApiServer
-        {
-            Description = "The development server",
-            Url = LocalServer
-        };
 
         foreach (var (_, item) in paths)
         {
             item.Servers.Clear();
             item.Servers.Add(server);
-            item.Servers.Add(local);
         }
     }
 }
