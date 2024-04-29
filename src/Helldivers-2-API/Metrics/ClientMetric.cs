@@ -29,7 +29,10 @@ public static partial class ClientMetric
         if (context.User.Identity is { Name: { } name })
             return name;
 
-        // TODO: document custom header that clients can send to identify themselves.
+        // If the client sends `X-Super-Client` we use that name
+        if (context.Request.Headers.TryGetValue("X-Super-Client", out var superClient))
+            if (string.IsNullOrWhiteSpace(superClient) is false)
+                return superClient!;
 
         if (GetBrowserClientName(context.Request) is { } clientName)
             return clientName;
