@@ -13,7 +13,7 @@ public class RedirectFlyDomainMiddleware : IMiddleware
         if (context.Request.Host.Host.Equals("helldivers-2-dotnet.fly.dev", StringComparison.InvariantCultureIgnoreCase))
         {
             var url = $"{RedirectDomain}{context.Request.Path}";
-            
+
             context.Response.Redirect(url, permanent: true);
         }
 
