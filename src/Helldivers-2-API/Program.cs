@@ -43,6 +43,7 @@ builder.Services.AddProblemDetails();
 
 // Register the rate limiting middleware.
 builder.Services.AddTransient<RateLimitMiddleware>();
+builder.Services.AddTransient<RedirectFlyDomainMiddleware>();
 
 // Register the memory cache, used in the rate limiting middleware.
 builder.Services.AddMemoryCache();
@@ -181,6 +182,8 @@ builder.Services.AddHelldiversSync();
 #endif
 
 var app = builder.Build();
+
+app.UseMiddleware<RedirectFlyDomainMiddleware>();
 
 // Track telemetry for Prometheus (Fly.io metrics)
 app.UseHttpMetrics(options =>
