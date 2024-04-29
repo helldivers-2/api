@@ -16,8 +16,8 @@ public sealed partial class SteamSyncService(
     IServiceScopeFactory scopeFactory
 ) : BackgroundService
 {
-    private static readonly Histogram ArrowHeadSyncMetric =
-        Metrics.CreateHistogram("helldivers_sync_arrowhead", "All ArrowHead synchronizations");
+    private static readonly Histogram SteamSyncMetric =
+        Metrics.CreateHistogram("helldivers_sync_steam", "All Steam synchronizations");
 
     #region Source generated logging
 
@@ -35,7 +35,7 @@ public sealed partial class SteamSyncService(
         {
             try
             {
-                using var _ = ArrowHeadSyncMetric.NewTimer();
+                using var _ = SteamSyncMetric.NewTimer();
                 await using var scope = scopeFactory.CreateAsyncScope();
 
                 var feed = await scope

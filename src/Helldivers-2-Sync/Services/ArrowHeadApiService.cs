@@ -3,7 +3,6 @@ using Helldivers.Models.ArrowHead;
 using Helldivers.Sync.Configuration;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 
 namespace Helldivers.Sync.Services;
