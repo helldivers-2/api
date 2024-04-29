@@ -15,7 +15,7 @@ kill_signal = 'SIGTERM'
 
 [metrics]
 port = 8080
-parth = "/metrics"
+path = "/metrics"
 
 [http_service]
   internal_port = 8080
