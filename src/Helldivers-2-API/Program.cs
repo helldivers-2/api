@@ -1,6 +1,7 @@
 using Helldivers.API.Configuration;
 using Helldivers.API.Controllers;
 using Helldivers.API.Controllers.V1;
+using Helldivers.API.Metrics;
 using Helldivers.API.Middlewares;
 using Helldivers.Core.Extensions;
 using Helldivers.Models;
@@ -184,20 +185,7 @@ var app = builder.Build();
 // Track telemetry for Prometheus (Fly.io metrics)
 app.UseHttpMetrics(options =>
 {
-    options.AddCustomLabel("Client", context =>
-    {
-        if (context.User.Identity is { Name: { } name })
-            return name;
-
-        // TODO: document custom header that clients can send to identify themselves.
-
-        if (string.IsNullOrWhiteSpace(context.Request.Headers.Referer) is false)
-            return context.Request.Headers.Referer!;
-        if (string.IsNullOrWhiteSpace(context.Request.Headers.Origin) is false)
-            return context.Request.Headers.Origin!;
-
-        return "Unknown";
-    });
+    options.AddCustomLabel("Client", ClientMetric.GetClientName);
 });
 
 // Use response compression for smaller payload sizes
