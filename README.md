@@ -22,16 +22,15 @@ The root URL of the API is available here: https://api.helldivers2.dev
 > [!WARNING]
 > The root domain of the API recently changed, it's recommended you use the domain above to avoid problems in the future
 
-We also ask that you send us a `User-Agent` header when making requests (if accessing directly from the browser,
-the headers sent by those should suffice and you don't need to add anything special).
-While this is currently not *required*, we are considering making this required in the future, so adding it now
-is the safer option.
+We ask that you send along a `X-Super-Client` header with the name of your application / domain
+(e.g. `X-Super-Client: api.helldivers2.dev`) and optionally a `X-Super-Contact` with some form of contact if your site
+does not link to any form of contact information we can find. We use this information in case we need to notify our users
+of important changes to the API that may cause disruption of service or when additional restrictions would be imposed
+on your app (to prevent abuse, unintentional or otherwise).
 
-We also ask that you include an `X-Application-Contact` header with either a Discord, email or other contact handle
-so we know how to reach out to you (see below).
-
-We ask this so we can identify the applications making requests, and so we can reach out in case we notice weird or
-incorrect behaviour (or we notice you're generating more traffic than we can handle).
+> [!IMPORTANT]
+> While adding `X-Super-Client` and `X-Super-Contact` is currently not required, the `X-Super-Client` header **will**
+> be made obligatory in the future, causing clients who don't send it to fail. For more information see #94
 
 ### Rate limits
 Currently the rate limit is set at 5 requests/10 seconds.

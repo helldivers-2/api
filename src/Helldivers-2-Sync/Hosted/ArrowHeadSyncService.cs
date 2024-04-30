@@ -22,8 +22,8 @@ public sealed partial class ArrowHeadSyncService(
     StorageFacade storage
 ) : BackgroundService
 {
-    private static readonly Histogram SteamSyncMetric =
-        Metrics.CreateHistogram("helldivers_sync_steam", "All Steam synchronizations");
+    private static readonly Histogram ArrowHeadSyncMetric =
+        Metrics.CreateHistogram("helldivers_sync_arrowhead", "All ArrowHead synchronizations");
 
     #region Source generated logging
 
@@ -49,7 +49,7 @@ public sealed partial class ArrowHeadSyncService(
         {
             try
             {
-                using var _ = SteamSyncMetric.NewTimer();
+                using var _ = ArrowHeadSyncMetric.NewTimer();
                 await using var scope = scopeFactory.CreateAsyncScope();
 
                 await SynchronizeAsync(scope.ServiceProvider, cancellationToken);
