@@ -30,7 +30,7 @@ public static partial class ClientMetric
             return name;
 
         // If the client sends `X-Super-Client` we use that name
-        if (context.Request.Headers.TryGetValue("X-Super-Client", out var superClient))
+        if (context.Request.Headers.TryGetValue(Constants.CLIENT_HEADER_NAME, out var superClient))
             if (string.IsNullOrWhiteSpace(superClient) is false)
                 return superClient!;
 

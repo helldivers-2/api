@@ -1,3 +1,4 @@
+using Helldivers.API;
 using Helldivers.API.Configuration;
 using Helldivers.API.Controllers;
 using Helldivers.API.Controllers.V1;
@@ -79,6 +80,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy => policy
         .AllowAnyOrigin()
         .AllowAnyMethod()
+        .WithHeaders(Constants.CLIENT_HEADER_NAME, Constants.CONTACT_HEADER_NAME)
     );
 });
 
