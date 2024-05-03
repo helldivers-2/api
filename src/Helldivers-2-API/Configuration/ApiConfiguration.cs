@@ -16,6 +16,11 @@ public sealed class ApiConfiguration
     public int RateLimitWindow { get; set; }
 
     /// <summary>
+    /// A comma separated list of clients that are (temporarily) blacklisted from making requests.
+    /// </summary>
+    public string Blacklist { get; set; } = string.Empty;
+
+    /// <summary>
     /// Contains the <see cref="AuthenticationConfiguration" /> for the API.
     /// </summary>
     public AuthenticationConfiguration Authentication { get; set; } = null!;
