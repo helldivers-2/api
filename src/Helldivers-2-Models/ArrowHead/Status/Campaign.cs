@@ -11,5 +11,5 @@ public sealed record Campaign(
     int Id,
     int PlanetIndex,
     int Type,
-    int Count
+    ulong Count
 );

@@ -7,5 +7,5 @@
 /// <param name="Amount">The amount of <see cref="Type" /> that will be awarded.</param>
 public sealed record Reward(
     int Type, // TODO: map to enum
-    int Amount
+    ulong Amount
 );

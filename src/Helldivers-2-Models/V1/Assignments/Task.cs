@@ -9,6 +9,6 @@
 /// <param name="ValueTypes">A list of numbers, purpose unknown</param>
 public sealed record Task(
     int Type,
-    List<int> Values,
-    List<int> ValueTypes
+    List<ulong> Values,
+    List<ulong> ValueTypes
 );

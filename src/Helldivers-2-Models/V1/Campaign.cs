@@ -11,5 +11,5 @@ public record Campaign(
     int Id,
     Planet Planet,
     int Type, // TODO: map to enum
-    int Count
+    ulong Count
 );

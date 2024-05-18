@@ -25,6 +25,7 @@ public static class DevelopmentController
             audience: options.Value.Authentication.ValidAudiences.First(),
             claims: [
                 new Claim("sub", name),
+                new Claim(ClaimTypes.Name, name),
                 new Claim("nbf", $"{DateTime.UtcNow.Subtract(DateTime.UnixEpoch).TotalSeconds:0}"),
                 new Claim("iat", $"{DateTime.UtcNow.Subtract(DateTime.UnixEpoch).TotalSeconds:0}"),
                 new Claim("exp", $"{DateTime.UtcNow.AddDays(30).Subtract(DateTime.UnixEpoch).TotalSeconds:0}"),
