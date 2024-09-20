@@ -11,7 +11,7 @@ namespace Helldivers.Models.ArrowHead;
 /// <param name="Setting">Contains detailed information on this assignment like briefing, rewards, ...</param>
 public sealed record Assignment(
     long Id32,
-    List<ulong> Progress,
+    List<long> Progress,
     long ExpiresIn,
     Setting Setting
 );
