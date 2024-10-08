@@ -18,7 +18,7 @@ namespace Helldivers.Models.V1;
 /// <param name="Expiration">The date when the assignment will expire.</param>
 public sealed record Assignment(
     long Id,
-    List<ulong> Progress,
+    List<long> Progress,
     LocalizedMessage Title,
     LocalizedMessage Briefing,
     LocalizedMessage Description,
