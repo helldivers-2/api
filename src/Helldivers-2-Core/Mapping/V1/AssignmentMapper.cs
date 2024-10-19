@@ -13,17 +13,17 @@ public sealed class AssignmentMapper
     /// <summary>
     /// Maps a set of multi-language <see cref="Assignment" />s into a list of <see cref="Assignment" />.
     /// </summary>
-    public IEnumerable<Assignment> MapToV1(Dictionary<string, List<Models.ArrowHead.Assignment>> assignments)
+    public IEnumerable<Assignment> MapToV1(MappingContext context)
     {
         // Get a list of all assignments across all translations.
-        var invariants = assignments
+        var invariants = context.Assignments
             .SelectMany(pair => pair.Value)
             .DistinctBy(assignment => assignment.Id32);
 
         foreach (var assignment in invariants)
         {
             // Build a dictionary of all translations for this assignment
-            var translations = assignments.Select(pair =>
+            var translations = context.Assignments.Select(pair =>
                 new KeyValuePair<string, Models.ArrowHead.Assignment?>(
                     pair.Key,
                     pair.Value.FirstOrDefault(a => a.Id32 == assignment.Id32)

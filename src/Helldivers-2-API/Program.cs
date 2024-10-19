@@ -1,14 +1,21 @@
+using Helldivers.API;
+using Helldivers.API.Configuration;
 using Helldivers.API.Controllers;
 using Helldivers.API.Controllers.V1;
+using Helldivers.API.Metrics;
 using Helldivers.API.Middlewares;
 using Helldivers.Core.Extensions;
 using Helldivers.Models;
 using Helldivers.Models.Domain.Localization;
 using Helldivers.Sync.Configuration;
 using Helldivers.Sync.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Prometheus;
 using System.Globalization;
 using System.Net;
 using System.Text.Json.Serialization;
@@ -24,6 +31,11 @@ var isRunningAsTool = args.FirstOrDefault(arg => arg.StartsWith("--applicationNa
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
+#if RELEASE
+// When running in release mode write JSON logfiles
+builder.Logging.AddJsonConsole();
+#endif
+
 // Registers the core services in the container.
 builder.Services.AddHelldivers();
 
@@ -32,6 +44,8 @@ builder.Services.AddProblemDetails();
 
 // Register the rate limiting middleware.
 builder.Services.AddTransient<RateLimitMiddleware>();
+builder.Services.AddTransient<RedirectFlyDomainMiddleware>();
+builder.Services.AddTransient<BlacklistMiddleware>();
 
 // Register the memory cache, used in the rate limiting middleware.
 builder.Services.AddMemoryCache();
@@ -58,6 +72,8 @@ builder.Services.AddRequestLocalization(options =>
     options.ApplyCurrentCultureToResponseHeaders = true;
     options.DefaultRequestCulture = new RequestCulture(LocalizedMessage.FallbackCulture);
     options.SupportedCultures = languages.Select(iso => new CultureInfo(iso)).ToList();
+    options.SupportedCultures.Add(LocalizedMessage.InvariantCulture);
+    options.SupportedUICultures = options.SupportedCultures;
 });
 // Set CORS headers for websites directly accessing the API.
 builder.Services.AddCors(options =>
@@ -65,6 +81,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy => policy
         .AllowAnyOrigin()
         .AllowAnyMethod()
+        .WithHeaders(Constants.CLIENT_HEADER_NAME, Constants.CONTACT_HEADER_NAME)
     );
 });
 
@@ -79,6 +96,7 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 });
 
 // This configuration is bound here so that source generators kick in.
+builder.Services.Configure<ApiConfiguration>(builder.Configuration.GetSection("Helldivers:API"));
 builder.Services.Configure<HelldiversSyncConfiguration>(builder.Configuration.GetSection("Helldivers:Synchronization"));
 
 // If a request takes over 10s to complete, abort it.
@@ -101,6 +119,31 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
+#if DEBUG
+IdentityModelEventSource.ShowPII = true;
+#endif
+
+var authConfig = new AuthenticationConfiguration();
+builder.Configuration.GetSection("Helldivers:API:Authentication").Bind(authConfig);
+if (authConfig.Enabled)
+{
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+    {
+
+        options.TokenValidationParameters = new()
+        {
+            ValidIssuers = authConfig.ValidIssuers,
+            ValidAudiences = authConfig.ValidAudiences,
+            IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(authConfig.SigningKey)),
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true
+        };
+    });
+    builder.Services.AddAuthorization();
+}
+
 // Swagger is generated at compile time, so we don't include Swagger dependencies in Release builds.
 #if DEBUG
 // Only add OpenApi dependencies when generating 
@@ -111,14 +154,15 @@ if (isRunningAsTool)
         document.Title = "Helldivers 2";
         document.Description = "Helldivers 2 Unofficial API";
 
+        var languages = builder
+            .Configuration
+            .GetSection("Helldivers:Synchronization:Languages")
+            .Get<List<string>>()!;
         document.SchemaSettings.TypeMappers.Add(
-            new NJsonSchema.Generation.TypeMappers.PrimitiveTypeMapper(
-                typeof(Helldivers.Models.Domain.Localization.LocalizedMessage),
-                schema => schema.Type = NJsonSchema.JsonObjectType.String
-            )
+            new Helldivers.API.OpenApi.TypeMappers.LocalizedMessageTypeMapper(languages)
         );
 
-        document.DocumentProcessors.Add(new Helldivers.API.OpenApi.HelldiversDocumentProcessor());
+        document.DocumentProcessors.Add(new Helldivers.API.OpenApi.DocumentProcessors.HelldiversDocumentProcessor());
     });
     builder.Services.AddOpenApiDocument(document =>
     {
@@ -127,7 +171,7 @@ if (isRunningAsTool)
         document.DocumentName = "arrowhead";
         document.ApiGroupNames = ["arrowhead"];
 
-        document.DocumentProcessors.Add(new Helldivers.API.OpenApi.ArrowHeadDocumentProcessor());
+        document.DocumentProcessors.Add(new Helldivers.API.OpenApi.DocumentProcessors.ArrowHeadDocumentProcessor());
     });
     builder.Services.AddEndpointsApiExplorer();
 }
@@ -141,6 +185,15 @@ builder.Services.AddHelldiversSync();
 #endif
 
 var app = builder.Build();
+
+app.UseMiddleware<RedirectFlyDomainMiddleware>();
+app.UseMiddleware<BlacklistMiddleware>();
+
+// Track telemetry for Prometheus (Fly.io metrics)
+app.UseHttpMetrics(options =>
+{
+    options.AddCustomLabel("Client", ClientMetric.GetClientName);
+});
 
 // Use response compression for smaller payload sizes
 app.UseResponseCompression();
@@ -163,6 +216,20 @@ app.UseMiddleware<RateLimitMiddleware>();
 
 // Add middleware to timeout requests if they take too long.
 app.UseRequestTimeouts();
+
+#region API dev
+#if DEBUG
+
+var dev = app
+    .MapGroup("/dev")
+    .WithGroupName("development")
+    .WithTags("dev")
+    .ExcludeFromDescription();
+
+dev.MapGet("/token", DevelopmentController.CreateToken);
+
+#endif
+#endregion
 
 #region ArrowHead API endpoints ('raw' API)
 
@@ -206,5 +273,12 @@ v1.MapGet("/steam", SteamController.Index);
 v1.MapGet("/steam/{gid}", SteamController.Show);
 
 #endregion
+
+app.MapGet("/", () => @"Check out the documentation over at https://helldivers-2.github.io/api/
+You can also find additional resources on our Github: https://github.com/helldivers-2/api
+Consider supporting us at https://github.com/sponsors/dealloc");
+
+// Maps Prometheus to /metrics
+app.MapMetrics();
 
 await app.RunAsync();

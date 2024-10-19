@@ -16,6 +16,13 @@ public sealed record LocalizedMessage(IReadOnlyDictionary<CultureInfo, string> M
     public static CultureInfo FallbackCulture { get; set; } = null!;
 
     /// <summary>
+    /// Represents the <see cref="CultureInfo.InvariantCulture" /> as a named culture that can be assigned by the request
+    /// localization middleware.
+    /// Selecting this culture will result in all languages being serialized at once.
+    /// </summary>
+    public static readonly CultureInfo InvariantCulture = new CultureInfo("ivl-IV");
+
+    /// <summary>
     /// Factory method for creating a <see cref="LocalizedMessage" /> from a list of {language, value} pairs.
     /// </summary>
     public static LocalizedMessage FromStrings(IEnumerable<KeyValuePair<string, string>> values)

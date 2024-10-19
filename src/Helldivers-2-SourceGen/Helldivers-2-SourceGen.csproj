@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="System.Text.Json" Version="8.0.3" PrivateAssets="all" LocalSourceGenerators="true" />
+        <PackageReference Include="System.Text.Json" Version="8.0.4" PrivateAssets="all" LocalSourceGenerators="true" />
         <PackageReference Include="System.Text.Encodings.Web" Version="8.0.0" PrivateAssets="all" LocalSourceGenerators="true" />
         <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" PrivateAssets="all" LocalSourceGenerators="true" />
     </ItemGroup>

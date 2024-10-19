@@ -1,4 +1,5 @@
 ﻿using Helldivers.Core.Facades;
+using Helldivers.Core.Mapping;
 using Helldivers.Core.Storage.ArrowHead;
 using Helldivers.Models;
 using Helldivers.Models.Steam;
@@ -51,7 +52,7 @@ public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V
             pair => DeserializeOrThrow(pair.Value, ArrowHeadSerializerContext.Default.ListAssignment)
         );
 
-        await v1.UpdateStores(
+        var context = new MappingContext(
             warId,
             warInfo,
             warStatuses,
@@ -59,6 +60,8 @@ public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V
             newsFeeds,
             assignments
         );
+
+        await v1.UpdateStores(context);
     }
 
     private T DeserializeOrThrow<T>(Memory<byte> memory, JsonTypeInfo<T> typeInfo)

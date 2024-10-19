@@ -8,6 +8,6 @@
 /// <param name="Amount">The amount of <see cref="Type" /> the players will receive upon completion.</param>
 public sealed record Reward(
     int Type,
-    int Id32,
-    int Amount
+    ulong Id32,
+    ulong Amount
 );
