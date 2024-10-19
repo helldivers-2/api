@@ -4,7 +4,7 @@
 #
 
 app = 'helldivers2-prod1'
-primary_region = 'ams'
+primary_region = 'syd'
 kill_signal = 'SIGTERM'
 
 [build]
