@@ -34,7 +34,7 @@ public sealed partial class RateLimitMiddleware(
             await RejectRequest(context);
             return;
         }
-        
+
         var limiter = GetRateLimiter(context);
         using var lease = await limiter.AcquireAsync(permitCount: 1, context.RequestAborted);
         if (limiter.GetStatistics() is { } statistics)
@@ -119,7 +119,7 @@ public sealed partial class RateLimitMiddleware(
         writer.WritePropertyName("message");
         writer.WriteStringValue("The X-Super-Client and X-Super-Contact headers are required");
         writer.WriteEndObject();
-        
+
         await writer.FlushAsync(context.RequestAborted);
     }
 }

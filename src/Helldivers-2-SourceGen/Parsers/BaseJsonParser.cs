@@ -31,18 +31,18 @@ public static partial class Static
 
         var name = Path.GetFileNameWithoutExtension(file.Path);
         name = $"{char.ToUpper(name[0])}{name.Substring(1)}";
-        
+
         if (string.IsNullOrWhiteSpace(json) is false)
         {
             var (type, csharp) = Parse(json!);
-            
+
             var output = string.Format(TEMPLATE, name, filename, type, csharp);
             return SourceText.From(output, Encoding.UTF8);
         }
-        
+
         return SourceText.From("// Could not read JSON file");
     }
-    
+
     /// <summary>
     /// Convert the JSON string into C# code that can be injected.
     /// </summary>

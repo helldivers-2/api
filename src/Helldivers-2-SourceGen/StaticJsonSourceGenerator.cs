@@ -25,12 +25,12 @@ public class StaticJsonSourceGenerator : IIncrementalGenerator
             .Select(static (file, cancellationToken) =>
             {
                 var parser = GetParserForFile(file);
-                
+
                 var name = Path.GetFileNameWithoutExtension(file.Path);
 
                 return (parser.Parse(file, cancellationToken), name);
             });
-        
+
         context.RegisterSourceOutput(generated, static (context, pair) =>
         {
             var (source, name) = pair;
@@ -63,7 +63,7 @@ public class StaticJsonSourceGenerator : IIncrementalGenerator
     {
         var name = Path.GetFileNameWithoutExtension(file.Path);
         name = $"{char.ToUpper(name[0])}{name.Substring(1)}";
-        
+
         return name.ToLowerInvariant() switch
         {
             "planets" => PlanetParser,
@@ -74,7 +74,7 @@ public class StaticJsonSourceGenerator : IIncrementalGenerator
         };
     }
 
-    
+
 
 #if false
     /// <inheritdoc />
