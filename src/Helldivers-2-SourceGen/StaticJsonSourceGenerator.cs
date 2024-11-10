@@ -1,6 +1,6 @@
+using Helldivers.SourceGen.Contracts;
+using Helldivers.SourceGen.Parsers;
 using Microsoft.CodeAnalysis;
-using System.Text;
-using System.Text.Json;
 
 namespace Helldivers.SourceGen;
 
@@ -9,14 +9,74 @@ namespace Helldivers.SourceGen;
 /// When using a simple text file as a baseline, we can create a non-incremental source generator.
 /// </summary>
 [Generator]
-public class StaticJsonSourceGenerator : ISourceGenerator
+public class StaticJsonSourceGenerator : IIncrementalGenerator
 {
+    private static readonly IJsonParser PlanetParser = new PlanetsParser();
+    private static readonly IJsonParser BiomesParser = new BiomesParser();
+    private static readonly IJsonParser EnvironmentalsParser = new EnvironmentalsParser();
+    private static readonly IJsonParser FactionsParser = new FactionsParser();
+
     /// <inheritdoc />
-    public void Initialize(GeneratorInitializationContext context)
+    public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        // No initialization required for this generator.
+        var generated = context
+            .AdditionalTextsProvider
+            .Where(static file => file.Path.EndsWith(".json"))
+            .Select(static (file, cancellationToken) =>
+            {
+                var parser = GetParserForFile(file);
+                
+                var name = Path.GetFileNameWithoutExtension(file.Path);
+
+                return (parser.Parse(file, cancellationToken), name);
+            });
+        
+        context.RegisterSourceOutput(generated, static (context, pair) =>
+        {
+            var (source, name) = pair;
+
+            try
+            {
+                context.AddSource(name, source);
+            }
+            catch (Exception exception)
+            {
+                context.AddSource($"{name}.g.cs", $"// An exception was thrown processing {name}.json\n{exception.ToString()}");
+                context.ReportDiagnostic(
+                    Diagnostic.Create(
+                        new DiagnosticDescriptor(
+                            id: "HDJSON", // Unique ID for your error
+                            title: "JSON source generator failed", // Title of the error
+                            messageFormat: $"An error occured generating C# code from JSON files: {exception}", // Message format
+                            category: "HD2", // Category of the error
+                            DiagnosticSeverity.Error, // Severity of the error
+                            isEnabledByDefault: true // Whether the error is enabled by default
+                        ),
+                        Location.None // No specific location provided for simplicity
+                    )
+                );
+            }
+        });
     }
 
+    private static IJsonParser GetParserForFile(AdditionalText file)
+    {
+        var name = Path.GetFileNameWithoutExtension(file.Path);
+        name = $"{char.ToUpper(name[0])}{name.Substring(1)}";
+        
+        return name.ToLowerInvariant() switch
+        {
+            "planets" => PlanetParser,
+            "biomes" => BiomesParser,
+            "environmentals" => EnvironmentalsParser,
+            "factions" => FactionsParser,
+            _ => throw new Exception($"Generator does not know how to parse {name}")
+        };
+    }
+
+    
+
+#if false
     /// <inheritdoc />
     public void Execute(GeneratorExecutionContext context)
     {
@@ -76,69 +136,5 @@ public static partial class Static
             }
         }
     }
-
-    /// <summary>
-    /// Parses a JSON file that's an object where keys are numerical and values are names (strings).
-    /// </summary>
-    private (string Type, string Source) ParseFactionsDictionary(string json)
-    {
-        var builder = new StringBuilder("new Dictionary<int, string>()\n\t{\n");
-        var entries = JsonSerializer.Deserialize<Dictionary<string, string>>(json)!;
-        foreach (var pair in entries)
-            builder.AppendLine($@"{'\t'}{'\t'}{{ {pair.Key}, ""{pair.Value}"" }},");
-
-        builder.Append("\t}");
-        return ("IReadOnlyDictionary<int, string>", builder.ToString());
-    }
-
-    private (string Type, string Source) ParsePlanetsDictionary(string json)
-    {
-        var builder = new StringBuilder("new Dictionary<int, (LocalizedMessage Name, string Sector, string Biome, List<string> Environmentals)>()\n\t{\n");
-        var document = JsonDocument.Parse(json);
-        foreach (var property in document.RootElement.EnumerateObject())
-        {
-            var index = property.Name;
-            var name = property.Value.GetProperty("name").GetString();
-            var names = property
-                .Value
-                .GetProperty("names")
-                .EnumerateObject()
-                .ToDictionary(prop => prop.Name, prop => prop.Value.GetString()!);
-            var sector = property.Value.GetProperty("sector").GetString();
-            var biome = property.Value.GetProperty("biome").GetString();
-            var environmentals = property
-                .Value
-                .GetProperty("environmentals")
-                .EnumerateArray()
-                .Select(prop => $@"""{prop.GetString()!}""")
-                .ToList();
-
-            builder.AppendLine($@"{'\t'}{'\t'}{{ {index}, (LocalizedMessage.FromStrings([{string.Join(", ", names.Select(pair => $@"new KeyValuePair<string, string>(""{pair.Key}"", ""{pair.Value}"")"))}]), ""{sector}"", ""{biome}"", [{string.Join(", ", environmentals)}]) }},");
-        }
-
-        builder.Append("\t}");
-        return ("IReadOnlyDictionary<int, (LocalizedMessage Name, string Sector, string Biome, List<string> Environmentals)>", builder.ToString());
-    }
-
-    private (string Type, string Source) ParseBiomesDictionary(string json)
-    {
-        var builder = new StringBuilder("new Dictionary<string, Helldivers.Models.V1.Planets.Biome>()\n\t{\n");
-        var entries = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(json)!;
-        foreach (var pair in entries)
-            builder.AppendLine($@"{'\t'}{'\t'}{{ ""{pair.Key}"", new Helldivers.Models.V1.Planets.Biome(""{pair.Value["name"]}"", ""{pair.Value["description"]}"") }},");
-
-        builder.Append("\t}");
-        return ("IReadOnlyDictionary<string, Helldivers.Models.V1.Planets.Biome>", builder.ToString());
-    }
-
-    private (string Type, string Source) ParseEnvironmentalsDictionary(string json)
-    {
-        var builder = new StringBuilder("new Dictionary<string, Helldivers.Models.V1.Planets.Hazard>()\n\t{\n");
-        var entries = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(json)!;
-        foreach (var pair in entries)
-            builder.AppendLine($@"{'\t'}{'\t'}{{ ""{pair.Key}"", new Helldivers.Models.V1.Planets.Hazard(""{pair.Value["name"]}"", ""{pair.Value["description"]}"") }},");
-
-        builder.Append("\t}");
-        return ("IReadOnlyDictionary<string, Helldivers.Models.V1.Planets.Hazard>", builder.ToString());
-    }
+#endif
 }
