@@ -15,6 +15,7 @@ namespace Helldivers.Models.V1;
 /// <param name="Description">A very short summary of the description.</param>
 /// <param name="Tasks">A list of tasks that need to be completed for this assignment.</param>
 /// <param name="Reward">The reward for completing the assignment.</param>
+/// <param name="Rewards">A list of rewards for completing the assignment.</param>
 /// <param name="Expiration">The date when the assignment will expire.</param>
 public sealed record Assignment(
     long Id,
@@ -24,5 +25,6 @@ public sealed record Assignment(
     LocalizedMessage Description,
     List<Task> Tasks,
     Reward Reward,
+    List<Reward> Rewards,
     DateTime Expiration
 );

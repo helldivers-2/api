@@ -21,6 +21,11 @@ public sealed class ApiConfiguration
     public string Blacklist { get; set; } = string.Empty;
 
     /// <summary>
+    /// Whether X-Super-Client and X-Super-Contact headers are validated.
+    /// </summary>
+    public bool ValidateClients { get; set; } = true;
+
+    /// <summary>
     /// Contains the <see cref="AuthenticationConfiguration" /> for the API.
     /// </summary>
     public AuthenticationConfiguration Authentication { get; set; } = null!;
