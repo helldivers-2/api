@@ -50,6 +50,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 		.github\ISSUE_TEMPLATE\feature_request.md = .github\ISSUE_TEMPLATE\feature_request.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OpenApi", "OpenApi", "{1A2CFD82-2D8E-4DA3-97A3-403BB478B6EB}"
+	ProjectSection(SolutionItems) = preProject
+		docs\openapi\Helldivers-2-API.json = docs\openapi\Helldivers-2-API.json
+		docs\openapi\Helldivers-2-API_arrowhead.json = docs\openapi\Helldivers-2-API_arrowhead.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,5 +97,6 @@ Global
 		{18D4A0EA-02CE-4FEA-A641-848A13603040} = {C0ECDBEB-FC7B-4F3C-AF8F-D0961BD22F61}
 		{9D663AC9-2CD8-4114-A802-D12284662FF0} = {18D4A0EA-02CE-4FEA-A641-848A13603040}
 		{FD5B9284-4689-48BE-B520-633C7269F97C} = {18D4A0EA-02CE-4FEA-A641-848A13603040}
+		{1A2CFD82-2D8E-4DA3-97A3-403BB478B6EB} = {C0ECDBEB-FC7B-4F3C-AF8F-D0961BD22F61}
 	EndGlobalSection
 EndGlobal
