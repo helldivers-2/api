@@ -1,3 +1,4 @@
+#if DEBUG
 using NSwag;
 using NSwag.Generation.Processors;
 using NSwag.Generation.Processors.Contexts;
@@ -40,3 +41,4 @@ public class SuperHeadersProcessor : IOperationProcessor
         return true;
     }
 }
+#endif

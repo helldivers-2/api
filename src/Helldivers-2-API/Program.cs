@@ -4,7 +4,6 @@ using Helldivers.API.Controllers;
 using Helldivers.API.Controllers.V1;
 using Helldivers.API.Metrics;
 using Helldivers.API.Middlewares;
-using Helldivers.API.OpenApi.OperationProcessors;
 using Helldivers.Core.Extensions;
 using Helldivers.Models;
 using Helldivers.Models.Domain.Localization;
@@ -163,7 +162,7 @@ if (isRunningAsTool)
             new Helldivers.API.OpenApi.TypeMappers.LocalizedMessageTypeMapper(languages)
         );
 
-        document.OperationProcessors.Add(new SuperHeadersProcessor());
+        document.OperationProcessors.Add(new Helldivers.API.OpenApi.OperationProcessors.SuperHeadersProcessor());
 
         document.DocumentProcessors.Add(new Helldivers.API.OpenApi.DocumentProcessors.HelldiversDocumentProcessor());
     });
