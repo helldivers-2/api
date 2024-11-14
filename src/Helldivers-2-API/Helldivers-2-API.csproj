@@ -23,8 +23,8 @@
 
     <!-- Dependencies for all build configurations -->
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
         <PackageReference Include="prometheus-net.AspNetCore" Version="8.2.1" />
         <ProjectReference Include="..\Helldivers-2-Models\Helldivers-2-Models.csproj" />
         <ProjectReference Include="..\Helldivers-2-Core\Helldivers-2-Core.csproj" />
@@ -36,8 +36,8 @@
 
     <!-- Only include swagger dependencies in DEBUG builds -->
     <ItemGroup Condition="'$(Configuration)' == 'Debug'">
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.10" />
-        <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" Version="8.0.10">
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" Version="9.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
