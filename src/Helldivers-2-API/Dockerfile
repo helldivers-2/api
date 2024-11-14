@@ -1,8 +1,8 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-alpine-extra AS base
+﻿FROM mcr.microsoft.com/dotnet/runtime-deps:9.0-alpine-extra AS base
 USER $APP_UID
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS build
 RUN apk add --upgrade --no-cache build-base clang zlib-dev
 ARG BUILD_CONFIGURATION=Release
 ARG BUILD_RUNTIME=linux-musl-x64
