@@ -214,6 +214,9 @@ app.UseCors();
 // Make sure ASP.NET Core uses the correct addresses internally rather than Fly's proxy
 app.UseForwardedHeaders();
 
+// Maps Prometheus to /metrics
+app.MapMetrics();
+
 // Handles rate limiting so everyone plays nice
 app.UseMiddleware<RateLimitMiddleware>();
 
@@ -280,8 +283,5 @@ v1.MapGet("/steam/{gid}", SteamController.Show);
 app.MapGet("/", () => @"Check out the documentation over at https://helldivers-2.github.io/api/
 You can also find additional resources on our Github: https://github.com/helldivers-2/api
 Consider supporting us at https://github.com/sponsors/dealloc");
-
-// Maps Prometheus to /metrics
-app.MapMetrics();
 
 await app.RunAsync();
