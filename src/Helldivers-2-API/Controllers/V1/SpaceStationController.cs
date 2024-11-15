@@ -16,7 +16,7 @@ public static class SpaceStationController
     public static async Task<IResult> Index(HttpContext context, IStore<SpaceStation, int> store)
     {
         var stations = await store.AllAsync(context.RequestAborted);
-        
+
         return Results.Ok(stations);
     }
 
