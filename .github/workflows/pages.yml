@@ -26,25 +26,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 9.0.x
-      - name: Install DocFX
-        run: dotnet tool install -g docfx
       - name: Initial static JSON schema submodule
         run: git submodule update --init ./src/Helldivers-2-Models/json
       - name: Generate OpenAPI JSON files
         run: dotnet build -c Debug
-      - name: Generate DocFX metadata
-        run: docfx metadata
-      - name: Generate DocFX site
-        run: docfx build docfx.json
-      - name: Upload DocFX website
+      - name: Copy README
+        run: cp README.md docs/README.md
+      - name: Upload docsify website
         uses: actions/upload-artifact@master
         with:
-          name: 'docfx'
-          path: './_site/'
+          name: 'docs'
+          path: './docs/'
   deploy:
     needs: build
     environment:
@@ -52,10 +44,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Download DocFX website
+      - name: Download docsify website
         uses: actions/download-artifact@master
         with:
-          name: 'docfx'
+          name: 'docs'
           path: '.'
       - name: Setup Pages
         uses: actions/configure-pages@v4
