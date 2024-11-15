@@ -11,7 +11,7 @@ public class PlanetsParser : BaseJsonParser
     /// <inheritdoc />
     protected override (string Type, string Source) Parse(string json)
     {
-        var builder = new StringBuilder("new Dictionary<int, (LocalizedMessage Name, string Sector, string Biome, List<string> Environmentals)>()\n\t{\n");
+        var builder = new StringBuilder("new Dictionary<int, (LocalizedMessage Name, string Sector, string Biome, string[] Environmentals)>()\n\t{\n");
         var document = JsonDocument.Parse(json);
         foreach (var property in document.RootElement.EnumerateObject())
         {
@@ -31,10 +31,10 @@ public class PlanetsParser : BaseJsonParser
                 .Select(prop => $@"""{prop.GetString()!}""")
                 .ToList();
 
-            builder.AppendLine($@"{'\t'}{'\t'}{{ {index}, (LocalizedMessage.FromStrings([{string.Join(", ", names.Select(pair => $@"new KeyValuePair<string, string>(""{pair.Key}"", ""{pair.Value}"")"))}]), ""{sector}"", ""{biome}"", [{string.Join(", ", environmentals)}]) }},");
+            builder.AppendLine($@"{'\t'}{'\t'}{{ {index}, (LocalizedMessage.FromStrings([{string.Join(", ", names.Select(pair => $@"[""{pair.Key}"", ""{pair.Value}""]"))}]), ""{sector}"", ""{biome}"", [{string.Join(", ", environmentals)}]) }},");
         }
 
         builder.Append("\t}");
-        return ("IReadOnlyDictionary<int, (LocalizedMessage Name, string Sector, string Biome, List<string> Environmentals)>", builder.ToString());
+        return ("IReadOnlyDictionary<int, (LocalizedMessage Name, string Sector, string Biome, string[] Environmentals)>", builder.ToString());
     }
 }
