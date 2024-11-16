@@ -59,7 +59,7 @@ public sealed partial class RateLimitMiddleware(
     /// </summary>
     private bool IsValidRequest(HttpContext context)
     {
-        if (options.Value.ValidateClients is false)
+        if (options.Value.ValidateClients is false || context.Request.Path.StartsWithSegments("/metrics"))
             return true;
 
         return context.Request.Headers.ContainsKey(Constants.CLIENT_HEADER_NAME)
