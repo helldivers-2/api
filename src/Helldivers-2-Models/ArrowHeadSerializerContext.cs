@@ -12,6 +12,7 @@ namespace Helldivers.Models;
 [JsonSerializable(typeof(NewsFeedItem))]
 [JsonSerializable(typeof(WarSummary))]
 [JsonSerializable(typeof(List<Assignment>))]
+[JsonSerializable(typeof(List<SpaceStation>))]
 [JsonSerializable(typeof(List<NewsFeedItem>))]
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
 public sealed partial class ArrowHeadSerializerContext : JsonSerializerContext
