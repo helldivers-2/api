@@ -14,6 +14,7 @@ public sealed class ArrowHeadStore
     private CultureDictionary<Memory<byte>> _statuses = null!;
     private CultureDictionary<Memory<byte>> _feeds = null!;
     private CultureDictionary<Memory<byte>> _assignments = null!;
+    private CultureDictionary<Memory<byte>> _spaceStations = null!;
     private readonly TaskCompletionSource _syncState = new();
 
     /// <summary>
@@ -25,7 +26,8 @@ public sealed class ArrowHeadStore
         Memory<byte> warSummary,
         IEnumerable<KeyValuePair<string, Memory<byte>>> statuses,
         IEnumerable<KeyValuePair<string, Memory<byte>>> feeds,
-        IEnumerable<KeyValuePair<string, Memory<byte>>> assignments
+        IEnumerable<KeyValuePair<string, Memory<byte>>> assignments,
+        IEnumerable<KeyValuePair<string, Memory<byte>>> spaceStations
     )
     {
         _warId = warId;
@@ -34,6 +36,7 @@ public sealed class ArrowHeadStore
         _statuses = new(statuses);
         _feeds = new(feeds);
         _assignments = new(assignments);
+        _spaceStations = new(spaceStations);
 
         _syncState.TrySetResult();
     }
@@ -96,5 +99,16 @@ public sealed class ArrowHeadStore
         await _syncState.Task.WaitAsync(cancellationToken);
 
         return _assignments.Get();
+    }
+
+    /// <summary>
+    /// returns the raw payload for <see cref="SpaceStation" />s.
+    /// </summary>
+    public async Task<Memory<byte>> GetSpaceStations(int id, CancellationToken cancellationToken)
+    {
+        await _syncState.Task.WaitAsync(cancellationToken);
+
+        // TODO use ID to get relevant space station
+        return _spaceStations.Get();
     }
 }

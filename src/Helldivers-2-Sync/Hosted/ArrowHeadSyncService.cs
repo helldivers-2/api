@@ -99,13 +99,21 @@ public sealed partial class ArrowHeadSyncService(
             cancellationToken
         );
 
+        // For each language, load space stations
+        var spaceStations = await DownloadTranslations<SpaceStation>(
+            // TODO extract station id's from war status
+            async language => await api.LoadSpaceStations(season, "749875195", language, cancellationToken),
+            cancellationToken
+        );
+
         await storage.UpdateStores(
             rawWarId,
             warInfo,
             statuses,
             warSummary,
             feeds,
-            assignments
+            assignments,
+            spaceStations
         );
 
         LastUpdated = DateTime.UtcNow;

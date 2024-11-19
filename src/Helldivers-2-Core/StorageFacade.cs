@@ -25,7 +25,8 @@ public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V
     /// </summary>
     public async ValueTask UpdateStores(Memory<byte> rawWarId, Memory<byte> rawWarInfo,
         Dictionary<string, Memory<byte>> rawWarStatuses, Memory<byte> rawWarSummary,
-        Dictionary<string, Memory<byte>> rawNewsFeeds, Dictionary<string, Memory<byte>> rawAssignments)
+        Dictionary<string, Memory<byte>> rawNewsFeeds, Dictionary<string, Memory<byte>> rawAssignments,
+        Dictionary<string, Memory<byte>> rawStations)
     {
         arrowHead.UpdateRawStore(
             rawWarId,
@@ -33,7 +34,8 @@ public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V
             rawWarSummary,
             rawWarStatuses,
             rawNewsFeeds,
-            rawAssignments
+            rawAssignments,
+            rawStations
         );
 
         var warId = DeserializeOrThrow(rawWarId, ArrowHeadSerializerContext.Default.WarId);
@@ -51,6 +53,10 @@ public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V
             pair => pair.Key,
             pair => DeserializeOrThrow(pair.Value, ArrowHeadSerializerContext.Default.ListAssignment)
         );
+        var spaceStations = rawAssignments.ToDictionary(
+            pair => pair.Key,
+            pair => DeserializeOrThrow(pair.Value, ArrowHeadSerializerContext.Default.ListSpaceStation)
+        );
 
         var context = new MappingContext(
             warId,
@@ -58,7 +64,8 @@ public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V
             warStatuses,
             warSummary,
             newsFeeds,
-            assignments
+            assignments,
+            spaceStations
         );
 
         await v1.UpdateStores(context);
