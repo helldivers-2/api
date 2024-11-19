@@ -12,9 +12,9 @@ but rather a community driven effort to provide the information of Helldivers 2 
 The API does not require authentication (unless you'd like higher rate limits than the default, see [rate limits](#rate-limits)),
 so all you need to do is call it's publicly available endpoints.
 
-We provide an [OpenAPI](https://helldivers-2.github.io/api/docs/openapi/Helldivers-2-API.json) specification of the community API as well as
-a [SwaggerUI](https://helldivers-2.github.io/api/docs/openapi/swagger-ui.html) (which visualizes the OpenAPI document). We also provide an
-[OpenAPI](https://helldivers-2.github.io/api/docs/openapi/Helldivers-2-API_arrowhead.json) of the official ArrowHead studio's API we use
+We provide an [OpenAPI](https://helldivers-2.github.io/api/openapi/Helldivers-2-API.json) specification of the community API as well as
+a [SwaggerUI](https://helldivers-2.github.io/api/openapi/swagger-ui.html) (which visualizes the OpenAPI document). We also provide an
+[OpenAPI](https://helldivers-2.github.io/api/openapi/Helldivers-2-API_arrowhead.json) of the official ArrowHead studio's API we use
 internally, however we strongly encourage you to use the `/raw` endpoints of the community wrapper instead of accessing
 the ArrowHead API directly, as it puts additional load on their servers (besides, we have shinier endpoints, I swear!).
 
