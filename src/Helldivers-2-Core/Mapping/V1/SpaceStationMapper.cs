@@ -20,7 +20,7 @@ public sealed class SpaceStationMapper
             yield return Map(context, station, planets);
     }
 
-    private SpaceStation Map(MappingContext context, Helldivers.Models.ArrowHead.Status.SpaceStation raw, List<Planet> planets)
+    private SpaceStation Map(MappingContext context, Helldivers.Models.ArrowHead.SpaceStation raw, List<Planet> planets)
     {
         var planet = planets.First(p => p.Index == raw.PlanetIndex);
 

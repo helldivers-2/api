@@ -31,6 +31,9 @@ public sealed class MappingContext
     /// <summary>The <see cref="Assignment" />s currently being mapped.</summary>
     public Dictionary<string, List<Assignment>> Assignments { get; private init; }
 
+    /// <summary>The <see cref="SpaceStation" />s currently being mapped.</summary>
+    public Dictionary<string, List<SpaceStation>> SpaceStations { get; private init; }
+
     /// <summary>
     /// A <see cref="DateTime" /> that represents the 'start' of the time in Helldivers 2.
     /// This accounts for the <see cref="Models.ArrowHead.WarInfo.StartDate" /> and <see cref="GameTimeDeviation" />.
@@ -44,7 +47,7 @@ public sealed class MappingContext
     public TimeSpan GameTimeDeviation { get; private init; }
 
     /// <summary>Initializes a new <see cref="MappingContext" />.</summary>
-    internal MappingContext(WarId warId, WarInfo warInfo, Dictionary<string, WarStatus> warStatuses, WarSummary warSummary, Dictionary<string, List<NewsFeedItem>> newsFeeds, Dictionary<string, List<Assignment>> assignments)
+    internal MappingContext(WarId warId, WarInfo warInfo, Dictionary<string, WarStatus> warStatuses, WarSummary warSummary, Dictionary<string, List<NewsFeedItem>> newsFeeds, Dictionary<string, List<Assignment>> assignments, Dictionary<string, List<SpaceStation>> spaceStations)
     {
         WarId = warId;
         WarInfo = warInfo;
@@ -52,6 +55,7 @@ public sealed class MappingContext
         WarSummary = warSummary;
         NewsFeeds = newsFeeds;
         Assignments = assignments;
+        SpaceStations = spaceStations;
 
         InvariantWarStatus = warStatuses.FirstOrDefault().Value
                              ?? throw new InvalidOperationException("No warstatus available");
