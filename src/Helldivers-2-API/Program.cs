@@ -150,10 +150,13 @@ if (authConfig.Enabled)
 // Only add OpenApi dependencies when generating 
 if (isRunningAsTool)
 {
+    var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0.0.0.0";
+
     builder.Services.AddOpenApiDocument(document =>
     {
         document.Title = "Helldivers 2";
         document.Description = "Helldivers 2 Unofficial API";
+        document.Version = version;
 
         var languages = builder
             .Configuration
@@ -173,6 +176,7 @@ if (isRunningAsTool)
         document.Description = "An OpenAPI mapping of the official Helldivers API";
         document.DocumentName = "arrowhead";
         document.ApiGroupNames = ["arrowhead"];
+        document.Version = version;
 
         document.DocumentProcessors.Add(new Helldivers.API.OpenApi.DocumentProcessors.ArrowHeadDocumentProcessor());
     });
