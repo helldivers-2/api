@@ -18,7 +18,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
       - name: download JSON submodule
         run: git submodule update --init ./src/Helldivers-2-Models/json
       - name: Restore dependencies

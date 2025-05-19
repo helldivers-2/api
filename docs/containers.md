@@ -129,3 +129,24 @@ make to the application.
 
 Alternatively, if you use the hosted versions you can request an API key that allows for higher rate limits
 by sponsoring this project! (if you self-host you can generate your own keys too!).
+
+# Disabling the client validation
+If you run the container and navigate to it in your browser
+you might come across the following message:
+```json
+{"message":"The X-Super-Client and X-Super-Contact headers are required"}
+```
+
+This is because by default the API will validate all requests send `X-Super-Client` and `X-Super-Contact`
+headers along. You can disable this behaviour by setting the following flag:
+```json
+{
+  "Helldivers": {
+    "API": {
+      "ValidateClients": false
+    }
+  }
+}
+```
+Or through environment flags with `-e Helldivers__API__ValidateClients`
+

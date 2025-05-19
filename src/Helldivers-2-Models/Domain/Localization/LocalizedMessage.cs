@@ -44,4 +44,29 @@ public sealed record LocalizedMessage(IReadOnlyDictionary<CultureInfo, string> M
 
         return new LocalizedMessage(messages);
     }
+
+    /// <summary>
+    /// Factory method for creating a <see cref="LocalizedMessage" /> from a list of {language, value} pairs.
+    /// </summary>
+    public static LocalizedMessage FromStrings(IEnumerable<string[]> values)
+    {
+        var messages = values.SelectMany(pair =>
+        {
+            var key = pair[0];
+            var value = pair[1];
+
+            var culture = new CultureInfo(key);
+            var parent = culture.Parent;
+
+            return new[]
+            {
+                new KeyValuePair<CultureInfo, string>(culture, value),
+                new KeyValuePair<CultureInfo, string>(parent, value)
+            };
+        })
+        .DistinctBy(pair => pair.Key)
+        .ToDictionary(pair => pair.Key, pair => pair.Value);
+
+        return new LocalizedMessage(messages);
+    }
 }

@@ -37,6 +37,10 @@ path = "/metrics"
     method = "GET"
     timeout = "10s"
     path = "/raw/api/WarSeason/current/WarID"
+    [http_service.checks.headers]
+      X-Super-Client = "Fly Health Check"
+      X-Super-Contact = "fly.io"
+
 
 
 [[vm]]

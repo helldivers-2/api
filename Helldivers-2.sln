@@ -7,13 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helldivers-2-API", "src\Hel
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C0ECDBEB-FC7B-4F3C-AF8F-D0961BD22F61}"
 	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		Directory.Build.props = Directory.Build.props
 		fly.toml = fly.toml
-		.dockerignore = .dockerignore
-		docfx.json = docfx.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helldivers-2-Models", "src\Helldivers-2-Models\Helldivers-2-Models.csproj", "{9B017849-C756-4B98-9B98-885AEBE9EAD4}"
@@ -28,19 +27,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helldivers-2-SourceGen", "s
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Github", "Github", "{18D4A0EA-02CE-4FEA-A641-848A13603040}"
 	ProjectSection(SolutionItems) = preProject
+		.github\CODEOWNERS = .github\CODEOWNERS
 		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
+		CONTRIBUTING.md = CONTRIBUTING.md
+		LICENSE = LICENSE
 		README.md = README.md
 		SECURITY.md = SECURITY.md
-		LICENSE = LICENSE
-		CONTRIBUTING.md = CONTRIBUTING.md
-		.github\CODEOWNERS = .github\CODEOWNERS
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{9D663AC9-2CD8-4114-A802-D12284662FF0}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\codeql.yml = .github\workflows\codeql.yml
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 		.github\workflows\fly.yml = .github\workflows\fly.yml
 		.github\workflows\pages.yml = .github\workflows\pages.yml
-		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{FD5B9284-4689-48BE-B520-633C7269F97C}"
@@ -48,6 +48,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 		.github\ISSUE_TEMPLATE\bug_report.yml = .github\ISSUE_TEMPLATE\bug_report.yml
 		.github\ISSUE_TEMPLATE\config.yml = .github\ISSUE_TEMPLATE\config.yml
 		.github\ISSUE_TEMPLATE\feature_request.md = .github\ISSUE_TEMPLATE\feature_request.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OpenApi", "OpenApi", "{1A2CFD82-2D8E-4DA3-97A3-403BB478B6EB}"
+	ProjectSection(SolutionItems) = preProject
+		docs\openapi\Helldivers-2-API.json = docs\openapi\Helldivers-2-API.json
+		docs\openapi\Helldivers-2-API_arrowhead.json = docs\openapi\Helldivers-2-API_arrowhead.json
 	EndProjectSection
 EndProject
 Global
@@ -80,16 +86,17 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3511FD7F-508F-4E9A-ABEB-7F7656961728}
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{939EFFA5-462B-4F5F-969A-61B4C424407A} = {154421CC-393F-4BDC-8D6D-7EECB28FD874}
 		{9B017849-C756-4B98-9B98-885AEBE9EAD4} = {154421CC-393F-4BDC-8D6D-7EECB28FD874}
 		{CB53B78C-7AB2-4B39-98B0-394778AF882F} = {154421CC-393F-4BDC-8D6D-7EECB28FD874}
+		{939EFFA5-462B-4F5F-969A-61B4C424407A} = {154421CC-393F-4BDC-8D6D-7EECB28FD874}
 		{32AE19FB-7D9E-4AC7-A0A5-80DED3680369} = {154421CC-393F-4BDC-8D6D-7EECB28FD874}
 		{18D4A0EA-02CE-4FEA-A641-848A13603040} = {C0ECDBEB-FC7B-4F3C-AF8F-D0961BD22F61}
 		{9D663AC9-2CD8-4114-A802-D12284662FF0} = {18D4A0EA-02CE-4FEA-A641-848A13603040}
 		{FD5B9284-4689-48BE-B520-633C7269F97C} = {18D4A0EA-02CE-4FEA-A641-848A13603040}
+		{1A2CFD82-2D8E-4DA3-97A3-403BB478B6EB} = {C0ECDBEB-FC7B-4F3C-AF8F-D0961BD22F61}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3511FD7F-508F-4E9A-ABEB-7F7656961728}
 	EndGlobalSection
 EndGlobal

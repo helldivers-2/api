@@ -54,6 +54,7 @@ public sealed class AssignmentMapper
             Description: LocalizedMessage.FromStrings(descriptions),
             Tasks: invariant.Setting.Tasks.Select(MapToV1).ToList(),
             Reward: MapToV1(invariant.Setting.Reward),
+            Rewards: invariant.Setting.Rewards.Select(MapToV1).ToList(),
             Expiration: expiration
         );
     }
