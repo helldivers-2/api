@@ -12,7 +12,7 @@ namespace Helldivers.Core;
 /// Rather than having the sync service be aware of all mappings and storage versions,
 /// this facade class handles dispatching incoming data to the correct underlying stores.
 /// </summary>
-public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V1Facade v1)
+public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V1Facade v1, V2Facade v2)
 {
     /// <summary>
     /// Updates all stores that rely on <see cref="SteamNewsFeed" />.
@@ -62,6 +62,7 @@ public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V
         );
 
         await v1.UpdateStores(context);
+        await v2.UpdateStores(context);
     }
 
     private T DeserializeOrThrow<T>(Memory<byte> memory, JsonTypeInfo<T> typeInfo)

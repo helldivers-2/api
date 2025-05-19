@@ -26,7 +26,8 @@ public static class ServiceCollectionExtensions
         return services
             .AddArrowHeadStores()
             .AddSteamStores()
-            .AddV1Stores();
+            .AddV1Stores()
+            .AddV2Stores();
     }
 
     /// <summary>
@@ -81,6 +82,22 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<StatisticsMapper>();
         services.AddSingleton<WarMapper>();
         services.AddSingleton<SpaceStationMapper>();
+
+        return services;
+    }
+
+    /// <summary>
+    /// Registers all <see cref="IStore{T}" /> &amp; <see cref="IStore{T,TKey}" /> for V2 models.
+    /// </summary>
+    public static IServiceCollection AddV2Stores(this IServiceCollection services)
+    {
+        // Register facade for all stores below
+        services.AddSingleton<V2Facade>();
+
+        services.AddSingleton<IStore<Models.V2.Dispatch, int>, Storage.V2.DispatchStore>();
+
+        // Register mappers
+        services.AddSingleton<Mapping.V2.DispatchMapper>();
 
         return services;
     }

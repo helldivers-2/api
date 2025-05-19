@@ -1,7 +1,6 @@
 using Helldivers.API;
 using Helldivers.API.Configuration;
 using Helldivers.API.Controllers;
-using Helldivers.API.Controllers.V1;
 using Helldivers.API.Metrics;
 using Helldivers.API.Middlewares;
 using Helldivers.Core.Extensions;
@@ -116,6 +115,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.TypeInfoResolverChain.Add(ArrowHeadSerializerContext.Default);
     options.SerializerOptions.TypeInfoResolverChain.Add(SteamSerializerContext.Default);
     options.SerializerOptions.TypeInfoResolverChain.Add(V1SerializerContext.Default);
+    options.SerializerOptions.TypeInfoResolverChain.Add(V2SerializerContext.Default);
 
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
@@ -233,7 +233,7 @@ var dev = app
     .WithTags("dev")
     .ExcludeFromDescription();
 
-dev.MapGet("/token", DevelopmentController.CreateToken);
+dev.MapGet("/token", Helldivers.API.Controllers.DevelopmentController.CreateToken);
 
 #endif
 #endregion
@@ -261,26 +261,38 @@ var v1 = app
     .WithGroupName("community")
     .WithTags("v1");
 
-v1.MapGet("/war", WarController.Show);
+v1.MapGet("/war", Helldivers.API.Controllers.V1.WarController.Show);
 
-v1.MapGet("/assignments", AssignmentsController.Index);
-v1.MapGet("/assignments/{index:long}", AssignmentsController.Show);
+v1.MapGet("/assignments", Helldivers.API.Controllers.V1.AssignmentsController.Index);
+v1.MapGet("/assignments/{index:long}", Helldivers.API.Controllers.V1.AssignmentsController.Show);
 
-v1.MapGet("/campaigns", CampaignsController.Index);
-v1.MapGet("/campaigns/{index:int}", CampaignsController.Show);
+v1.MapGet("/campaigns", Helldivers.API.Controllers.V1.CampaignsController.Index);
+v1.MapGet("/campaigns/{index:int}", Helldivers.API.Controllers.V1.CampaignsController.Show);
 
-v1.MapGet("/dispatches", DispatchController.Index);
-v1.MapGet("/dispatches/{index:int}", DispatchController.Show);
+v1.MapGet("/dispatches", Helldivers.API.Controllers.V1.DispatchController.Index);
+v1.MapGet("/dispatches/{index:int}", Helldivers.API.Controllers.V1.DispatchController.Show);
 
-v1.MapGet("/planets", PlanetController.Index);
-v1.MapGet("/planets/{index:int}", PlanetController.Show);
-v1.MapGet("/planet-events", PlanetController.WithEvents);
+v1.MapGet("/planets", Helldivers.API.Controllers.V1.PlanetController.Index);
+v1.MapGet("/planets/{index:int}", Helldivers.API.Controllers.V1.PlanetController.Show);
+v1.MapGet("/planet-events", Helldivers.API.Controllers.V1.PlanetController.WithEvents);
 
-v1.MapGet("/space-stations", SpaceStationController.Index);
-v1.MapGet("/space/stations/{index:int}", SpaceStationController.Show);
+v1.MapGet("/space-stations", Helldivers.API.Controllers.V1.SpaceStationController.Index);
+v1.MapGet("/space/stations/{index:int}", Helldivers.API.Controllers.V1.SpaceStationController.Show);
 
-v1.MapGet("/steam", SteamController.Index);
-v1.MapGet("/steam/{gid}", SteamController.Show);
+v1.MapGet("/steam", Helldivers.API.Controllers.V1.SteamController.Index);
+v1.MapGet("/steam/{gid}", Helldivers.API.Controllers.V1.SteamController.Show);
+
+#endregion
+
+#region API v2
+
+var v2 = app
+    .MapGroup("/api/v2")
+    .WithGroupName("community")
+    .WithTags("v2");
+
+v2.MapGet("/dispatches", Helldivers.API.Controllers.V2.DispatchController.Index);
+v2.MapGet("/dispatches/{index:int}", Helldivers.API.Controllers.V2.DispatchController.Show);
 
 #endregion
 
