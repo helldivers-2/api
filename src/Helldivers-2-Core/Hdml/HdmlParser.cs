@@ -86,7 +86,6 @@ public sealed class HdmlParser(ILogger<HdmlParser> logger)
         }
         catch (Exception exception)
         {
-            // TODO: chinese encoding always seems to fail, hard to debug if you can't read the strings though.
             logger.LogError(exception, "Failed to parse HDML");
 
             return hdml;
@@ -128,7 +127,7 @@ public sealed class HdmlParser(ILogger<HdmlParser> logger)
 
         index++; // include closing tag
         ClampIndex(ref index, ref span);
-        buffer.Close = span[closeStart..index];
+        buffer.Close = span[Math.Min(closeStart, index)..index];
         return;
     }
 
