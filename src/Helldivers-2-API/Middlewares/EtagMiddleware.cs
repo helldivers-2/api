@@ -1,5 +1,4 @@
 ﻿using Helldivers.Sync.Hosted;
-using Helldivers.Sync.Services;
 using System.Globalization;
 
 namespace Helldivers.API.Middlewares;
@@ -7,7 +6,7 @@ namespace Helldivers.API.Middlewares;
 /// <summary>
 /// Automatically appends the `Etag` header to responses.
 /// </summary>
-public sealed class EtagMiddleware(ILogger<EtagMiddleware> logger, ArrowHeadSyncService arrowHead) : IMiddleware
+public sealed class EtagMiddleware(ArrowHeadSyncService arrowHead) : IMiddleware
 {
     /// <inheritdoc />
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)

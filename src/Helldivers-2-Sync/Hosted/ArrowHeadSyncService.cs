@@ -22,7 +22,10 @@ public sealed partial class ArrowHeadSyncService(
     StorageFacade storage
 ) : BackgroundService
 {
-    public DateTime? LastUpdated { get; internal set; }
+    /// <summary>
+    /// Timestamp the store was last updated successfully.
+    /// </summary>
+    public DateTime? LastUpdated { get; private set; }
 
     private static readonly Histogram ArrowHeadSyncMetric =
         Metrics.CreateHistogram("helldivers_sync_arrowhead", "All ArrowHead synchronizations");

@@ -16,6 +16,9 @@ public sealed partial class SteamSyncService(
     IServiceScopeFactory scopeFactory
 ) : BackgroundService
 {
+    /// <summary>
+    /// Timestamp the store was last updated successfully.
+    /// </summary>
     public DateTime? LastUpdated { get; internal set; }
 
     private static readonly Histogram SteamSyncMetric =
