@@ -1,6 +1,7 @@
 ﻿using Helldivers.Core.Contracts;
 using Helldivers.Core.Contracts.Collections;
 using Helldivers.Core.Facades;
+using Helldivers.Core.Hdml;
 using Helldivers.Core.Mapping.Steam;
 using Helldivers.Core.Mapping.V1;
 using Helldivers.Core.Storage.ArrowHead;
@@ -22,6 +23,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddHelldivers(this IServiceCollection services)
     {
         services.AddSingleton<StorageFacade>();
+        services.AddSingleton<HdmlParser>();
 
         return services
             .AddArrowHeadStores()

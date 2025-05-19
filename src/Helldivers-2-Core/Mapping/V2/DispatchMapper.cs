@@ -1,4 +1,5 @@
-﻿using Helldivers.Models.ArrowHead;
+﻿using Helldivers.Core.Hdml;
+using Helldivers.Models.ArrowHead;
 using Helldivers.Models.Domain.Localization;
 using Helldivers.Models.V2;
 
@@ -7,7 +8,7 @@ namespace Helldivers.Core.Mapping.V2;
 /// <summary>
 /// Handles mapping for <see cref="Dispatch" />.
 /// </summary>
-public sealed class DispatchMapper
+public sealed class DispatchMapper(HdmlParser parser)
 {
     /// <summary>
     /// Maps ArrowHead's <see cref="WarInfo" /> onto V2's <see cref="Dispatch" />es.
@@ -37,7 +38,8 @@ public sealed class DispatchMapper
     private Dispatch MapToV2(MappingContext context, Dictionary<string, NewsFeedItem> translations)
     {
         var invariant = translations.Values.First();
-        var messages = translations.Select(pair => new KeyValuePair<string, string>(pair.Key, pair.Value.Message));
+        var messages = translations.Select(pair =>
+            new KeyValuePair<string, string>(pair.Key, parser.Compile(pair.Value.Message)));
 
         return new Dispatch(
             Id: invariant.Id,
