@@ -17,6 +17,15 @@ public sealed class HdmlParser(ILogger<HdmlParser> logger)
     /// <summary>The token that indicates an HDML tag is being closed.</summary>
     private const char CLOSE_TOKEN = '>';
 
+    private const string YELLOW_OPENING = "<span data-ah=\"1\">";
+    private const string YELLOW_CLOSING = "</span>";
+
+    private const string RED_OPENING = "<span data-ah=\"2\">";
+    private const string RED_CLOSING = "</span>";
+
+    private const string BOLD_OPENING = "<span data-ah=\"3\">";
+    private const string BOLD_CLOSING = "</span>";
+
     /// <summary>
     /// A small stack-only data type to contain a single parsed HDML token (eg. `&lt;i=3&gt;lorem ipsum&lt;/i&gt;`).
     /// </summary>
@@ -51,26 +60,27 @@ public sealed class HdmlParser(ILogger<HdmlParser> logger)
             var buffer = new Token();
 
             var content = 0; // Tracks the last start of content after an HDML block for building a content span.
-            for (int i = 0; i < span.Length; i++)
+            for (int index = 0; index < span.Length; index++)
             {
-                if (span[i] == OPEN_TOKEN)
+                if (span[index] == OPEN_TOKEN)
                 {
                     if (content is not 0)
-                        builder.Append(span[content..i]);
+                        builder.Append(span[content..index]);
 
-                    Tokenize(ref i, ref span, ref buffer);
-                    content = i;
+                    Tokenize(ref index, ref span, ref buffer);
+                    content = index;
 
                     Parse(ref buffer, ref builder);
-                }
-                else
-                {
-                    content++;
+                    buffer.Opening = ReadOnlySpan<char>.Empty;
+                    buffer.Content = ReadOnlySpan<char>.Empty;
+                    buffer.Close = ReadOnlySpan<char>.Empty;
                 }
             }
 
-            if (content is not 0)
+            if (content < span.Length)
                 builder.Append(span[content..span.Length]);
+            else if (content == span.Length)
+                builder.Append(span);
 
             return builder.ToString();
         }
@@ -125,9 +135,40 @@ public sealed class HdmlParser(ILogger<HdmlParser> logger)
     /// <summary>
     /// Performs the actual conversion of HDML tokens to HTML tokens.
     /// </summary>
+    /// <seealso href="https://github.com/helldivers-2/api/issues/55#issuecomment-2077491483" />
     private static void Parse(ref Token token, ref StringBuilder builder)
     {
-        builder.Append(token.Content);
+        if (token.Opening.Length >= 4 && token.Opening[3] == '1')
+        {
+            builder.Append(YELLOW_OPENING);
+            builder.Append(token.Content);
+            builder.Append(YELLOW_CLOSING);
+        }
+        else if (token.Opening.Length >= 4 && token.Opening[3] == '2')
+        {
+            builder.Append(RED_OPENING);
+            builder.Append(token.Content);
+            builder.Append(RED_CLOSING);
+        }
+        else if (token.Opening.Length >= 4 && token.Opening[3] == '3')
+        {
+            builder.Append(BOLD_OPENING);
+            builder.Append(token.Content);
+            builder.Append(BOLD_CLOSING);
+        }
+        else if (token.Opening.Length >= 12 && token.Opening[1] == 'c' && token.Opening[3] == '#')
+        {
+            builder.Append($"<span data-hex=\"{token.Opening[3..12]}\">");
+            builder.Append(token.Content);
+            builder.Append("</span>");
+        }
+        else
+        {
+            // Fallback, add the entire span as-is.
+            builder.Append(token.Opening);
+            builder.Append(token.Content);
+            builder.Append(token.Close);
+        }
     }
 
     /// <summary>Small helper method to clamp the index NEVER past the span length.</summary>
