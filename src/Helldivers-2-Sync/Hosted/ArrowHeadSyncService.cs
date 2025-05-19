@@ -22,6 +22,8 @@ public sealed partial class ArrowHeadSyncService(
     StorageFacade storage
 ) : BackgroundService
 {
+    public DateTime? LastUpdated { get; internal set; }
+
     private static readonly Histogram ArrowHeadSyncMetric =
         Metrics.CreateHistogram("helldivers_sync_arrowhead", "All ArrowHead synchronizations");
 
@@ -98,6 +100,8 @@ public sealed partial class ArrowHeadSyncService(
             feeds,
             assignments
         );
+
+        LastUpdated = DateTime.UtcNow;
     }
 
     private async Task<Dictionary<string, Memory<byte>>> DownloadTranslations<T>(Func<string, Task<Memory<byte>>> func, CancellationToken cancellationToken)
