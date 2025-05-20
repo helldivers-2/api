@@ -55,7 +55,8 @@ public sealed class AssignmentMapper
             Tasks: invariant.Setting.Tasks.Select(MapToV1).ToList(),
             Reward: MapToV1(invariant.Setting.Reward),
             Rewards: invariant.Setting.Rewards.Select(MapToV1).ToList(),
-            Expiration: expiration
+            Expiration: expiration,
+            Flags: invariant.Setting.Flags
         );
     }
 

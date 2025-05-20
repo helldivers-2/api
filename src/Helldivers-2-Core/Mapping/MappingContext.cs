@@ -31,6 +31,9 @@ public sealed class MappingContext
     /// <summary>The <see cref="Assignment" />s currently being mapped.</summary>
     public Dictionary<string, List<Assignment>> Assignments { get; private init; }
 
+    /// <summary>The <see cref="SpaceStation" />s currently being mapped.</summary>
+    public Dictionary<string, List<SpaceStation>> SpaceStations { get; private init; }
+
     /// <summary>
     /// A <see cref="DateTime" /> that represents the 'start' of the time in Helldivers 2.
     /// This accounts for the <see cref="Models.ArrowHead.WarInfo.StartDate" /> and <see cref="GameTimeDeviation" />.
@@ -44,7 +47,13 @@ public sealed class MappingContext
     public TimeSpan GameTimeDeviation { get; private init; }
 
     /// <summary>Initializes a new <see cref="MappingContext" />.</summary>
-    internal MappingContext(WarId warId, WarInfo warInfo, Dictionary<string, WarStatus> warStatuses, WarSummary warSummary, Dictionary<string, List<NewsFeedItem>> newsFeeds, Dictionary<string, List<Assignment>> assignments)
+    internal MappingContext(WarId warId,
+        WarInfo warInfo,
+        Dictionary<string, WarStatus> warStatuses,
+        WarSummary warSummary,
+        Dictionary<string, List<NewsFeedItem>> newsFeeds,
+        Dictionary<string, List<Assignment>> assignments,
+        Dictionary<string, List<SpaceStation>> spaceStations)
     {
         WarId = warId;
         WarInfo = warInfo;
@@ -52,12 +61,20 @@ public sealed class MappingContext
         WarSummary = warSummary;
         NewsFeeds = newsFeeds;
         Assignments = assignments;
+        SpaceStations = spaceStations;
 
         InvariantWarStatus = warStatuses.FirstOrDefault().Value
                              ?? throw new InvalidOperationException("No warstatus available");
 
+
         var gameTime = DateTime.UnixEpoch.AddSeconds(warInfo.StartDate + InvariantWarStatus.Time);
-        GameTimeDeviation = DateTime.UtcNow.Subtract(gameTime);
+        GameTimeDeviation = TruncateToSeconds(DateTime.UtcNow).Subtract(gameTime);
         RelativeGameStart = DateTime.UnixEpoch.Add(GameTimeDeviation).AddSeconds(warInfo.StartDate);
     }
+
+    /// <summary>
+    /// ArrowHead doesn't send timestamps more accurate than seconds, so we truncate our relative time to seconds.
+    /// This prevents timestamps for the same value from being different (due to milli/micro second differences).
+    /// </summary>
+    private static DateTime TruncateToSeconds(DateTime dateTime) => dateTime.AddTicks(-(dateTime.Ticks % TimeSpan.TicksPerSecond));
 }

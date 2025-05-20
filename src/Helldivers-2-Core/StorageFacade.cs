@@ -12,7 +12,7 @@ namespace Helldivers.Core;
 /// Rather than having the sync service be aware of all mappings and storage versions,
 /// this facade class handles dispatching incoming data to the correct underlying stores.
 /// </summary>
-public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V1Facade v1)
+public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V1Facade v1, V2Facade v2)
 {
     /// <summary>
     /// Updates all stores that rely on <see cref="SteamNewsFeed" />.
@@ -23,9 +23,13 @@ public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V
     /// <summary>
     /// Updates all stores that rely on ArrowHead's models.
     /// </summary>
-    public async ValueTask UpdateStores(Memory<byte> rawWarId, Memory<byte> rawWarInfo,
-        Dictionary<string, Memory<byte>> rawWarStatuses, Memory<byte> rawWarSummary,
-        Dictionary<string, Memory<byte>> rawNewsFeeds, Dictionary<string, Memory<byte>> rawAssignments)
+    public async ValueTask UpdateStores(Memory<byte> rawWarId,
+        Memory<byte> rawWarInfo,
+        Dictionary<string, Memory<byte>> rawWarStatuses,
+        Memory<byte> rawWarSummary,
+        Dictionary<string, Memory<byte>> rawNewsFeeds,
+        Dictionary<string, Memory<byte>> rawAssignments,
+        Dictionary<long, Dictionary<string, Memory<byte>>> rawStations)
     {
         arrowHead.UpdateRawStore(
             rawWarId,
@@ -33,7 +37,8 @@ public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V
             rawWarSummary,
             rawWarStatuses,
             rawNewsFeeds,
-            rawAssignments
+            rawAssignments,
+            rawStations
         );
 
         var warId = DeserializeOrThrow(rawWarId, ArrowHeadSerializerContext.Default.WarId);
@@ -52,16 +57,31 @@ public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V
             pair => DeserializeOrThrow(pair.Value, ArrowHeadSerializerContext.Default.ListAssignment)
         );
 
+        var spaceStations = new Dictionary<string, List<Models.ArrowHead.SpaceStation>>();
+        foreach (var (id, translations) in rawStations)
+        {
+            foreach (var (lang, translation) in translations)
+            {
+                if (spaceStations.ContainsKey(lang) is false)
+                    spaceStations.Add(lang, new List<Models.ArrowHead.SpaceStation>());
+
+                var stations = spaceStations[lang];
+                stations.Add(DeserializeOrThrow(translation, ArrowHeadSerializerContext.Default.SpaceStation));
+            }
+        }
+
         var context = new MappingContext(
             warId,
             warInfo,
             warStatuses,
             warSummary,
             newsFeeds,
-            assignments
+            assignments,
+            spaceStations
         );
 
         await v1.UpdateStores(context);
+        await v2.UpdateStores(context);
     }
 
     private T DeserializeOrThrow<T>(Memory<byte> memory, JsonTypeInfo<T> typeInfo)

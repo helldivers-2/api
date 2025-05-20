@@ -22,6 +22,11 @@ public sealed partial class ArrowHeadSyncService(
     StorageFacade storage
 ) : BackgroundService
 {
+    /// <summary>
+    /// Timestamp the store was last updated successfully.
+    /// </summary>
+    public DateTime? LastUpdated { get; private set; }
+
     private static readonly Histogram ArrowHeadSyncMetric =
         Metrics.CreateHistogram("helldivers_sync_arrowhead", "All ArrowHead synchronizations");
 
@@ -29,6 +34,9 @@ public sealed partial class ArrowHeadSyncService(
 
     [LoggerMessage(Level = LogLevel.Information, Message = "sync will run every {Interval}")]
     private static partial void LogRunAtInterval(ILogger logger, TimeSpan interval);
+
+    [LoggerMessage(LogLevel.Debug, Message = "Running sync at {Timestamp}")]
+    private static partial void LogRunningSyncAt(ILogger logger, DateTime timestamp);
 
     [LoggerMessage(Level = LogLevel.Error, Message = "An exception was thrown when synchronizing from ArrowHead API")]
     private static partial void LogSyncThrewAnError(ILogger logger, Exception exception);
@@ -52,6 +60,7 @@ public sealed partial class ArrowHeadSyncService(
                 using var _ = ArrowHeadSyncMetric.NewTimer();
                 await using var scope = scopeFactory.CreateAsyncScope();
 
+                LogRunningSyncAt(logger, DateTime.UtcNow);
                 await SynchronizeAsync(scope.ServiceProvider, cancellationToken);
             }
             catch (Exception exception)
@@ -90,17 +99,27 @@ public sealed partial class ArrowHeadSyncService(
             cancellationToken
         );
 
+        var spaceStations = await configuration.Value.SpaceStations.ToAsyncEnumerable().ToDictionaryAwaitAsync(ValueTask.FromResult, async key =>
+            await DownloadTranslations<SpaceStation>(
+                async language => await api.LoadSpaceStations(season, key, language, cancellationToken),
+                cancellationToken
+            ), cancellationToken: cancellationToken);
+
         await storage.UpdateStores(
             rawWarId,
             warInfo,
             statuses,
             warSummary,
             feeds,
-            assignments
+            assignments,
+            spaceStations
         );
+
+        LastUpdated = DateTime.UtcNow;
     }
 
-    private async Task<Dictionary<string, Memory<byte>>> DownloadTranslations<T>(Func<string, Task<Memory<byte>>> func, CancellationToken cancellationToken)
+    private async Task<Dictionary<string, Memory<byte>>> DownloadTranslations<T>(Func<string, Task<Memory<byte>>> func,
+        CancellationToken cancellationToken)
     {
         return await configuration.Value.Languages
             .ToAsyncEnumerable()
@@ -121,6 +140,7 @@ public sealed partial class ArrowHeadSyncService(
             })
             .SelectAwait(async task => await task)
             .Where(pair => pair.Value is not null)
-            .ToDictionaryAsync(pair => pair.Key, pair => pair.Value.GetValueOrDefault(), cancellationToken: cancellationToken);
+            .ToDictionaryAsync(pair => pair.Key, pair => pair.Value.GetValueOrDefault(),
+                cancellationToken: cancellationToken);
     }
 }

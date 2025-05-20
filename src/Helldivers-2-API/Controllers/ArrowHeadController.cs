@@ -75,4 +75,18 @@ public static class ArrowHeadController
 
         return Results.Bytes(assignments, contentType: "application/json");
     }
+
+    /// <summary>
+    /// Fetches THE specific <see cref="SpaceStation" /> (749875195).
+    /// </summary>
+    [ProducesResponseType<List<Assignment>>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
+    public static async Task<IResult> SpaceStation(HttpContext context, ArrowHeadStore store, [FromRoute] long index)
+    {
+        var spaceStation = await store.GetSpaceStation(index, context.RequestAborted);
+        if (spaceStation is { } bytes)
+            return Results.Bytes(bytes, contentType: "application/json");
+
+        return Results.NotFound();
+    }
 }

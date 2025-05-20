@@ -28,6 +28,19 @@ public class HelldiversDocumentProcessor : IDocumentProcessor
             item.Servers.Clear();
             item.Servers.Add(server);
         }
+
+        foreach (var (_, schema) in context.Document.Components.Schemas)
+        {
+            foreach (var (key, property) in schema.Properties)
+            {
+                foreach (var oneOf in property.OneOf)
+                {
+                    property.AnyOf.Add(oneOf);
+                }
+
+                property.OneOf.Clear();
+            }
+        }
     }
 }
 #endif

@@ -1,6 +1,7 @@
 ﻿using Helldivers.Core.Contracts;
 using Helldivers.Core.Contracts.Collections;
 using Helldivers.Core.Facades;
+using Helldivers.Core.Hdml;
 using Helldivers.Core.Mapping.Steam;
 using Helldivers.Core.Mapping.V1;
 using Helldivers.Core.Storage.ArrowHead;
@@ -22,11 +23,13 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddHelldivers(this IServiceCollection services)
     {
         services.AddSingleton<StorageFacade>();
+        services.AddSingleton<HdmlParser>();
 
         return services
             .AddArrowHeadStores()
             .AddSteamStores()
-            .AddV1Stores();
+            .AddV1Stores()
+            .AddV2Stores();
     }
 
     /// <summary>
@@ -71,7 +74,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IStore<Campaign, int>, CampaignStore>();
         services.AddSingleton<IStore<Models.V1.Assignment, long>, Storage.V1.AssignmentStore>();
         services.AddSingleton<IStore<Dispatch, int>, DispatchStore>();
-        services.AddSingleton<IStore<SpaceStation, int>, SpaceStationStore>();
 
         // Register mappers
         services.AddSingleton<AssignmentMapper>();
@@ -80,7 +82,24 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<PlanetMapper>();
         services.AddSingleton<StatisticsMapper>();
         services.AddSingleton<WarMapper>();
-        services.AddSingleton<SpaceStationMapper>();
+
+        return services;
+    }
+
+    /// <summary>
+    /// Registers all <see cref="IStore{T}" /> &amp; <see cref="IStore{T,TKey}" /> for V2 models.
+    /// </summary>
+    public static IServiceCollection AddV2Stores(this IServiceCollection services)
+    {
+        // Register facade for all stores below
+        services.AddSingleton<V2Facade>();
+
+        services.AddSingleton<IStore<Models.V2.Dispatch, int>, Storage.V2.DispatchStore>();
+        services.AddSingleton<IStore<Models.V2.SpaceStation, long>, Storage.V2.SpaceStationStore>();
+
+        // Register mappers
+        services.AddSingleton<Mapping.V2.DispatchMapper>();
+        services.AddSingleton<Mapping.V2.SpaceStationMapper>();
 
         return services;
     }

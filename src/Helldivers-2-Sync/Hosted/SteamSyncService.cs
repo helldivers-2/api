@@ -16,6 +16,11 @@ public sealed partial class SteamSyncService(
     IServiceScopeFactory scopeFactory
 ) : BackgroundService
 {
+    /// <summary>
+    /// Timestamp the store was last updated successfully.
+    /// </summary>
+    public DateTime? LastUpdated { get; internal set; }
+
     private static readonly Histogram SteamSyncMetric =
         Metrics.CreateHistogram("helldivers_sync_steam", "All Steam synchronizations");
 
@@ -37,13 +42,12 @@ public sealed partial class SteamSyncService(
             {
                 using var _ = SteamSyncMetric.NewTimer();
                 await using var scope = scopeFactory.CreateAsyncScope();
+                var api = scope.ServiceProvider.GetRequiredService<SteamApiService>();
 
-                var feed = await scope
-                    .ServiceProvider
-                    .GetRequiredService<SteamApiService>()
-                    .GetLatest();
+                var feed = await api.GetLatest();
 
                 await storage.UpdateStores(feed);
+                LastUpdated = DateTime.UtcNow;
             }
             catch (Exception exception)
             {

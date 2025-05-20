@@ -7,6 +7,7 @@ RUN apk add --upgrade --no-cache build-base clang zlib-dev
 ARG BUILD_CONFIGURATION=Release
 ARG BUILD_RUNTIME=linux-musl-x64
 ARG OPENAPI=false
+ARG VERSION=0.0.0
 
 WORKDIR /
 COPY ./docs/openapi /docs/openapi
@@ -26,7 +27,7 @@ WORKDIR "/src/Helldivers-2-API"
 RUN if [[ "${OPENAPI}" = 'true' ]]; \
   then \
     echo "OPENAPI is set to ${OPENAPI}, running OpenAPI generators" \
-    && dotnet build "Helldivers-2-API.csproj" --no-restore -c Debug \
+    && dotnet build "Helldivers-2-API.csproj" /p:Version="$VERSION" --no-restore -c Debug \
     && mkdir -p wwwroot \
     && cp /docs/openapi/* wwwroot/ \
   ; fi
@@ -34,7 +35,7 @@ RUN dotnet build "Helldivers-2-API.csproj" --no-restore -r $BUILD_RUNTIME -c $BU
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "Helldivers-2-API.csproj" --no-restore --self-contained -r $BUILD_RUNTIME -c $BUILD_CONFIGURATION -o /app/publish
+RUN dotnet publish "Helldivers-2-API.csproj" /p:Version="$VERSION" --no-restore --self-contained -r $BUILD_RUNTIME -c $BUILD_CONFIGURATION -o /app/publish
 
 FROM base AS final
 WORKDIR /app
