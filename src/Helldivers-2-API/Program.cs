@@ -282,7 +282,7 @@ v1.MapGet("/planets/{index:int}", Helldivers.API.Controllers.V1.PlanetController
 v1.MapGet("/planet-events", Helldivers.API.Controllers.V1.PlanetController.WithEvents);
 
 v1.MapGet("/space-stations", Helldivers.API.Controllers.V1.SpaceStationController.Index);
-v1.MapGet("/space/stations/{index:int}", Helldivers.API.Controllers.V1.SpaceStationController.Show);
+v1.MapGet("/space-stations/{index:long}", Helldivers.API.Controllers.V1.SpaceStationController.Show);
 
 v1.MapGet("/steam", Helldivers.API.Controllers.V1.SteamController.Index);
 v1.MapGet("/steam/{gid}", Helldivers.API.Controllers.V1.SteamController.Show);

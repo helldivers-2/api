@@ -25,7 +25,7 @@ public static class SpaceStationController
     /// Fetches a specific <see cref="SpaceStation" /> identified by <paramref name="index" />.
     /// </summary>
     [ProducesResponseType<SpaceStation>(StatusCodes.Status200OK)]
-    public static async Task<IResult> Show(HttpContext context, IStore<SpaceStation, long> store, [FromRoute] int index)
+    public static async Task<IResult> Show(HttpContext context, IStore<SpaceStation, long> store, [FromRoute] long index)
     {
         var station = await store.GetAsync(index, context.RequestAborted);
 

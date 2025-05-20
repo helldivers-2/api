@@ -53,7 +53,29 @@ public sealed class SpaceStationMapper
 
     private TacticalAction MapTacticalAction(MappingContext context, Helldivers.Models.ArrowHead.SpaceStations.TacticalAction raw)
     {
-        // TODO: map actions.
-        return new TacticalAction();
+        return new TacticalAction(
+            Id32: raw.Id32,
+            MediaId32: raw.MediaId32,
+            Name: raw.Name,
+            Description: raw.Description,
+            StrategicDescription: raw.StrategicDescription,
+            Status: raw.Status,
+            StatusExpire: context.RelativeGameStart.AddSeconds(raw.StatusExpireAtWarTimeSeconds),
+            Costs: raw.Cost.Select(MapCost).ToList(),
+            EffectIds: raw.EffectIds
+        );
+    }
+
+    private Cost MapCost(Models.ArrowHead.SpaceStations.Cost cost)
+    {
+        return new Cost(
+            Id: cost.Id,
+            ItemMixId: cost.ItemMixId,
+            TargetValue: cost.TargetValue,
+            CurrentValue: cost.CurrentValue,
+            DeltaPerSecond: cost.DeltaPerSecond,
+            MaxDonationAmmount: cost.MaxDonationAmmount,
+            MaxDonationPeriodSeconds: cost.MaxDonationPeriodSeconds
+        );
     }
 }
