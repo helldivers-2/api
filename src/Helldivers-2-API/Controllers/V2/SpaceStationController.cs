@@ -1,8 +1,8 @@
 using Helldivers.Core.Contracts.Collections;
-using Helldivers.Models.V1;
+using Helldivers.Models.V2;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Helldivers.API.Controllers.V1;
+namespace Helldivers.API.Controllers.V2;
 
 /// <summary>
 /// Contains API endpoints for <see cref="SpaceStation" />.

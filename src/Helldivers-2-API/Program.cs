@@ -281,9 +281,6 @@ v1.MapGet("/planets", Helldivers.API.Controllers.V1.PlanetController.Index);
 v1.MapGet("/planets/{index:int}", Helldivers.API.Controllers.V1.PlanetController.Show);
 v1.MapGet("/planet-events", Helldivers.API.Controllers.V1.PlanetController.WithEvents);
 
-v1.MapGet("/space-stations", Helldivers.API.Controllers.V1.SpaceStationController.Index);
-v1.MapGet("/space-stations/{index:long}", Helldivers.API.Controllers.V1.SpaceStationController.Show);
-
 v1.MapGet("/steam", Helldivers.API.Controllers.V1.SteamController.Index);
 v1.MapGet("/steam/{gid}", Helldivers.API.Controllers.V1.SteamController.Show);
 
@@ -298,6 +295,9 @@ var v2 = app
 
 v2.MapGet("/dispatches", Helldivers.API.Controllers.V2.DispatchController.Index);
 v2.MapGet("/dispatches/{index:int}", Helldivers.API.Controllers.V2.DispatchController.Show);
+
+v2.MapGet("/space-stations", Helldivers.API.Controllers.V2.SpaceStationController.Index);
+v2.MapGet("/space-stations/{index:long}", Helldivers.API.Controllers.V2.SpaceStationController.Show);
 
 #endregion
 

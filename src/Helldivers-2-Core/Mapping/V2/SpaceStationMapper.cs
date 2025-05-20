@@ -1,8 +1,8 @@
-using Helldivers.Models;
 using Helldivers.Models.V1;
-using Helldivers.Models.V1.SpaceStations;
+using Helldivers.Models.V2;
+using Helldivers.Models.V2.SpaceStations;
 
-namespace Helldivers.Core.Mapping.V1;
+namespace Helldivers.Core.Mapping.V2;
 
 /// <summary>
 /// Handles mapping for <see cref="SpaceStation" />.
@@ -15,7 +15,7 @@ public sealed class SpaceStationMapper
     /// <param name="context">The mapping context containing the invariant war status and other relevant data.</param>
     /// <param name="planets">The list of planets to map with.</param>
     /// <returns>An enumerable list of space stations mapped to the V1 model.</returns>
-    public IEnumerable<SpaceStation> MapToV1(MappingContext context, List<Planet> planets)
+    public IEnumerable<SpaceStation> MapToV2(MappingContext context, List<Planet> planets)
     {
         // Get a list of all assignments across all translations.
         var invariants = context.SpaceStations

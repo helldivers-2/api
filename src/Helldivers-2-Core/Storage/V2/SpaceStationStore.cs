@@ -1,7 +1,7 @@
 using Helldivers.Core.Contracts.Collections;
-using Helldivers.Models.V1;
+using Helldivers.Models.V2;
 
-namespace Helldivers.Core.Storage.V1;
+namespace Helldivers.Core.Storage.V2;
 
 /// <inheritdoc cref="IStore{T,TKey}" />
 public sealed class SpaceStationStore : StoreBase<SpaceStation, long>

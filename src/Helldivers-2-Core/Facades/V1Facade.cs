@@ -19,9 +19,7 @@ public sealed class V1Facade(
     IStore<Assignment, long> assignmentStore,
     AssignmentMapper assignmentMapper,
     IStore<Dispatch, int> dispatchStore,
-    DispatchMapper dispatchMapper,
-    IStore<SpaceStation, long> spaceStationStore,
-    SpaceStationMapper spaceStationMapper
+    DispatchMapper dispatchMapper
 )
 {
     /// <see cref="IStore{T,TKey}.SetStore" />
@@ -37,7 +35,6 @@ public sealed class V1Facade(
         await UpdateCampaignStore(context, planets);
         await UpdateAssignmentsStore(context);
         await UpdateDispatchStore(context);
-        await UpdateSpaceStationStore(context, planets);
     }
 
     private async ValueTask UpdateWarStore(MappingContext context, List<Planet> planets)
@@ -78,14 +75,5 @@ public sealed class V1Facade(
             .ToList();
 
         await dispatchStore.SetStore(dispatches);
-    }
-
-    private async ValueTask UpdateSpaceStationStore(MappingContext context, List<Planet> planets)
-    {
-        var spaceStations = spaceStationMapper
-            .MapToV1(context, planets)
-            .ToList();
-
-        await spaceStationStore.SetStore(spaceStations);
     }
 }

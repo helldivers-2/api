@@ -1,4 +1,4 @@
-﻿namespace Helldivers.Models.V1.SpaceStations;
+﻿namespace Helldivers.Models.V2.SpaceStations;
 
 public sealed record Cost(
     string Id,

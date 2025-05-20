@@ -1,4 +1,4 @@
-﻿namespace Helldivers.Models.V1.SpaceStations;
+﻿namespace Helldivers.Models.V2.SpaceStations;
 
 /// <summary>
 /// Represents a tactical action that the Space Station can take.

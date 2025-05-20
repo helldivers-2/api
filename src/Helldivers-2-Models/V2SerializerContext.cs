@@ -8,6 +8,8 @@ namespace Helldivers.Models;
 /// </summary>
 [JsonSerializable(typeof(Dispatch))]
 [JsonSerializable(typeof(List<Dispatch>))]
+[JsonSerializable(typeof(SpaceStation))]
+[JsonSerializable(typeof(List<SpaceStation>))]
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true, UseStringEnumConverter = true)]
 public sealed partial class V2SerializerContext : JsonSerializerContext
 {

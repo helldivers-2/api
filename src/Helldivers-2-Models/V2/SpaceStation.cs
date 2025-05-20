@@ -1,6 +1,7 @@
-using Helldivers.Models.V1.SpaceStations;
+using Helldivers.Models.V1;
+using Helldivers.Models.V2.SpaceStations;
 
-namespace Helldivers.Models.V1;
+namespace Helldivers.Models.V2;
 
 /// <summary>
 /// Represents a Super Earth Democracy Space Station.

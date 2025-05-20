@@ -18,8 +18,6 @@ namespace Helldivers.Models;
 [JsonSerializable(typeof(SteamNews))]
 [JsonSerializable(typeof(List<SteamNews>))]
 [JsonSerializable(typeof(War))]
-[JsonSerializable(typeof(SpaceStation))]
-[JsonSerializable(typeof(List<SpaceStation>))]
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true, UseStringEnumConverter = true)]
 public sealed partial class V1SerializerContext : JsonSerializerContext
 {

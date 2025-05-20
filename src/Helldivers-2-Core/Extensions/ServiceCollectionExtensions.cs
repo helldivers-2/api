@@ -74,7 +74,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IStore<Campaign, int>, CampaignStore>();
         services.AddSingleton<IStore<Models.V1.Assignment, long>, Storage.V1.AssignmentStore>();
         services.AddSingleton<IStore<Dispatch, int>, DispatchStore>();
-        services.AddSingleton<IStore<SpaceStation, long>, SpaceStationStore>();
 
         // Register mappers
         services.AddSingleton<AssignmentMapper>();
@@ -83,7 +82,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<PlanetMapper>();
         services.AddSingleton<StatisticsMapper>();
         services.AddSingleton<WarMapper>();
-        services.AddSingleton<SpaceStationMapper>();
 
         return services;
     }
@@ -97,9 +95,11 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<V2Facade>();
 
         services.AddSingleton<IStore<Models.V2.Dispatch, int>, Storage.V2.DispatchStore>();
+        services.AddSingleton<IStore<Models.V2.SpaceStation, long>, Storage.V2.SpaceStationStore>();
 
         // Register mappers
         services.AddSingleton<Mapping.V2.DispatchMapper>();
+        services.AddSingleton<Mapping.V2.SpaceStationMapper>();
 
         return services;
     }
