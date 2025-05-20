@@ -66,7 +66,7 @@ public sealed class MappingContext
         InvariantWarStatus = warStatuses.FirstOrDefault().Value
                              ?? throw new InvalidOperationException("No warstatus available");
 
-        
+
         var gameTime = DateTime.UnixEpoch.AddSeconds(warInfo.StartDate + InvariantWarStatus.Time);
         GameTimeDeviation = TruncateToSeconds(DateTime.UtcNow).Subtract(gameTime);
         RelativeGameStart = DateTime.UnixEpoch.Add(GameTimeDeviation).AddSeconds(warInfo.StartDate);

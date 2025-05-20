@@ -17,6 +17,7 @@ namespace Helldivers.Models.V1;
 /// <param name="Reward">The reward for completing the assignment.</param>
 /// <param name="Rewards">A list of rewards for completing the assignment.</param>
 /// <param name="Expiration">The date when the assignment will expire.</param>
+/// <param name="Flags">Flags regarding the assignment.</param>
 public sealed record Assignment(
     long Id,
     List<long> Progress,
@@ -26,5 +27,6 @@ public sealed record Assignment(
     List<Task> Tasks,
     Reward Reward,
     List<Reward> Rewards,
-    DateTime Expiration
+    DateTime Expiration,
+    int Flags
 );
