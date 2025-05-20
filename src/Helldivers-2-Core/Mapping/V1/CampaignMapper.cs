@@ -1,4 +1,5 @@
-﻿using Helldivers.Models.V1;
+﻿using Helldivers.Models;
+using Helldivers.Models.V1;
 
 namespace Helldivers.Core.Mapping.V1;
 
@@ -22,12 +23,14 @@ public class CampaignMapper
     private Campaign MapToV1(Models.ArrowHead.Status.Campaign campaign, List<Planet> planets)
     {
         var planet = planets.First(p => p.Index == campaign.PlanetIndex);
+        Static.Factions.TryGetValue(campaign.Race, out var currentOwner);
 
         return new Campaign(
             Id: campaign.Id,
             Planet: planet,
             Type: campaign.Type,
-            Count: campaign.Count
+            Count: campaign.Count,
+            Faction: currentOwner ?? string.Empty
         );
     }
 }
