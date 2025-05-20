@@ -81,11 +81,12 @@ public static class ArrowHeadController
     /// </summary>
     [ProducesResponseType<List<Assignment>>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
-    public static async Task<IResult> SpaceStation(HttpContext context, ArrowHeadStore store)
+    public static async Task<IResult> SpaceStation(HttpContext context, ArrowHeadStore store, [FromRoute] long index)
     {
-        // TODO extract ID from route
-        var spaceStation = await store.GetSpaceStations(749875195, context.RequestAborted);
+        var spaceStation = await store.GetSpaceStation(index, context.RequestAborted);
+        if (spaceStation is { } bytes)
+            return Results.Bytes(bytes, contentType: "application/json");
 
-        return Results.Bytes(spaceStation, contentType: "application/json");
+        return Results.NotFound();
     }
 }

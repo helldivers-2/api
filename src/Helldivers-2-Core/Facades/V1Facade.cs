@@ -20,7 +20,7 @@ public sealed class V1Facade(
     AssignmentMapper assignmentMapper,
     IStore<Dispatch, int> dispatchStore,
     DispatchMapper dispatchMapper,
-    IStore<SpaceStation, int> spaceStationStore,
+    IStore<SpaceStation, long> spaceStationStore,
     SpaceStationMapper spaceStationMapper
 )
 {

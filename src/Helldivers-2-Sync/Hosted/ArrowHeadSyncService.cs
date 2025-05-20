@@ -99,12 +99,11 @@ public sealed partial class ArrowHeadSyncService(
             cancellationToken
         );
 
-        // For each language, load space stations
-        var spaceStations = await DownloadTranslations<SpaceStation>(
-            // TODO extract station id's from war status
-            async language => await api.LoadSpaceStations(season, "749875195", language, cancellationToken),
-            cancellationToken
-        );
+        var spaceStations = await configuration.Value.SpaceStations.ToAsyncEnumerable().ToDictionaryAwaitAsync(ValueTask.FromResult, async key =>
+            await DownloadTranslations<SpaceStation>(
+                async language => await api.LoadSpaceStations(season, key, language, cancellationToken),
+                cancellationToken
+            ), cancellationToken: cancellationToken);
 
         await storage.UpdateStores(
             rawWarId,
@@ -119,7 +118,8 @@ public sealed partial class ArrowHeadSyncService(
         LastUpdated = DateTime.UtcNow;
     }
 
-    private async Task<Dictionary<string, Memory<byte>>> DownloadTranslations<T>(Func<string, Task<Memory<byte>>> func, CancellationToken cancellationToken)
+    private async Task<Dictionary<string, Memory<byte>>> DownloadTranslations<T>(Func<string, Task<Memory<byte>>> func,
+        CancellationToken cancellationToken)
     {
         return await configuration.Value.Languages
             .ToAsyncEnumerable()
@@ -140,6 +140,7 @@ public sealed partial class ArrowHeadSyncService(
             })
             .SelectAwait(async task => await task)
             .Where(pair => pair.Value is not null)
-            .ToDictionaryAsync(pair => pair.Key, pair => pair.Value.GetValueOrDefault(), cancellationToken: cancellationToken);
+            .ToDictionaryAsync(pair => pair.Key, pair => pair.Value.GetValueOrDefault(),
+                cancellationToken: cancellationToken);
     }
 }

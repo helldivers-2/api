@@ -16,6 +16,11 @@ public sealed class HelldiversSyncConfiguration
     public string DefaultLanguage { get; set; } = "en-US";
 
     /// <summary>
+    /// The list of space stations to fetch information for.
+    /// </summary>
+    public List<long> SpaceStations { get; set; } = new(0);
+
+    /// <summary>
     /// A list of language codes for which translations will be provided.
     /// </summary>
     public List<string> Languages { get; set; } = new(0);

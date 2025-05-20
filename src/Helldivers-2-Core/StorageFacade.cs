@@ -23,10 +23,13 @@ public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V
     /// <summary>
     /// Updates all stores that rely on ArrowHead's models.
     /// </summary>
-    public async ValueTask UpdateStores(Memory<byte> rawWarId, Memory<byte> rawWarInfo,
-        Dictionary<string, Memory<byte>> rawWarStatuses, Memory<byte> rawWarSummary,
-        Dictionary<string, Memory<byte>> rawNewsFeeds, Dictionary<string, Memory<byte>> rawAssignments,
-        Dictionary<string, Memory<byte>> rawStations)
+    public async ValueTask UpdateStores(Memory<byte> rawWarId,
+        Memory<byte> rawWarInfo,
+        Dictionary<string, Memory<byte>> rawWarStatuses,
+        Memory<byte> rawWarSummary,
+        Dictionary<string, Memory<byte>> rawNewsFeeds,
+        Dictionary<string, Memory<byte>> rawAssignments,
+        Dictionary<long, Dictionary<string, Memory<byte>>> rawStations)
     {
         arrowHead.UpdateRawStore(
             rawWarId,
@@ -53,10 +56,19 @@ public sealed class StorageFacade(ArrowHeadStore arrowHead, SteamFacade steam, V
             pair => pair.Key,
             pair => DeserializeOrThrow(pair.Value, ArrowHeadSerializerContext.Default.ListAssignment)
         );
-        var spaceStations = rawAssignments.ToDictionary(
-            pair => pair.Key,
-            pair => DeserializeOrThrow(pair.Value, ArrowHeadSerializerContext.Default.ListSpaceStation)
-        );
+
+        var spaceStations = new Dictionary<string, List<Models.ArrowHead.SpaceStation>>();
+        foreach (var (id, translations) in rawStations)
+        {
+            foreach (var (lang, translation) in translations)
+            {
+                if (spaceStations.ContainsKey(lang) is false)
+                    spaceStations.Add(lang, new List<Models.ArrowHead.SpaceStation>());
+
+                var stations = spaceStations[lang];
+                stations.Add(DeserializeOrThrow(translation, ArrowHeadSerializerContext.Default.SpaceStation));
+            }
+        }
 
         var context = new MappingContext(
             warId,

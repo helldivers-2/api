@@ -1,3 +1,5 @@
+using Helldivers.Models.V1.SpaceStations;
+
 namespace Helldivers.Models.V1;
 
 /// <summary>
@@ -11,5 +13,6 @@ public sealed record SpaceStation(
     long Id32,
     Planet Planet,
     DateTime ElectionEnd,
-    int Flags
+    int Flags,
+    List<TacticalAction> TacticalActions
 );

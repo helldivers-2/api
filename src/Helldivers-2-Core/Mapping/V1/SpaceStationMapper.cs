@@ -1,5 +1,6 @@
 using Helldivers.Models;
 using Helldivers.Models.V1;
+using Helldivers.Models.V1.SpaceStations;
 
 namespace Helldivers.Core.Mapping.V1;
 
@@ -16,19 +17,43 @@ public sealed class SpaceStationMapper
     /// <returns>An enumerable list of space stations mapped to the V1 model.</returns>
     public IEnumerable<SpaceStation> MapToV1(MappingContext context, List<Planet> planets)
     {
-        foreach (var station in context.InvariantWarStatus.SpaceStations)
-            yield return Map(context, station, planets);
+        // Get a list of all assignments across all translations.
+        var invariants = context.SpaceStations
+            .SelectMany(pair => pair.Value)
+            .DistinctBy(spaceStation => spaceStation.Id32);
+
+        foreach (var spaceStation in invariants)
+        {
+            // Build a dictionary of all translations for this assignment
+            var translations = context.SpaceStations.Select(pair =>
+                    new KeyValuePair<string, Models.ArrowHead.SpaceStation?>(
+                        pair.Key,
+                        pair.Value.FirstOrDefault(a => a.Id32 == spaceStation.Id32)
+                    )
+                ).Where(pair => pair.Value is not null)
+                .ToDictionary(pair => pair.Key, pair => pair.Value!);
+
+            yield return Map(translations, context, planets);
+        }
     }
 
-    private SpaceStation Map(MappingContext context, Helldivers.Models.ArrowHead.SpaceStation raw, List<Planet> planets)
+    private SpaceStation Map(Dictionary<string, Models.ArrowHead.SpaceStation> translations, MappingContext context, List<Planet> planets)
     {
-        var planet = planets.First(p => p.Index == raw.PlanetIndex);
+        var invariant = translations.First().Value;
+        var planet = planets.First(p => p.Index == invariant.PlanetIndex);
 
         return new SpaceStation(
-            Id32: raw.Id32,
+            Id32: invariant.Id32,
             Planet: planet,
-            ElectionEnd: context.RelativeGameStart.AddSeconds(raw.CurrentElectionEndWarTime),
-            Flags: raw.Flags
+            ElectionEnd: context.RelativeGameStart.AddSeconds(invariant.CurrentElectionEndWarTime),
+            Flags: invariant.Flags,
+            TacticalActions: invariant.TacticalActions.Select(rawAction => MapTacticalAction(context, rawAction)).ToList()
         );
+    }
+
+    private TacticalAction MapTacticalAction(MappingContext context, Helldivers.Models.ArrowHead.SpaceStations.TacticalAction raw)
+    {
+        // TODO: map actions.
+        return new TacticalAction();
     }
 }

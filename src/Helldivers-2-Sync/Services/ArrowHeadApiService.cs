@@ -83,8 +83,7 @@ public sealed class ArrowHeadApiService(
     /// <summary>
     /// Loads space station of a given <paramref name="season" /> and <paramref name="id"/> in <paramref name="language" />.
     /// </summary>
-    public async Task<Memory<byte>> LoadSpaceStations(string season, string id, string language,
-        CancellationToken cancellationToken)
+    public async Task<Memory<byte>> LoadSpaceStations(string season, long id, string language, CancellationToken cancellationToken)
     {
         var request = BuildRequest($"/api/SpaceStation/{season}/{id}", language);
         using var response = await http.SendAsync(request, cancellationToken);

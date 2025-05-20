@@ -47,7 +47,13 @@ public sealed class MappingContext
     public TimeSpan GameTimeDeviation { get; private init; }
 
     /// <summary>Initializes a new <see cref="MappingContext" />.</summary>
-    internal MappingContext(WarId warId, WarInfo warInfo, Dictionary<string, WarStatus> warStatuses, WarSummary warSummary, Dictionary<string, List<NewsFeedItem>> newsFeeds, Dictionary<string, List<Assignment>> assignments, Dictionary<string, List<SpaceStation>> spaceStations)
+    internal MappingContext(WarId warId,
+        WarInfo warInfo,
+        Dictionary<string, WarStatus> warStatuses,
+        WarSummary warSummary,
+        Dictionary<string, List<NewsFeedItem>> newsFeeds,
+        Dictionary<string, List<Assignment>> assignments,
+        Dictionary<string, List<SpaceStation>> spaceStations)
     {
         WarId = warId;
         WarInfo = warInfo;

@@ -13,9 +13,9 @@
 public sealed record Cost(
     string Id,
     long ItemMixId,
-    int TargetValue,
-    int CurrentValue,
-    int DeltaPerSecond,
-    int MaxDonationAmmount,
-    int MaxDonationPeriodSeconds
+    long TargetValue,
+    double CurrentValue,
+    long DeltaPerSecond,
+    long MaxDonationAmmount,
+    long MaxDonationPeriodSeconds
 );
