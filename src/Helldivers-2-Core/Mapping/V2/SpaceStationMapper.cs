@@ -1,3 +1,4 @@
+using Helldivers.Core.Hdml;
 using Helldivers.Models.V1;
 using Helldivers.Models.V2;
 using Helldivers.Models.V2.SpaceStations;
@@ -7,7 +8,7 @@ namespace Helldivers.Core.Mapping.V2;
 /// <summary>
 /// Handles mapping for <see cref="SpaceStation" />.
 /// </summary>
-public sealed class SpaceStationMapper
+public sealed class SpaceStationMapper(HdmlParser parser)
 {
     /// <summary>
     /// Maps all space stations in the <see cref="MappingContext" />.
@@ -58,7 +59,7 @@ public sealed class SpaceStationMapper
             MediaId32: raw.MediaId32,
             Name: raw.Name,
             Description: raw.Description,
-            StrategicDescription: raw.StrategicDescription,
+            StrategicDescription: parser.Compile(raw.StrategicDescription),
             Status: raw.Status,
             StatusExpire: context.RelativeGameStart.AddSeconds(raw.StatusExpireAtWarTimeSeconds),
             Costs: raw.Cost.Select(MapCost).ToList(),
