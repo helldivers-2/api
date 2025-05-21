@@ -37,6 +37,6 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "version-without-v=$VERSION_WITHOUT_V" >> $GITHUB_OUTPUT
 
-      - run: flyctl deploy --remote-only --build-arg VERSION=$VERSION_WITHOUT_V
+      - run: flyctl deploy --remote-only --build-arg VERSION=${{ steps.set_version.outputs.version-without-v }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
