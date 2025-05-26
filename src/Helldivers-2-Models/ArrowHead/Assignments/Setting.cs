@@ -17,7 +17,7 @@ public sealed record Setting(
     string OverrideBrief,
     string TaskDescription,
     List<Task> Tasks,
-    Reward Reward,
-    List<Reward> Rewards,
+    Reward? Reward,
+    List<Reward?> Rewards,
     int Flags
 );

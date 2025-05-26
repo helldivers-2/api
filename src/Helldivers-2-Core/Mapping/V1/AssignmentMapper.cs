@@ -54,7 +54,7 @@ public sealed class AssignmentMapper
             Description: LocalizedMessage.FromStrings(descriptions),
             Tasks: invariant.Setting.Tasks.Select(MapToV1).ToList(),
             Reward: MapToV1(invariant.Setting.Reward),
-            Rewards: invariant.Setting.Rewards.Select(MapToV1).ToList(),
+            Rewards: invariant.Setting.Rewards.Select(MapToV1).Where(reward => reward is not null).ToList()!,
             Expiration: expiration,
             Flags: invariant.Setting.Flags
         );
@@ -69,8 +69,11 @@ public sealed class AssignmentMapper
         );
     }
 
-    private Reward MapToV1(Models.ArrowHead.Assignments.Reward reward)
+    private Reward? MapToV1(Models.ArrowHead.Assignments.Reward? reward)
     {
+        if (reward is null)
+            return null;
+
         return new Reward(
             Type: reward.Type,
             Amount: reward.Amount

@@ -25,7 +25,7 @@ public sealed record Assignment(
     LocalizedMessage Briefing,
     LocalizedMessage Description,
     List<Task> Tasks,
-    Reward Reward,
+    Reward? Reward,
     List<Reward> Rewards,
     DateTime Expiration,
     int Flags
