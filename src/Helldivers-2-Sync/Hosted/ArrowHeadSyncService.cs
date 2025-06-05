@@ -45,11 +45,15 @@ public sealed partial class ArrowHeadSyncService(
     private static partial void LogFailedToLoadTranslation(ILogger logger, Exception exception, string language,
         string type);
 
+    [LoggerMessage(Level = LogLevel.Information, Message = "ArrowHeadSyncService finished processing, shutting down.")]
+    private static partial void LogRunOnceCompleted(ILogger logger);
+
     #endregion
 
     /// <inheritdoc cref="BackgroundService.ExecuteAsync(CancellationToken)" />
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
+
         var delay = TimeSpan.FromSeconds(configuration.Value.IntervalSeconds);
 
         LogRunAtInterval(logger, delay);
@@ -66,6 +70,16 @@ public sealed partial class ArrowHeadSyncService(
             catch (Exception exception)
             {
                 LogSyncThrewAnError(logger, exception);
+
+                if (configuration.Value.RunOnce)
+                    throw;
+            }
+
+            // If we should only run once, we exit the loop (and thus service) after this.
+            if (configuration.Value.RunOnce)
+            {
+                LogRunOnceCompleted(logger);
+                return;
             }
 
             await Task.Delay(delay, cancellationToken);

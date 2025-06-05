@@ -56,6 +56,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OpenApi", "OpenApi", "{1A2C
 		docs\openapi\Helldivers-2-API_arrowhead.json = docs\openapi\Helldivers-2-API_arrowhead.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helldivers-2-CI", "src\Helldivers-2-CI\Helldivers-2-CI.csproj", "{DD942DB1-162A-4915-B10E-C049ED478297}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +84,10 @@ Global
 		{32AE19FB-7D9E-4AC7-A0A5-80DED3680369}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32AE19FB-7D9E-4AC7-A0A5-80DED3680369}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32AE19FB-7D9E-4AC7-A0A5-80DED3680369}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD942DB1-162A-4915-B10E-C049ED478297}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD942DB1-162A-4915-B10E-C049ED478297}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD942DB1-162A-4915-B10E-C049ED478297}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD942DB1-162A-4915-B10E-C049ED478297}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
