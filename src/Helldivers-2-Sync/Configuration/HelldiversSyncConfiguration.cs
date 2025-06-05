@@ -24,4 +24,10 @@ public sealed class HelldiversSyncConfiguration
     /// A list of language codes for which translations will be provided.
     /// </summary>
     public List<string> Languages { get; set; } = new(0);
+
+    /// <summary>
+    /// Flag to indicate if the application should only run the sync once.
+    /// This is used in CI testing to validate sync works.
+    /// </summary>
+    public bool RunOnce { get; set; } = false;
 }
