@@ -41,6 +41,12 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
         Static.Factions.TryGetValue(info.InitialOwner, out var initialOwner);
         Static.Factions.TryGetValue(status.Owner, out var currentOwner);
 
+        var regionStates = context.InvariantWarStatus.PlanetRegions.Where(region => region.PlanetIndex == info.Index).ToList();
+        var regions = context.WarInfo.PlanetRegions
+            .Where(region => region.PlanetIndex == info.Index)
+            .Select(region => (region, regionStates.FirstOrDefault(state => state.RegionIndex == region.RegionIndex)))
+            .ToList();
+
         var (name, sector, biomeKey, environmentals) = planet;
 
         return new Planet(
@@ -60,7 +66,8 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
             RegenPerSecond: status.RegenPerSecond,
             Event: MapToV1(@event, context),
             Statistics: statisticsMapper.MapToV1(stats, status),
-            Attacking: attacking
+            Attacking: attacking,
+            Regions: regions.Select(region => MapToV1(region.region, region.Item2, context)).ToList()
         );
     }
 
@@ -81,6 +88,25 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
             EndTime: context.RelativeGameStart.AddSeconds(@event.ExpireTime),
             CampaignId: @event.CampaignId,
             JointOperationIds: @event.JointOperationIds
+        );
+    }
+
+    private Region MapToV1(Models.ArrowHead.Info.PlanetRegion region, Models.ArrowHead.Status.PlanetRegionStatus? status, MappingContext context)
+    {
+        string? owner = null;
+        if (status is { Owner: var faction })
+            Static.Factions.TryGetValue(faction, out owner);
+
+        Static.PlanetRegion.TryGetValue(region.SettingsHash, out var planetRegion);
+        return new Region(
+            Name: planetRegion.Name,
+            Description: planetRegion.Description,
+            MaxHealth: region.MaxHealth,
+            Size: (RegionSize)region.RegionSize,
+            RegenPerSecond: status?.RegerPerSecond,
+            AvailabilityFactor: status?.AvailabilityFactor,
+            IsAvailable: status?.IsAvailable ?? false,
+            Players: status?.Players ?? 0
         );
     }
 }

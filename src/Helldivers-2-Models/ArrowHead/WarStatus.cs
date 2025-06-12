@@ -29,5 +29,5 @@ public sealed record WarStatus(
 // TODO activeElectionPolicyEffects
 // TODO globalEvents
 // TODO superEarthWarResults
-    List<PlanetRegion> PlanetRegions
+    List<PlanetRegionStatus> PlanetRegions
 );

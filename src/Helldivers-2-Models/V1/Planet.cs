@@ -40,5 +40,6 @@ public record Planet(
     double RegenPerSecond,
     Event? Event,
     Statistics Statistics,
-    List<int> Attacking
+    List<int> Attacking,
+    List<Region> Regions
 );

@@ -13,7 +13,7 @@ namespace Helldivers.Models.ArrowHead.Status;
 /// <param name="AvailabilityFactor">Unknown purpose.</param>
 /// <param name="IsAvailable">Whether this region is currently available to play on(?).</param>
 /// <param name="Players">The amount of helldivers currently active on this planet.</param>
-public sealed record PlanetRegion(
+public sealed record PlanetRegionStatus(
     int PlanetIndex,
     int RegionIndex,
     int Owner,
