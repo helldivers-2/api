@@ -43,7 +43,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: sync-artifacts
           path: |
@@ -53,7 +53,7 @@ jobs:
 
       - name: Create an issue on failure (schedule or push to master)
         if: steps.run_sync.outputs.exit_code != '0' && github.event_name != 'pull_request'
-        uses: peter-evans/create-issue@v4
+        uses: peter-evans/create-pull-request@v7
         with:
           title: '[Sync Validation] Failure on ${{ github.ref_name }}'
           body: |
@@ -69,7 +69,7 @@ jobs:
 
       - name: Comment on PR on failure
         if: steps.run_sync.outputs.exit_code != '0' && github.event_name == 'pull_request'
-        uses: peter-evans/create-or-update-comment@v3
+        uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
