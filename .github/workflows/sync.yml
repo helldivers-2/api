@@ -1,0 +1,80 @@
+name: Validate sync
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  validate-sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Download JSON submodule
+        run: git submodule update --init ./src/Helldivers-2-Models/json
+
+      - name: Run sync and capture logs
+        id: run_sync
+        shell: bash
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          dotnet build
+          dotnet run --project ./src/Helldivers-2-CI/Helldivers-2-CI.csproj 2>&1 | tee sync.log
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sync-artifacts
+          path: |
+            v1/*.json
+            v2/*.json
+            sync.log
+
+      - name: Capture error log
+        id: sync_log
+        if: ${{ steps.run_sync.outcome == 'failure' && github.event_name == 'pull_request' }}
+        run: |
+          # open a multi-line output called "log"
+          echo "log<<EOF" >> $GITHUB_OUTPUT
+          cat sync.log       >> $GITHUB_OUTPUT
+          echo "EOF"         >> $GITHUB_OUTPUT
+
+      - name: Comment on PR on failure
+        if: ${{ steps.run_sync.outcome == 'failure' && github.event_name == 'pull_request' }}
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ⚠️ **Sync validation failed** (run #${{ github.run_number }} exited with ${{ steps.run_sync.outcome }})
+
+            <details>
+              <summary>Error log</summary>
+  
+              ```text
+              ${{ steps.sync_log.outputs.log }}
+              ```
+            </details>
+
+            **Artifacts** (JSON + log) here:  
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      - name: Fail job on error
+        if: ${{ steps.run_sync.outcome == 'failure' }}
+        run: exit 1

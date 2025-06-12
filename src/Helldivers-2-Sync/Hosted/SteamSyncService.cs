@@ -1,8 +1,10 @@
 ﻿using Helldivers.Core;
+using Helldivers.Sync.Configuration;
 using Helldivers.Sync.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Prometheus;
 
 namespace Helldivers.Sync.Hosted;
@@ -13,7 +15,8 @@ namespace Helldivers.Sync.Hosted;
 public sealed partial class SteamSyncService(
     ILogger<SteamSyncService> logger,
     StorageFacade storage,
-    IServiceScopeFactory scopeFactory
+    IServiceScopeFactory scopeFactory,
+    IOptions<HelldiversSyncConfiguration> configuration
 ) : BackgroundService
 {
     /// <summary>
@@ -28,6 +31,9 @@ public sealed partial class SteamSyncService(
 
     [LoggerMessage(Level = LogLevel.Error, Message = "An exception was thrown when synchronizing from Steam API")]
     private static partial void LogSyncThrewAnError(ILogger logger, Exception exception);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "SteamSyncService finished processing, shutting down.")]
+    private static partial void LogRunOnceCompleted(ILogger logger);
 
     #endregion
 
@@ -52,8 +58,18 @@ public sealed partial class SteamSyncService(
             catch (Exception exception)
             {
                 LogSyncThrewAnError(logger, exception);
+
+                if (configuration.Value.RunOnce)
+                    throw;
             }
 
+
+            // If we should only run once, we exit the loop (and thus service) after this.
+            if (configuration.Value.RunOnce)
+            {
+                LogRunOnceCompleted(logger);
+                return;
+            }
             await Task.Delay(delay, cancellationToken);
         }
     }

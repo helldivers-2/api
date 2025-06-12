@@ -40,7 +40,7 @@ public static partial class Static
             return SourceText.From(output, Encoding.UTF8);
         }
 
-        return SourceText.From("// Could not read JSON file");
+        return SourceText.From("// Could not read JSON file", Encoding.UTF8);
     }
 
     /// <summary>
