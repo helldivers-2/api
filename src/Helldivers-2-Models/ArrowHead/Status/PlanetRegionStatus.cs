@@ -18,7 +18,7 @@ public sealed record PlanetRegionStatus(
     int RegionIndex,
     int Owner,
     long Health,
-    int RegerPerSecond,
+    double RegerPerSecond,
     double AvailabilityFactor,
     bool IsAvailable,
     long Players
