@@ -14,6 +14,7 @@ namespace Helldivers.Models.ArrowHead;
 /// <param name="Campaigns">A list of ongoing campaigns in the galactic war.</param>
 /// <param name="JointOperations">A list of <see cref="JointOperation" />s.</param>
 /// <param name="PlanetEvents">A list of ongoing <see cref="PlanetEvent" />s.</param>
+/// <param name="PlanetRegions">The regions that have a status.</param>
 public sealed record WarStatus(
     int WarId,
     long Time,
@@ -24,9 +25,10 @@ public sealed record WarStatus(
     List<Campaign> Campaigns,
     // TODO CommunityTargets
     List<JointOperation> JointOperations,
-    List<PlanetEvent> PlanetEvents
+    List<PlanetEvent> PlanetEvents,
 // TODO PlanetActiveEffects
 // TODO activeElectionPolicyEffects
 // TODO globalEvents
 // TODO superEarthWarResults
+    List<PlanetRegionStatus> PlanetRegions
 );

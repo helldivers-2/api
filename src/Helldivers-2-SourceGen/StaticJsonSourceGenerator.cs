@@ -12,6 +12,7 @@ namespace Helldivers.SourceGen;
 public class StaticJsonSourceGenerator : IIncrementalGenerator
 {
     private static readonly IJsonParser PlanetParser = new PlanetsParser();
+    private static readonly IJsonParser PlanetRegionParser = new PlanetRegionsParser();
     private static readonly IJsonParser BiomesParser = new BiomesParser();
     private static readonly IJsonParser EnvironmentalsParser = new EnvironmentalsParser();
     private static readonly IJsonParser FactionsParser = new FactionsParser();
@@ -67,6 +68,7 @@ public class StaticJsonSourceGenerator : IIncrementalGenerator
         return name.ToLowerInvariant() switch
         {
             "planets" => PlanetParser,
+            "planetregion" => PlanetRegionParser,
             "biomes" => BiomesParser,
             "environmentals" => EnvironmentalsParser,
             "factions" => FactionsParser,

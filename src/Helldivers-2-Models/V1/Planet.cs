@@ -23,6 +23,7 @@ namespace Helldivers.Models.V1;
 /// <param name="Event">Information on the active event ongoing on this planet, if one is active.</param>
 /// <param name="Statistics">A set of statistics scoped to this planet.</param>
 /// <param name="Attacking">A list of <see cref="Index" /> integers that this planet is currently attacking.</param>
+/// <param name="Regions">All regions on this planet, including their status (if any).</param>
 public record Planet(
     int Index,
     LocalizedMessage Name,
@@ -40,5 +41,6 @@ public record Planet(
     double RegenPerSecond,
     Event? Event,
     Statistics Statistics,
-    List<int> Attacking
+    List<int> Attacking,
+    List<Region> Regions
 );

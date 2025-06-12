@@ -165,6 +165,9 @@ if (isRunningAsTool)
         document.SchemaSettings.TypeMappers.Add(
             new Helldivers.API.OpenApi.TypeMappers.LocalizedMessageTypeMapper(languages)
         );
+        document.SchemaSettings.TypeMappers.Add(
+            new Helldivers.API.OpenApi.TypeMappers.EnumStringTypeMapper<Helldivers.Models.V1.Planets.RegionSize>()
+        );
 
         document.OperationProcessors.Add(new Helldivers.API.OpenApi.OperationProcessors.SuperHeadersProcessor());
 

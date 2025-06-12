@@ -16,7 +16,6 @@ public class PlanetsParser : BaseJsonParser
         foreach (var property in document.RootElement.EnumerateObject())
         {
             var index = property.Name;
-            var name = property.Value.GetProperty("name").GetString();
             var names = property
                 .Value
                 .GetProperty("names")

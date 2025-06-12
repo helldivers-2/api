@@ -1,4 +1,5 @@
 ﻿using Helldivers.Models.V1;
+using Helldivers.Models.V1.Planets;
 using System.Text.Json.Serialization;
 
 namespace Helldivers.Models;
@@ -18,6 +19,8 @@ namespace Helldivers.Models;
 [JsonSerializable(typeof(SteamNews))]
 [JsonSerializable(typeof(List<SteamNews>))]
 [JsonSerializable(typeof(War))]
+[JsonSerializable(typeof(Region))]
+[JsonSerializable(typeof(List<Region>))]
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true, UseStringEnumConverter = true)]
 public sealed partial class V1SerializerContext : JsonSerializerContext
 {
