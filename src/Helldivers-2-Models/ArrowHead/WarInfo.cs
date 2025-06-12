@@ -11,13 +11,15 @@ namespace Helldivers.Models.ArrowHead;
 /// <param name="MinimumClientVersion">A version string indicating the minimum game client version the API supports.</param>
 /// <param name="PlanetInfos">A list of planets involved in this season's war.</param>
 /// <param name="HomeWorlds">A list of homeworlds for the races (factions) involved in this war.</param>
+/// <param name="PlanetRegions">The regions that can be found on this planet.</param>
 public sealed record WarInfo(
     int WarId,
     long StartDate,
     long EndDate,
     string MinimumClientVersion,
     List<PlanetInfo> PlanetInfos,
-    List<HomeWorld> HomeWorlds
+    List<HomeWorld> HomeWorlds,
 // TODO: capitalInfo's
 // TODO planetPermanentEffects
+    List<PlanetRegion> PlanetRegions
 );

@@ -3,15 +3,15 @@
 /// <summary>
 /// A region of a planet, containing information about its health and size.
 /// </summary>
-/// <param name="Index">The index of the planet region</param>
-/// <param name="regionIndex">The index of the region</param>
-/// <param name="SettingsHash">The ID that identifies the region.</param>
-/// <param name="maxHealth">The maximum health of this region.</param>
-/// <param name="regionSize">The size of the region.</param>
+/// <param name="PlanetIndex">The index of the region's planet</param>
+/// <param name="RegionIndex">The index of the region</param>
+/// <param name="SettingsHash">The ID that identifies the region in the JSON files.</param>
+/// <param name="MaxHealth">The maximum health of this region.</param>
+/// <param name="RegionSize">The size of the region.</param>
 public sealed record PlanetRegion(
-    int Index,
-    int regionIndex,
+    int PlanetIndex,
+    int RegionIndex,
     ulong SettingsHash,
-    ulong maxHealth,
-    int regionSize
+    ulong MaxHealth,
+    int RegionSize
 );
