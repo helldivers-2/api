@@ -3,6 +3,10 @@ using System.Text.Json;
 
 namespace Helldivers.SourceGen.Parsers;
 
+
+/// <summary>
+/// Handles parsing the planetRegion.json and generating the resulting region data.
+/// </summary>
 public class PlanetRegionsParser : BaseJsonParser
 {
     /// <inheritdoc />
