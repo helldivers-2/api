@@ -24,9 +24,10 @@ public sealed record WarStatus(
     List<Campaign> Campaigns,
     // TODO CommunityTargets
     List<JointOperation> JointOperations,
-    List<PlanetEvent> PlanetEvents
+    List<PlanetEvent> PlanetEvents,
 // TODO PlanetActiveEffects
 // TODO activeElectionPolicyEffects
 // TODO globalEvents
 // TODO superEarthWarResults
+    List<PlanetRegion> PlanetRegions
 );
