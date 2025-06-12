@@ -1,0 +1,84 @@
+name: Validate sync
+
+# Grant permissions to create issues & PR comments
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: [ "master" ]
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  validate-sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Run sync and capture logs
+        id: run_sync
+        shell: bash
+        # continue-on-error so we can handle failures in later steps
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          dotnet run --project ./src/Helldivers-2-CI/Helldivers-2-CI.csproj 2>&1 | tee sync.log
+          EXIT_CODE=${PIPESTATUS[0]}
+          # expose exit code and full log as step outputs
+          echo "exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
+          echo "log<<EOF" >> $GITHUB_OUTPUT
+          cat sync.log >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: sync-artifacts
+          path: |
+            v1/*.json
+            v2/*.json
+            sync.log
+
+      - name: Create an issue on failure (schedule or push to master)
+        if: steps.run_sync.outputs.exit_code != '0' && github.event_name != 'pull_request'
+        uses: peter-evans/create-issue@v4
+        with:
+          title: '[Sync Validation] Failure on ${{ github.ref_name }}'
+          body: |
+            The sync validation run (ID ${{ github.run_id }}) failed with exit code `${{ steps.run_sync.outputs.exit_code }}`.
+
+            **Error log**:
+            ```text
+            ${{ steps.run_sync.outputs.log }}
+            ```
+
+            **Artifacts** (JSON output + log) are available here:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts
+
+      - name: Comment on PR on failure
+        if: steps.run_sync.outputs.exit_code != '0' && github.event_name == 'pull_request'
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            The sync validation run (ID ${{ github.run_id }}) failed with exit code `${{ steps.run_sync.outputs.exit_code }}`.
+
+            **Error log**:
+            ```text
+            ${{ steps.run_sync.outputs.log }}
+            ```
+
+            **Artifacts** (JSON output + log) are available here:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts

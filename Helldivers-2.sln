@@ -41,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 		.github\workflows\fly.yml = .github\workflows\fly.yml
 		.github\workflows\pages.yml = .github\workflows\pages.yml
+		.github\workflows\sync.yml = .github\workflows\sync.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{FD5B9284-4689-48BE-B520-633C7269F97C}"
