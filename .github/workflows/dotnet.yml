@@ -29,3 +29,10 @@ jobs:
         run: dotnet format --no-restore --verify-no-changes --exclude-diagnostics IL2026 IL3050
       - name: Check tests
         run: dotnet test --no-build --verbosity normal
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          retention-days: 5
+          name: openapi-schemas
+          path: docs/openapi/
