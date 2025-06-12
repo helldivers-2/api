@@ -3,12 +3,15 @@
     <PropertyGroup>
         <IsAotCompatible>true</IsAotCompatible>
         <RootNamespace>Helldivers.Models</RootNamespace>
+
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     </PropertyGroup>
 
     <ItemGroup>
         <None Remove="json/**/*" Visible="false" />
         <AdditionalFiles Include="json/factions.json" Visible="false" />
         <AdditionalFiles Include="json/planets/planets.json" Visible="false" />
+        <AdditionalFiles Include="json/planets/planetRegion.json" Visible="false" />
         <AdditionalFiles Include="json/planets/biomes.json" Visible="false" />
         <AdditionalFiles Include="json/planets/environmentals.json" Visible="false" />
 
