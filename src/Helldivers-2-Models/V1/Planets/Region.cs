@@ -18,7 +18,7 @@
 public record struct Region(
     int Id,
     string Name,
-    string Description,
+    string? Description,
     long? Health,
     ulong MaxHealth,
     RegionSize Size,

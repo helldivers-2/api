@@ -94,14 +94,17 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
     private Region MapToV1(Models.ArrowHead.Info.PlanetRegion region, Models.ArrowHead.Status.PlanetRegionStatus? status, MappingContext context)
     {
         string? owner = null;
+        (string Name, string Description)? planetRegion = null;
         if (status is { Owner: var faction })
             Static.Factions.TryGetValue(faction, out owner);
 
-        Static.PlanetRegion.TryGetValue(region.SettingsHash, out var planetRegion);
+        if (Static.PlanetRegion.ContainsKey(region.SettingsHash))
+            planetRegion = Static.PlanetRegion[region.SettingsHash];
+
         return new Region(
             Id: region.RegionIndex,
-            Name: planetRegion.Name,
-            Description: planetRegion.Description,
+            Name: planetRegion?.Name ?? string.Empty,
+            Description: planetRegion?.Description,
             Health: status?.Health,
             MaxHealth: region.MaxHealth,
             Size: (RegionSize)region.RegionSize,
