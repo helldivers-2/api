@@ -103,7 +103,7 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
 
         return new Region(
             Id: region.RegionIndex,
-            Name: planetRegion?.Name ?? string.Empty,
+            Name: planetRegion?.Name,
             Description: planetRegion?.Description,
             Health: status?.Health,
             MaxHealth: region.MaxHealth,

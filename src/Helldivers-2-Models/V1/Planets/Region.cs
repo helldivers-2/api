@@ -3,6 +3,9 @@
 /// <summary>
 /// A region on a planet.
 ///
+/// The <c>Name</c> and <c>Description</c> fields may be empty when the underlying data store doesn't contain information on them.
+/// This is typically when ArrowHead adds new regions that aren't updated in the data store (helldivers-2/json) yet.
+///
 /// Note that some properties may be unavailable when the region is inactive.
 /// </summary>
 /// <param name="Id">The identifier of this region.</param>
@@ -17,7 +20,7 @@
 /// <param name="Players">The amount of helldivers currently active in this region.</param>
 public record struct Region(
     int Id,
-    string Name,
+    string? Name,
     string? Description,
     long? Health,
     ulong MaxHealth,
