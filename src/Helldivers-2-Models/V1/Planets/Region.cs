@@ -2,9 +2,12 @@
 
 /// <summary>
 /// A region on a planet.
+///
+/// Note that some properties may be unavailable when the region is inactive.
 /// </summary>
 /// <param name="Name">The name of the region.</param>
 /// <param name="Description">A long-form description of the region.</param>
+/// <param name="Health">The current health of the region.</param>
 /// <param name="MaxHealth">The maximum health of this region.</param>
 /// <param name="Size">The size of this region.</param>
 /// <param name="RegenPerSecond">The amount of health this region generates when left alone.</param>
@@ -14,6 +17,7 @@
 public record struct Region(
     string Name,
     string Description,
+    long? Health,
     ulong MaxHealth,
     RegionSize Size,
     double? RegenPerSecond,

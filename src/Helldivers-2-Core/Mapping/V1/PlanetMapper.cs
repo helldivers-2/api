@@ -101,6 +101,7 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
         return new Region(
             Name: planetRegion.Name,
             Description: planetRegion.Description,
+            Health: status?.Health,
             MaxHealth: region.MaxHealth,
             Size: (RegionSize)region.RegionSize,
             RegenPerSecond: status?.RegerPerSecond,
