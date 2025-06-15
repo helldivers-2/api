@@ -99,6 +99,7 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
 
         Static.PlanetRegion.TryGetValue(region.SettingsHash, out var planetRegion);
         return new Region(
+            Id: region.RegionIndex,
             Name: planetRegion.Name,
             Description: planetRegion.Description,
             Health: status?.Health,
