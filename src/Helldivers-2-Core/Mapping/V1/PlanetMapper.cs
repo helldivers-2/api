@@ -94,7 +94,7 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
     private Region MapToV1(Models.ArrowHead.Info.PlanetRegion region, Models.ArrowHead.Status.PlanetRegionStatus? status, MappingContext context)
     {
         string? owner = null;
-        (string Name, string Description)? planetRegion = null;
+        (string Name, string? Description)? planetRegion = null;
         if (status is { Owner: var faction })
             Static.Factions.TryGetValue(faction, out owner);
 
