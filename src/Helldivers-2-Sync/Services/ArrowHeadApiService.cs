@@ -73,7 +73,7 @@ public sealed class ArrowHeadApiService(
     /// </summary>
     public async Task<Memory<byte>> LoadFeed(string season, string language, CancellationToken cancellationToken)
     {
-        var request = BuildRequest($"/api/NewsFeed/{season}?maxEntries=1024", language);
+        var request = BuildRequest($"/api/NewsFeed/{season}", language);
         using var response = await http.SendAsync(request, cancellationToken);
         
         // Throw on error responses so we don't have to look down the entire serialisation tree.
