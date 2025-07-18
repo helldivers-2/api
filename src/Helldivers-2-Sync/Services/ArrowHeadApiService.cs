@@ -22,6 +22,10 @@ public sealed class ArrowHeadApiService(
     {
         var request = BuildRequest("/api/WarSeason/current/WarID");
         using var response = await http.SendAsync(request, cancellationToken);
+        
+        // Throw on error responses so we don't have to look down the entire serialisation tree.
+        response.EnsureSuccessStatusCode();
+
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
         var memory = await CollectStream(stream, cancellationToken);
         var warId = JsonSerializer.Deserialize(
@@ -39,6 +43,10 @@ public sealed class ArrowHeadApiService(
     {
         var request = BuildRequest($"/api/WarSeason/{season}/WarInfo");
         using var response = await http.SendAsync(request, cancellationToken);
+        
+        // Throw on error responses so we don't have to look down the entire serialisation tree.
+        response.EnsureSuccessStatusCode();
+
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
 
         return await CollectStream(stream, cancellationToken);
@@ -51,6 +59,10 @@ public sealed class ArrowHeadApiService(
     {
         var request = BuildRequest($"/api/WarSeason/{season}/Status", language);
         using var response = await http.SendAsync(request, cancellationToken);
+        
+        // Throw on error responses so we don't have to look down the entire serialisation tree.
+        response.EnsureSuccessStatusCode();
+
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
 
         return await CollectStream(stream, cancellationToken);
@@ -63,8 +75,11 @@ public sealed class ArrowHeadApiService(
     {
         var request = BuildRequest($"/api/NewsFeed/{season}?maxEntries=1024", language);
         using var response = await http.SendAsync(request, cancellationToken);
-        await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
+        
+        // Throw on error responses so we don't have to look down the entire serialisation tree.
+        response.EnsureSuccessStatusCode();
 
+        await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
         return await CollectStream(stream, cancellationToken);
     }
 
@@ -75,6 +90,10 @@ public sealed class ArrowHeadApiService(
     {
         var request = BuildRequest($"/api/v2/Assignment/War/{season}", language);
         using var response = await http.SendAsync(request, cancellationToken);
+        
+        // Throw on error responses so we don't have to look down the entire serialisation tree.
+        response.EnsureSuccessStatusCode();
+
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
 
         return await CollectStream(stream, cancellationToken);
@@ -87,6 +106,10 @@ public sealed class ArrowHeadApiService(
     {
         var request = BuildRequest($"/api/SpaceStation/{season}/{id}", language);
         using var response = await http.SendAsync(request, cancellationToken);
+        
+        // Throw on error responses so we don't have to look down the entire serialisation tree.
+        response.EnsureSuccessStatusCode();
+
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
 
         return await CollectStream(stream, cancellationToken);
@@ -99,6 +122,10 @@ public sealed class ArrowHeadApiService(
     {
         var request = BuildRequest($"/api/Stats/war/{season}/summary");
         using var response = await http.SendAsync(request, cancellationToken);
+        
+        // Throw on error responses so we don't have to look down the entire serialisation tree.
+        response.EnsureSuccessStatusCode();
+
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
 
         return await CollectStream(stream, cancellationToken);
