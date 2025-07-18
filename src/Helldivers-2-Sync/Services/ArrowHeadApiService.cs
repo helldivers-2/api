@@ -22,7 +22,7 @@ public sealed class ArrowHeadApiService(
     {
         var request = BuildRequest("/api/WarSeason/current/WarID");
         using var response = await http.SendAsync(request, cancellationToken);
-        
+
         // Throw on error responses so we don't have to look down the entire serialisation tree.
         response.EnsureSuccessStatusCode();
 
@@ -43,7 +43,7 @@ public sealed class ArrowHeadApiService(
     {
         var request = BuildRequest($"/api/WarSeason/{season}/WarInfo");
         using var response = await http.SendAsync(request, cancellationToken);
-        
+
         // Throw on error responses so we don't have to look down the entire serialisation tree.
         response.EnsureSuccessStatusCode();
 
@@ -59,7 +59,7 @@ public sealed class ArrowHeadApiService(
     {
         var request = BuildRequest($"/api/WarSeason/{season}/Status", language);
         using var response = await http.SendAsync(request, cancellationToken);
-        
+
         // Throw on error responses so we don't have to look down the entire serialisation tree.
         response.EnsureSuccessStatusCode();
 
@@ -75,7 +75,7 @@ public sealed class ArrowHeadApiService(
     {
         var request = BuildRequest($"/api/NewsFeed/{season}", language);
         using var response = await http.SendAsync(request, cancellationToken);
-        
+
         // Throw on error responses so we don't have to look down the entire serialisation tree.
         response.EnsureSuccessStatusCode();
 
@@ -90,7 +90,7 @@ public sealed class ArrowHeadApiService(
     {
         var request = BuildRequest($"/api/v2/Assignment/War/{season}", language);
         using var response = await http.SendAsync(request, cancellationToken);
-        
+
         // Throw on error responses so we don't have to look down the entire serialisation tree.
         response.EnsureSuccessStatusCode();
 
@@ -106,7 +106,7 @@ public sealed class ArrowHeadApiService(
     {
         var request = BuildRequest($"/api/SpaceStation/{season}/{id}", language);
         using var response = await http.SendAsync(request, cancellationToken);
-        
+
         // Throw on error responses so we don't have to look down the entire serialisation tree.
         response.EnsureSuccessStatusCode();
 
@@ -122,7 +122,7 @@ public sealed class ArrowHeadApiService(
     {
         var request = BuildRequest($"/api/Stats/war/{season}/summary");
         using var response = await http.SendAsync(request, cancellationToken);
-        
+
         // Throw on error responses so we don't have to look down the entire serialisation tree.
         response.EnsureSuccessStatusCode();
 
