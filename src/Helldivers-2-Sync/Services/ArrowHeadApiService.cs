@@ -73,7 +73,11 @@ public sealed class ArrowHeadApiService(
     /// </summary>
     public async Task<Memory<byte>> LoadFeed(string season, string language, CancellationToken cancellationToken)
     {
-        var request = BuildRequest($"/api/NewsFeed/{season}", language);
+        // If the `NewsFeedMaxEntries` flag is not set to 0 we pass it in.
+        var request = options.Value.NewsFeedMaxEntries is 0
+            ? BuildRequest($"/api/NewsFeed/{season}", language)
+            : BuildRequest($"/api/NewsFeed/{season}?maxEntries=${options.Value.NewsFeedMaxEntries}", language);
+
         using var response = await http.SendAsync(request, cancellationToken);
 
         // Throw on error responses so we don't have to look down the entire serialisation tree.
@@ -102,7 +106,8 @@ public sealed class ArrowHeadApiService(
     /// <summary>
     /// Loads space station of a given <paramref name="season" /> and <paramref name="id"/> in <paramref name="language" />.
     /// </summary>
-    public async Task<Memory<byte>> LoadSpaceStations(string season, long id, string language, CancellationToken cancellationToken)
+    public async Task<Memory<byte>> LoadSpaceStations(string season, long id, string language,
+        CancellationToken cancellationToken)
     {
         var request = BuildRequest($"/api/SpaceStation/{season}/{id}", language);
         using var response = await http.SendAsync(request, cancellationToken);
