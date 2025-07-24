@@ -30,4 +30,9 @@ public sealed class HelldiversSyncConfiguration
     /// This is used in CI testing to validate sync works.
     /// </summary>
     public bool RunOnce { get; set; } = false;
+
+    /// <summary>
+    /// Get the maximum number of entries returned by ArrowHead from the newsfeed API.
+    /// </summary>
+    public uint NewsFeedMaxEntries { get; set; } = 2048;
 }
