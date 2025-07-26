@@ -35,4 +35,9 @@ public sealed class HelldiversSyncConfiguration
     /// Get the maximum number of entries returned by ArrowHead from the newsfeed API.
     /// </summary>
     public uint NewsFeedMaxEntries { get; set; } = 1024;
+
+    /// <summary>
+    /// Get all news feed entries that were published after this timestamp
+    /// </summary>
+    public uint NewsFeedFromTimestamp { get; set; } = 1000;
 }
