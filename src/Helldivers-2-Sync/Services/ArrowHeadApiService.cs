@@ -77,12 +77,11 @@ public sealed class ArrowHeadApiService(
 
         // fromTimestamp is in options.Value.  This parameter is needed or else a 400 error will be reached.
         var request = options.Value.NewsFeedMaxEntries is 0
-            ? BuildRequest($"/api/NewsFeed/{season}?fromTimestamp=${options.Value.NewsFeedFromTimestamp}", language)
-            : BuildRequest($"/api/NewsFeed/{season}?maxEntries=${options.Value.NewsFeedMaxEntries}&fromTimestamp=${options.Value.NewsFeedFromTimestamp}", language);
+            ? BuildRequest($"/api/NewsFeed/{season}?fromTimestamp={options.Value.NewsFeedFromTimestamp}", language)
+            : BuildRequest($"/api/NewsFeed/{season}?maxEntries={options.Value.NewsFeedMaxEntries}&fromTimestamp={options.Value.NewsFeedFromTimestamp}", language);
 
         using var response = await http.SendAsync(request, cancellationToken);
 
-        // Throw on error responses so we don't have to look down the entire serialisation tree.
         response.EnsureSuccessStatusCode();
 
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);

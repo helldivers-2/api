@@ -36,10 +36,8 @@ public sealed class HelldiversSyncConfiguration
     /// </summary>
     public uint NewsFeedMaxEntries { get; set; } = 1024;
 
-
-    
     /// <summary>
-    /// Get all News Feed Entries that where published after THIS timestamp
+    /// Get all news feed entries that were published after this timestamp
     /// </summary>
     public uint NewsFeedFromTimestamp { get; set; } = 1000;
 }
