@@ -74,9 +74,10 @@ public sealed class ArrowHeadApiService(
     public async Task<Memory<byte>> LoadFeed(string season, string language, CancellationToken cancellationToken)
     {
         // If the `NewsFeedMaxEntries` flag is not set to 0 we pass it in.
+        // This parameter needs to be passed or a 400 status code will be returned occasionally.
         var request = options.Value.NewsFeedMaxEntries is 0
-            ? BuildRequest($"/api/NewsFeed/{season}", language)
-            : BuildRequest($"/api/NewsFeed/{season}?maxEntries=${options.Value.NewsFeedMaxEntries}", language);
+            ? BuildRequest($"/api/NewsFeed/{season}?fromTimestamp={options.Value.NewsFeedFromTimestamp}", language)
+            : BuildRequest($"/api/NewsFeed/{season}?maxEntries={options.Value.NewsFeedMaxEntries}&fromTimestamp={options.Value.NewsFeedFromTimestamp}", language);
 
         using var response = await http.SendAsync(request, cancellationToken);
 
@@ -84,6 +85,7 @@ public sealed class ArrowHeadApiService(
         response.EnsureSuccessStatusCode();
 
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
+
         return await CollectStream(stream, cancellationToken);
     }
 
