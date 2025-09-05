@@ -1,0 +1,94 @@
+{
+	"arctic_glacier_base": {
+		"name": "Icy Glaciers",
+		"description": "Submerged in eternal winter, this world's frosty peaks glimmer in the light of its too-distant star."
+	},
+	"arctic_glacier_coldrocky": {
+		"name": "Boneyard",
+		"description": "Ice and moss-covered rock can be found across most of the surface of this planet."
+	},
+	"arctic_glacier_tien_kwan": {
+		"name": "Tien Kwan Special",
+		"description": "Ice and moss-covered rock can be found across most of the surface of this planet."
+	},
+	"blackhole": {
+		"name": "Black Hole",
+		"description": "The planet is gone, the ultimate price to pay in the war for humanity's survival."
+	},
+	"bug_hiveworld": {
+		"name": "Hive World",
+		"description": "This planet has been completely infested by the Terminids, transformed inside and out into a hive of Tyranny."
+	},
+	"moor_arid": {
+		"name": "Scorched Moor",
+		"description": "Scorching temperatures, high winds, and low precipitation cause a near-constant cycle of fires to sweep this planet, punctuated by short bursts of lush rebirth between infernos."
+	},
+	"moor_baseplanet": {
+		"name": "Plains",
+		"description": "Rocky outcroppings punctuate fields of tall grass in a planet dominated by misty highland terrain."
+	},
+	"moor_red": {
+		"name": "Ionic Crimson",
+		"description": "A crimson algae has propagated wildly across this entire planet, coating its rocky hills with a constant red that masks the spilt blood of the heroes who defend it from tyranny."
+	},
+	"moor_tundra": {
+		"name": "Tundra",
+		"description": "A perennially chilly climate has allowed short, colorful shrubs to flourish across this planet's surface."
+	},
+	"primordial_base": {
+		"name": "Volcanic Jungle",
+		"description": "Abundant with life, this wet planet is covered in deep oceans, thick forests, and tall grasses."
+	},
+	"primordial_blue": {
+		"name": "Ionic Jungle",
+		"description": "The strange subversion of photosynthesis that sustains the oddly-hued flora that flourishes on this planet remains an intriguing mystery to Super Earth's greatest exo-biologists."
+	},
+	"primordial_bug": {
+		"name": "Supercolony",
+		"description": "Entirely unforeseeable mutations from the Termicide led to hyper-accelerated bug growth on this planet, turning it into a Supercolony. It is corrupted beyond saving. The bugs infest every inch of it, down to the mantle, spawning trillions of spores every day."
+	},
+	"primordial_dead": {
+		"name": "Deadlands",
+		"description": "The lifeless grey of this planet is interrupted only by the violet flowers that grow from strange, parasitic outcroppings."
+	},
+	"primordial_purple": {
+		"name": "Ethereal Jungle",
+		"description": "This world teems with ethereal, boundless, and peculiar plant life that spreads silent and uninterrupted across its entire surface."
+	},
+	"sandy_acid": {
+		"name": "Acidic Badlands",
+		"description": "Dense, toxic fumes from deep within the planet's crust seep out of cracks in the earth and coat the ground in a sickly haze."
+	},
+	"sandy_base": {
+		"name": "Desert Dunes",
+		"description": "A blazing-hot desert planet, its rocky mesas are the sole interruptions to the endless sea of dunes."
+	},
+	"sandy_mineral": {
+		"name": "Rocky Canyons",
+		"description": "This arid, rocky biome covering this world has driven the evolution of exceptionally efficient water usage in its various organisms."
+	},
+	"sandy_moon": {
+		"name": "Moon",
+		"description": "A rocky, lonely moon with extremely valuable mineral deposits underneath the surface."
+	},
+	"sandy_spiky": {
+		"name": "Desert Cliffs",
+		"description": "A desert planet prone to unpredictable and dangerous sand twisters."
+	},
+	"super_earth": {
+		"name": "Super Earth",
+		"description": "Super Earth is the blinding beacon that shines the light of democracy through the stars. The sprawling heart that beats in time to mankind's quest of liberation. Here live the wealthy, important and proud. Here live those who have pulled themselves up by their bootstraps and achieved their dreams. Here live the citizens of Super Earth."
+	},
+	"swamp_base": {
+		"name": "Basic Swamp",
+		"description": "Tall, gnarled trees flourish across the surface of this forested world. Sunlight filters past dangling vines, to the saturated undergrowth below."
+	},
+	"swamp_haunted": {
+		"name": "Haunted Swamp",
+		"description": "Squelching mud, twisting roots; the odor of rot and anarchy. A teeming, endless morass."
+	},
+	"unknown": {
+		"name": "Unknown",
+		"description": "This planet's biome is unknown at this time."
+	}
+}
