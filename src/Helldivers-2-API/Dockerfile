@@ -1,9 +1,9 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime-deps:9.0-alpine-extra AS base
+﻿FROM mcr.microsoft.com/dotnet/runtime-deps:10.0-alpine-extra AS base
 USER $APP_UID
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS build
-RUN apk add --upgrade --no-cache build-base clang zlib-dev
+FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine-aot AS build
+RUN apk add --no-cache build-base clang lld llvm zlib-dev libstdc++
 ARG BUILD_CONFIGURATION=Release
 ARG BUILD_RUNTIME=linux-musl-x64
 ARG OPENAPI=false
@@ -35,7 +35,9 @@ RUN dotnet build "Helldivers-2-API.csproj" --no-restore -r $BUILD_RUNTIME -c $BU
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "Helldivers-2-API.csproj" /p:Version="$VERSION" --no-restore --self-contained -r $BUILD_RUNTIME -c $BUILD_CONFIGURATION -o /app/publish
+ARG BUILD_RUNTIME=linux-musl-x64
+ARG VERSION=0.0.0
+RUN dotnet publish "Helldivers-2-API.csproj" /p:Version="$VERSION" --self-contained -r $BUILD_RUNTIME -c $BUILD_CONFIGURATION -o /app/publish
 
 FROM base AS final
 WORKDIR /app

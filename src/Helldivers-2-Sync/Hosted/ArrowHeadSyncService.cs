@@ -53,7 +53,6 @@ public sealed partial class ArrowHeadSyncService(
     /// <inheritdoc cref="BackgroundService.ExecuteAsync(CancellationToken)" />
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-
         var delay = TimeSpan.FromSeconds(configuration.Value.IntervalSeconds);
 
         LogRunAtInterval(logger, delay);
@@ -113,11 +112,12 @@ public sealed partial class ArrowHeadSyncService(
             cancellationToken
         );
 
-        var spaceStations = await configuration.Value.SpaceStations.ToAsyncEnumerable().ToDictionaryAwaitAsync(ValueTask.FromResult, async key =>
-            await DownloadTranslations<SpaceStation>(
-                async language => await api.LoadSpaceStations(season, key, language, cancellationToken),
-                cancellationToken
-            ), cancellationToken: cancellationToken);
+        var spaceStations = await configuration.Value.SpaceStations.ToAsyncEnumerable().ToDictionaryAsync(
+            static (key, _) => ValueTask.FromResult(key), async (key, stoppingToken) =>
+                await DownloadTranslations<SpaceStation>(
+                    async language => await api.LoadSpaceStations(season, key, language, stoppingToken),
+                    stoppingToken
+                ), cancellationToken: cancellationToken);
 
         await storage.UpdateStores(
             rawWarId,
@@ -152,7 +152,7 @@ public sealed partial class ArrowHeadSyncService(
                     return new KeyValuePair<string, Memory<byte>?>(language, null);
                 }
             })
-            .SelectAwait(async task => await task)
+            .Select(async (task, stoppingToken) => await task.WaitAsync(stoppingToken))
             .Where(pair => pair.Value is not null)
             .ToDictionaryAsync(pair => pair.Key, pair => pair.Value.GetValueOrDefault(),
                 cancellationToken: cancellationToken);
