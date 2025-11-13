@@ -91,8 +91,8 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.ForwardLimit = 999;
     options.OriginalForHeaderName = "Fly-Client-IP";
     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor;
-    options.KnownNetworks.Add(new IPNetwork(IPAddress.Any, 0));
-    options.KnownNetworks.Add(new IPNetwork(IPAddress.IPv6Any, 0));
+    options.KnownIPNetworks.Add(new System.Net.IPNetwork(IPAddress.Any, 0));
+    options.KnownIPNetworks.Add(new System.Net.IPNetwork(IPAddress.IPv6Any, 0));
 });
 
 // This configuration is bound here so that source generators kick in.
