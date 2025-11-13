@@ -219,6 +219,9 @@ app.UseRequestLocalization();
 // Ensure web applications can access the API by setting CORS headers.
 app.UseCors();
 
+// Add various security-related headers.
+app.UseSecurityHeaders();
+
 // Make sure ASP.NET Core uses the correct addresses internally rather than Fly's proxy
 app.UseForwardedHeaders();
 
