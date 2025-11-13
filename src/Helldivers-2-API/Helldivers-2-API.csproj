@@ -5,6 +5,7 @@
         <RootNamespace>Helldivers.API</RootNamespace>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
+        <PublishReadyToRun>true</PublishReadyToRun>
   </PropertyGroup>
 
     <!-- Only generate OpenAPI docs for DEBUG builds -->

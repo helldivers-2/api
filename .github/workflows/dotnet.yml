@@ -36,3 +36,22 @@ jobs:
           retention-days: 5
           name: openapi-schemas
           path: docs/openapi/
+
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./src/Helldivers-2-API/Dockerfile
+          push: false
+          tags: helldivers-api:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

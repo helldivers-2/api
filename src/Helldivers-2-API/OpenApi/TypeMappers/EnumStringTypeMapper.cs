@@ -1,4 +1,5 @@
-﻿using NJsonSchema;
+﻿#if DEBUG
+using NJsonSchema;
 using NJsonSchema.Generation.TypeMappers;
 using System.Collections.ObjectModel;
 
@@ -34,3 +35,4 @@ public sealed class EnumStringTypeMapper<T> : ITypeMapper where T : struct, Enum
         schema.ExtensionData ??= new Dictionary<string, object>()!;
     }
 }
+#endif
