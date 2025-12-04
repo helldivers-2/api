@@ -50,7 +50,7 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
             .ToList();
 
         var (name, sector, biomeKey, environmentals) = planet;
-        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(sector))
+        if (name is null || string.IsNullOrWhiteSpace(sector))
             return null;
 
         Static.Biomes.TryGetValue(biomeKey, out var biome);

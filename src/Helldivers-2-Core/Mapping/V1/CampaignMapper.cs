@@ -14,16 +14,24 @@ public class CampaignMapper
     public IEnumerable<Campaign> MapToV1(MappingContext context, List<Planet> planets)
     {
         foreach (var campaign in context.InvariantWarStatus.Campaigns)
-            yield return MapToV1(campaign, planets);
+        {
+            var result = MapToV1(campaign, planets);
+            
+            if (result is not null)
+                yield return result;
+        }
     }
 
     /// <summary>
     /// Maps ArrowHead's <see cref="Models.ArrowHead.Status.Campaign" /> onto V1's.
     /// </summary>
-    private Campaign MapToV1(Models.ArrowHead.Status.Campaign campaign, List<Planet> planets)
+    private Campaign? MapToV1(Models.ArrowHead.Status.Campaign campaign, List<Planet> planets)
     {
-        var planet = planets.First(p => p.Index == campaign.PlanetIndex);
+        var planet = planets.FirstOrDefault(p => p.Index == campaign.PlanetIndex);
         Static.Factions.TryGetValue(campaign.Race, out var currentOwner);
+
+        if (planet is null)
+            return null;
 
         return new Campaign(
             Id: campaign.Id,
