@@ -16,7 +16,7 @@ public class CampaignMapper
         foreach (var campaign in context.InvariantWarStatus.Campaigns)
         {
             var result = MapToV1(campaign, planets);
-            
+
             if (result is not null)
                 yield return result;
         }
