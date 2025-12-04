@@ -28,14 +28,16 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
                 .Select(attack => attack.Target)
                 .ToList();
 
-            yield return MapToV1(context, info, status, @event, stats, attacking);
+            var planet = MapToV1(context, info, status, @event, stats, attacking);
+            if (planet is not null)
+                yield return planet;
         }
     }
 
     /// <summary>
     /// Merges all ArrowHead data points on planets into a single <see cref="Planet" /> object.
     /// </summary>
-    private Planet MapToV1(MappingContext context, PlanetInfo info, PlanetStatus status, PlanetEvent? @event, PlanetStats? stats, List<int> attacking)
+    private Planet? MapToV1(MappingContext context, PlanetInfo info, PlanetStatus status, PlanetEvent? @event, PlanetStats? stats, List<int> attacking)
     {
         Static.Planets.TryGetValue(info.Index, out var planet);
         Static.Factions.TryGetValue(info.InitialOwner, out var initialOwner);
@@ -48,6 +50,8 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
             .ToList();
 
         var (name, sector, biomeKey, environmentals) = planet;
+        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(sector))
+            return null;
 
         Static.Biomes.TryGetValue(biomeKey, out var biome);
         return new Planet(
