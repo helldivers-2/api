@@ -8,4 +8,10 @@
 public sealed record Biome(
     string Name,
     string Description
-);
+)
+{
+    /// <summary>
+    /// Used when the biome could not be determined.
+    /// </summary>
+    public static readonly Biome Unknown = new("UNKNOWN BIOME", string.Empty);
+};

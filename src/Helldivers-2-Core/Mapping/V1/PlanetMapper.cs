@@ -49,12 +49,17 @@ public sealed class PlanetMapper(StatisticsMapper statisticsMapper)
 
         var (name, sector, biomeKey, environmentals) = planet;
 
+        Static.Biomes.TryGetValue(biomeKey, out var biome);
         return new Planet(
             Index: info.Index,
             Name: name,
             Sector: sector,
-            Biome: Static.Biomes[biomeKey],
-            Hazards: environmentals.Select(environmental => Static.Environmentals[environmental]).ToList(),
+            Biome: biome ?? Biome.Unknown,
+            Hazards: environmentals.Select(environmental =>
+            {
+                Static.Environmentals.TryGetValue(environmental, out var hazard);
+                return hazard ?? Hazard.Unknown;
+            }).ToList(),
             Hash: info.SettingsHash,
             Position: new Position(info.Position.X, info.Position.Y),
             Waypoints: info.Waypoints.ToList(),
