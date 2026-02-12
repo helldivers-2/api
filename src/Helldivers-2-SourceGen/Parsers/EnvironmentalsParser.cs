@@ -15,7 +15,7 @@ public class EnvironmentalsParser : BaseJsonParser
         var builder = new StringBuilder("new Dictionary<string, Helldivers.Models.V1.Planets.Hazard>()\n\t{\n");
         var entries = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(json)!;
         foreach (var pair in entries)
-            builder.AppendLine($@"{'\t'}{'\t'}{{ ""{pair.Key}"", new Helldivers.Models.V1.Planets.Hazard(""{pair.Value["name"]}"", ""{pair.Value["description"]}"") }},");
+            builder.AppendLine($@"{'\t'}{'\t'}{{ {EscapeString(pair.Key)}, new Helldivers.Models.V1.Planets.Hazard({EscapeString(pair.Value["name"])}, {EscapeString(pair.Value["description"])}) }},");
 
         builder.Append("\t}");
         return ("IReadOnlyDictionary<string, Helldivers.Models.V1.Planets.Hazard>", builder.ToString());

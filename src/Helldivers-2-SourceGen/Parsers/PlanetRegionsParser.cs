@@ -21,10 +21,8 @@ public class PlanetRegionsParser : BaseJsonParser
             string? description = property.Value.GetProperty("description").GetString();
             if (string.IsNullOrWhiteSpace(description))
                 description = "null";
-            else
-                description = $@"""{description}""";
 
-            builder.AppendLine($@"{'\t'}{'\t'}{{ {index}, (""{name}"", {description}) }},");
+            builder.AppendLine($@"{'\t'}{'\t'}{{ {index}, ({EscapeString(name)}, {EscapeString(description)}) }},");
         }
 
         builder.Append("\t}");
