@@ -43,8 +43,8 @@ jobs:
         with:
           name: sync-artifacts
           path: |
-            v1/*.json
-            v2/*.json
+            ci/v1/*.json
+            ci/v2/*.json
             sync.log
 
       - name: Capture error log
