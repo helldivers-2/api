@@ -62,8 +62,8 @@ public sealed partial class RateLimitMiddleware(
         if (options.Value.ValidateClients is false || context.Request.Path.StartsWithSegments("/metrics"))
             return true;
 
-        return context.Request.Headers.ContainsKey(Constants.CLIENT_HEADER_NAME)
-            && context.Request.Headers.ContainsKey(Constants.CONTACT_HEADER_NAME);
+        return HasSuperHeaderOrQuery(context, Constants.CLIENT_HEADER_NAME)
+            && HasSuperHeaderOrQuery(context, Constants.CONTACT_HEADER_NAME);
     }
 
     private RateLimiter GetRateLimiter(HttpContext http)
@@ -121,5 +121,13 @@ public sealed partial class RateLimitMiddleware(
         writer.WriteEndObject();
 
         await writer.FlushAsync(context.RequestAborted);
+    }
+
+    private bool HasSuperHeaderOrQuery(HttpContext context, string name)
+    {
+        if (context.Request.Headers.ContainsKey(name))
+            return true;
+
+        return context.Request.Query.ContainsKey(name.ToLowerInvariant());
     }
 }
