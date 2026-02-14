@@ -71,4 +71,13 @@ public static partial class ClientMetric
 
         return result;
     }
+
+    private static string? GetSuperClient(HttpContext context)
+    {
+        if (context.Request.Headers.TryGetValue(Constants.CLIENT_HEADER_NAME, out var superClient))
+            if (string.IsNullOrWhiteSpace(superClient) is false)
+                return superClient;
+
+        return context.Request.Query[Constants.CLIENT_HEADER_NAME.ToLowerInvariant()];
+    }
 }
