@@ -19,10 +19,11 @@ public class PlanetRegionsParser : BaseJsonParser
             var index = property.Name;
             var name = property.Value.GetProperty("name").GetString();
             string? description = property.Value.GetProperty("description").GetString();
+
             if (string.IsNullOrWhiteSpace(description))
                 description = "null";
             else
-                description = $@"""{description}""";
+                description = $"\"{EscapeSpecialChars(description)}\"";
 
             builder.AppendLine($@"{'\t'}{'\t'}{{ {index}, (""{name}"", {description}) }},");
         }
@@ -30,4 +31,15 @@ public class PlanetRegionsParser : BaseJsonParser
         builder.Append("\t}");
         return ("IReadOnlyDictionary<ulong, (string Name, string? Description)>", builder.ToString());
     }
+
+    static string EscapeSpecialChars(string value)
+    {
+        return value
+            .Replace("\\", "\\\\")
+            .Replace("\"", "\\\"")
+            .Replace("\r", "\\r")
+            .Replace("\n", "\\n")
+            .Replace("\t", "\\t");
+    }
+
 }
