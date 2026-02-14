@@ -15,12 +15,14 @@ public abstract class BaseJsonParser : IJsonParser
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 using global::System.Collections.Generic;
 using global::Helldivers.Models.Domain.Localization;
+using global::System.CodeDom.Compiler;
 
 namespace Helldivers.Models;
 
 public static partial class Static
 {{
     /// <summary>Public list of {0} entries from {1}</summary>
+    [GeneratedCode(""Helldivers.SourceGen"", ""1.0.0"")]
     public static {2} {0} = {3};
 }}";
 
@@ -48,4 +50,23 @@ public static partial class Static
     /// Convert the JSON string into C# code that can be injected.
     /// </summary>
     protected abstract (string Type, string Source) Parse(string json);
+
+    /// <summary>
+    /// Escapes the given JSON value so it remains a valid C# string while attempting to preserve formatting.
+    /// </summary>
+    protected string EscapeString(string? value)
+    {
+        const string tripleQuote = @"""""""";
+        if (string.IsNullOrWhiteSpace(value))
+            return string.Empty;
+
+        if (value.Contains('\n') || value.Contains('"'))
+        {
+            value = value?.Replace("\n", "\n\t\t");
+
+            return $"{tripleQuote}\n\t\t{value}\n\t\t{tripleQuote}";
+        }
+
+        return $@"""{value}""";
+    }
 }

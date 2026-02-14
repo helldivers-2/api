@@ -370,3 +370,6 @@ docs/README.md
 
 # Ignore OpenAPI documents
 docs/openapi/*.json
+
+# Ignore CI files
+/ci/

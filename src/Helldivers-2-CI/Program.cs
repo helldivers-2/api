@@ -66,16 +66,17 @@ var war = await app.Services.GetRequiredService<Helldivers.Core.Contracts.IStore
 var dispatchesv2 = await app.Services.GetRequiredService<IStore<Helldivers.Models.V2.Dispatch, int>>().AllAsync(maxRuntime.Token);
 var store = await app.Services.GetRequiredService<IStore<SpaceStation, long>>().AllAsync(maxRuntime.Token);
 
-Directory.CreateDirectory("v1");
-Directory.CreateDirectory("v2");
+Directory.CreateDirectory("ci");
+Directory.CreateDirectory("ci/v1");
+Directory.CreateDirectory("ci/v2");
 
 var options = new JsonSerializerOptions { WriteIndented = true };
-await File.WriteAllBytesAsync("v1/assignments.json", JsonSerializer.SerializeToUtf8Bytes(assignments, options), maxRuntime.Token);
-await File.WriteAllBytesAsync("v1/campaigns.json", JsonSerializer.SerializeToUtf8Bytes(campaigns, options), maxRuntime.Token);
-await File.WriteAllBytesAsync("v1/dispatches.json", JsonSerializer.SerializeToUtf8Bytes(dispatchesv1, options), maxRuntime.Token);
-await File.WriteAllBytesAsync("v1/planets.json", JsonSerializer.SerializeToUtf8Bytes(planets, options), maxRuntime.Token);
-await File.WriteAllBytesAsync("v1/war.json", JsonSerializer.SerializeToUtf8Bytes(war, options), maxRuntime.Token);
-await File.WriteAllBytesAsync("v2/dispatches.json", JsonSerializer.SerializeToUtf8Bytes(dispatchesv2, options), maxRuntime.Token);
-await File.WriteAllBytesAsync("v2/space-stations.json", JsonSerializer.SerializeToUtf8Bytes(store, options), maxRuntime.Token);
+await File.WriteAllBytesAsync("ci/v1/assignments.json", JsonSerializer.SerializeToUtf8Bytes(assignments, options), maxRuntime.Token);
+await File.WriteAllBytesAsync("ci/v1/campaigns.json", JsonSerializer.SerializeToUtf8Bytes(campaigns, options), maxRuntime.Token);
+await File.WriteAllBytesAsync("ci/v1/dispatches.json", JsonSerializer.SerializeToUtf8Bytes(dispatchesv1, options), maxRuntime.Token);
+await File.WriteAllBytesAsync("ci/v1/planets.json", JsonSerializer.SerializeToUtf8Bytes(planets, options), maxRuntime.Token);
+await File.WriteAllBytesAsync("ci/v1/war.json", JsonSerializer.SerializeToUtf8Bytes(war, options), maxRuntime.Token);
+await File.WriteAllBytesAsync("ci/v2/dispatches.json", JsonSerializer.SerializeToUtf8Bytes(dispatchesv2, options), maxRuntime.Token);
+await File.WriteAllBytesAsync("ci/v2/space-stations.json", JsonSerializer.SerializeToUtf8Bytes(store, options), maxRuntime.Token);
 
 return 0;

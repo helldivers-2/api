@@ -27,10 +27,10 @@ public class PlanetsParser : BaseJsonParser
                 .Value
                 .GetProperty("environmentals")
                 .EnumerateArray()
-                .Select(prop => $@"""{prop.GetString()!}""")
+                .Select(prop => EscapeString(prop.GetString()))
                 .ToList();
 
-            builder.AppendLine($@"{'\t'}{'\t'}{{ {index}, (LocalizedMessage.FromStrings([{string.Join(", ", names.Select(pair => $@"[""{pair.Key}"", ""{pair.Value}""]"))}]), ""{sector}"", ""{biome}"", [{string.Join(", ", environmentals)}]) }},");
+            builder.AppendLine($@"{'\t'}{'\t'}{{ {index}, (LocalizedMessage.FromStrings([{string.Join(", ", names.Select(pair => $@"[{EscapeString(pair.Key)}, {EscapeString(pair.Value)}]"))}]), {EscapeString(sector)}, {EscapeString(biome)}, [{string.Join(", ", environmentals)}]) }},");
         }
 
         builder.Append("\t}");

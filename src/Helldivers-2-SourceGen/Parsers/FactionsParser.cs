@@ -14,7 +14,7 @@ public class FactionsParser : BaseJsonParser
         var builder = new StringBuilder("new Dictionary<int, string>()\n\t{\n");
         var entries = JsonSerializer.Deserialize<Dictionary<string, string>>(json)!;
         foreach (var pair in entries)
-            builder.AppendLine($@"{'\t'}{'\t'}{{ {pair.Key}, ""{pair.Value}"" }},");
+            builder.AppendLine($@"{'\t'}{'\t'}{{ {pair.Key}, {EscapeString(pair.Value)} }},");
 
         builder.Append("\t}");
         return ("IReadOnlyDictionary<int, string>", builder.ToString());
