@@ -41,6 +41,30 @@ public class HelldiversDocumentProcessor : IDocumentProcessor
                 property.OneOf.Clear();
             }
         }
+
+        context.Document.SecurityDefinitions.Add(Constants.CLIENT_HEADER_NAME, new OpenApiSecurityScheme
+        {
+            Type = OpenApiSecuritySchemeType.ApiKey,
+            In = OpenApiSecurityApiKeyLocation.Header,
+            Name = Constants.CLIENT_HEADER_NAME,
+            Description = "A unique name that identifies your client to the API."
+        });
+
+        context.Document.SecurityDefinitions.Add(Constants.CONTACT_HEADER_NAME, new OpenApiSecurityScheme
+        {
+            Type = OpenApiSecuritySchemeType.ApiKey,
+            In = OpenApiSecurityApiKeyLocation.Header,
+            Name = Constants.CONTACT_HEADER_NAME,
+            Description = "Contact information for the developer (e.g. an email address or URL)."
+        });
+
+        context.Document.SecurityDefinitions.Add("Bearer", new OpenApiSecurityScheme
+        {
+            Type = OpenApiSecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            Description = "A JWT bearer token for authenticated access."
+        });
     }
 }
 #endif
