@@ -14,27 +14,12 @@ public class SuperHeadersProcessor : IOperationProcessor
     /// <inheritdoc />
     public bool Process(OperationProcessorContext context)
     {
-        context.OperationDescription.Operation.Parameters.Add(
-            new OpenApiParameter
+        context.OperationDescription.Operation.Security ??= [];
+        context.OperationDescription.Operation.Security.Add(
+            new OpenApiSecurityRequirement
             {
-                Name = Constants.CLIENT_HEADER_NAME,
-                Kind = OpenApiParameterKind.Header,
-                Type = NJsonSchema.JsonObjectType.String,
-                IsRequired = true,
-                Description = "The name of the header that identifies the client to the API.",
-                Default = string.Empty
-            }
-        );
-
-        context.OperationDescription.Operation.Parameters.Add(
-            new OpenApiParameter
-            {
-                Name = Constants.CONTACT_HEADER_NAME,
-                Kind = OpenApiParameterKind.Header,
-                Type = NJsonSchema.JsonObjectType.String,
-                IsRequired = true,
-                Description = "The name of the header with developer contact information.",
-                Default = string.Empty
+                { Constants.CLIENT_HEADER_NAME, [] },
+                { Constants.CONTACT_HEADER_NAME, [] }
             }
         );
 
