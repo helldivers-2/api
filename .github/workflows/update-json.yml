@@ -1,0 +1,70 @@
+name: Update JSON data submodule
+
+on:
+  repository_dispatch:
+    types: [json-data-updated]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Update submodule to latest
+        id: update
+        run: |
+          git submodule update --remote --merge src/Helldivers-2-Models/json
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup .NET
+        if: steps.update.outputs.changed == 'true'
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'   # match whatever your Directory.Build.props/global.json targets
+
+      - name: Build and test
+        if: steps.update.outputs.changed == 'true'
+        id: build
+        continue-on-error: true
+        run: |
+          dotnet restore Helldivers-2.sln
+          dotnet build Helldivers-2.sln --no-restore --configuration Release
+          dotnet test Helldivers-2.sln --no-build --configuration Release
+
+      - name: Open PR if build succeeded
+        if: steps.update.outputs.changed == 'true' && steps.build.outcome == 'success'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          commit-message: "chore: update JSON data submodule"
+          title: "chore: update JSON data submodule"
+          body: |
+            Automated update of `src/Helldivers-2-Models/json` to the latest commit on `master`.
+            Build and tests passed.
+          branch: auto/update-json-submodule
+          delete-branch: true
+
+      - name: Open issue if build failed
+        if: steps.update.outputs.changed == 'true' && steps.build.outcome == 'failure'
+        uses: actions/github-script@v9
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "Build failure after JSON submodule auto-update",
+              body: `The automated submodule update to \`src/Helldivers-2-Models/json\` broke the build.\n\nWorkflow run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              labels: ["automated", "build-failure"]
+            })
