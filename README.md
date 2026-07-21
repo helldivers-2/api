@@ -53,3 +53,4 @@ Check out some awesome projects made by our community!
   The Galactic Wide Web - a discord bot
 - [helldivers-2/api-wrapper](https://github.com/helldivers-2/api-wrapper)
   Typescript client code generated from OpenAPI
+- [Helldivers 2 Guides](https://hd2guides.com/) — Helldivers 2 stratagem tier lists, warbond guides, mission strategies, and loadout builds.
