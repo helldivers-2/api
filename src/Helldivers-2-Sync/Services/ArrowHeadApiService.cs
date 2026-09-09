@@ -69,15 +69,18 @@ public sealed class ArrowHeadApiService(
     }
 
     /// <summary>
-    /// Fetch the newsfeed of a given <paramref name="season" /> in <paramref name="language" />.
+    /// Fetch a single page of the newsfeed of a given <paramref name="season" /> in <paramref name="language" />,
+    /// starting at <paramref name="fromTimestamp" />. ArrowHead returns at most <see cref="HelldiversSyncConfiguration.NewsFeedMaxEntries" />
+    /// entries per call, oldest-first from <paramref name="fromTimestamp" /> onwards.
     /// </summary>
-    public async Task<Memory<byte>> LoadFeed(string season, string language, CancellationToken cancellationToken)
+    private async Task<Memory<byte>> LoadFeedPage(string season, string language, uint fromTimestamp,
+        CancellationToken cancellationToken)
     {
         // If the `NewsFeedMaxEntries` flag is not set to 0 we pass it in.
         // This parameter needs to be passed or a 400 status code will be returned occasionally.
         var request = options.Value.NewsFeedMaxEntries is 0
-            ? BuildRequest($"/api/NewsFeed/{season}?fromTimestamp={options.Value.NewsFeedFromTimestamp}", language)
-            : BuildRequest($"/api/NewsFeed/{season}?maxEntries={options.Value.NewsFeedMaxEntries}&fromTimestamp={options.Value.NewsFeedFromTimestamp}", language);
+            ? BuildRequest($"/api/NewsFeed/{season}?fromTimestamp={fromTimestamp}", language)
+            : BuildRequest($"/api/NewsFeed/{season}?maxEntries={options.Value.NewsFeedMaxEntries}&fromTimestamp={fromTimestamp}", language);
 
         using var response = await http.SendAsync(request, cancellationToken);
 
@@ -87,6 +90,43 @@ public sealed class ArrowHeadApiService(
         await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
 
         return await CollectStream(stream, cancellationToken);
+    }
+
+    /// <summary>
+    /// Fetch the entire newsfeed of a given <paramref name="season" /> in <paramref name="language" />, paging
+    /// through ArrowHead's API (which only ever returns up to <see cref="HelldiversSyncConfiguration.NewsFeedMaxEntries" />
+    /// entries per call starting at a given timestamp) until every entry has been collected.
+    /// </summary>
+    public async Task<Memory<byte>> LoadFeed(string season, string language, CancellationToken cancellationToken)
+    {
+        var maxEntries = options.Value.NewsFeedMaxEntries;
+        var fromTimestamp = options.Value.NewsFeedFromTimestamp;
+        var items = new List<NewsFeedItem>();
+
+        // Safety net so a misbehaving upstream (eg. always returning a full page) can't loop forever.
+        for (var page = 0; page < 1_000; page++)
+        {
+            var raw = await LoadFeedPage(season, language, fromTimestamp, cancellationToken);
+            var pageItems = JsonSerializer.Deserialize(
+                raw.Span,
+                ArrowHeadSerializerContext.Default.ListNewsFeedItem
+            ) ?? [];
+
+            if (pageItems.Count is 0)
+                break;
+
+            items.AddRange(pageItems);
+
+            // A page smaller than what we asked for means we've reached the end of the feed.
+            if (maxEntries is 0 || pageItems.Count < maxEntries)
+                break;
+
+            // Advance the window to just after the newest entry we've seen so far, so the next page
+            // picks up where this one left off instead of re-fetching the same entries forever.
+            fromTimestamp = checked((uint)(pageItems.Max(item => item.Published) + 1));
+        }
+
+        return JsonSerializer.SerializeToUtf8Bytes(items, ArrowHeadSerializerContext.Default.ListNewsFeedItem);
     }
 
     /// <summary>
