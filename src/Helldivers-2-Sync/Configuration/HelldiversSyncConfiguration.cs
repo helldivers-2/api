@@ -32,12 +32,15 @@ public sealed class HelldiversSyncConfiguration
     public bool RunOnce { get; set; } = false;
 
     /// <summary>
-    /// Get the maximum number of entries returned by ArrowHead from the newsfeed API.
+    /// The maximum number of entries ArrowHead returns per newsfeed API call. The sync service pages through
+    /// the full history by repeatedly calling the API with an advancing <see cref="NewsFeedFromTimestamp" />
+    /// until a page comes back with fewer than this many entries.
     /// </summary>
     public uint NewsFeedMaxEntries { get; set; } = 1024;
 
     /// <summary>
-    /// Get all news feed entries that were published after this timestamp
+    /// The timestamp used for the first page of newsfeed entries fetched each sync. Every entry published on
+    /// or after this timestamp will eventually be fetched, one <see cref="NewsFeedMaxEntries" />-sized page at a time.
     /// </summary>
     public uint NewsFeedFromTimestamp { get; set; } = 1000;
 }
